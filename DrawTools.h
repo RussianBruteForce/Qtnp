@@ -1,0 +1,14 @@
+#ifndef DRAWTOOLS_H
+#define DRAWTOOLS_H
+
+enum DrawTool{
+	NONE,
+	PEN,
+	LINE,
+	SQUARE,
+	ELLIPSE,
+	JOGGED_LINE,
+	CIRCLE
+};
+
+#endif // DRAWTOOLS_H

@@ -14,10 +14,40 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         Qtnp.cpp \
-    DigitalClock.cpp
+    DigitalClock.cpp \
+    DrawCore.cpp \
+    fparser/muparser/muParserTokenReader.cpp \
+    fparser/muparser/muParserTest.cpp \
+    fparser/muparser/muParserInt.cpp \
+    fparser/muparser/muParserError.cpp \
+    fparser/muparser/muParserDLL.cpp \
+    fparser/muparser/muParserCallback.cpp \
+    fparser/muparser/muParserBytecode.cpp \
+    fparser/muparser/muParserBase.cpp \
+    fparser/muparser/muParser.cpp \
+    fparser/fparser.cpp \
+    ColorWidget.cpp
 
 HEADERS  += Qtnp.h \
-    DigitalClock.h
+    DigitalClock.h \
+    DrawCore.h \
+    DrawTools.h \
+    fparser/fparser.h \
+    fparser/muparser/muParserTokenReader.h \
+    fparser/muparser/muParserToken.h \
+    fparser/muparser/muParserTest.h \
+    fparser/muparser/muParserTemplateMagic.h \
+    fparser/muparser/muParserStack.h \
+    fparser/muparser/muParserInt.h \
+    fparser/muparser/muParserFixes.h \
+    fparser/muparser/muParserError.h \
+    fparser/muparser/muParserDLL.h \
+    fparser/muparser/muParserDef.h \
+    fparser/muparser/muParserCallback.h \
+    fparser/muparser/muParserBytecode.h \
+    fparser/muparser/muParserBase.h \
+    fparser/muparser/muParser.h \
+    ColorWidget.h
 
 FORMS    += Qtnp.ui
 

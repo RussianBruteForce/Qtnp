@@ -2,5 +2,27 @@
     <qresource prefix="/">
         <file>resources/splash.png</file>
         <file>resources/GNU_GPLv3_Logo.png</file>
+        <file>resources/about.png</file>
+        <file>resources/change_pens_ico.png</file>
+        <file>resources/circle.png</file>
+        <file>resources/cursor.png</file>
+        <file>resources/exit.png</file>
+        <file>resources/fullscreen.png</file>
+        <file>resources/graphic.png</file>
+        <file>resources/grid.png</file>
+        <file>resources/jogged.png</file>
+        <file>resources/jogged_ico.png</file>
+        <file>resources/line.png</file>
+        <file>resources/line_ico.png</file>
+        <file>resources/new.png</file>
+        <file>resources/next.png</file>
+        <file>resources/open.png</file>
+        <file>resources/pencil.png</file>
+        <file>resources/pencil_ico.png</file>
+        <file>resources/prev.png</file>
+        <file>resources/qtnp_ru.qm</file>
+        <file>resources/save.png</file>
+        <file>resources/save_as.png</file>
+        <file>resources/template.png</file>
     </qresource>
 </RCC>

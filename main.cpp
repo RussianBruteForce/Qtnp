@@ -5,8 +5,7 @@
 int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
-	QSplashScreen *splash = new QSplashScreen;
-	splash->setPixmap(QPixmap(":/resources/splash.png"));
+	QSplashScreen *splash = new QSplashScreen(QPixmap(":/resources/splash.png"));
 	splash->show();
 
 	Qt::Alignment bottomLeft = Qt::AlignBottom | Qt::AlignLeft;
@@ -27,9 +26,13 @@ int main(int argc, char *argv[])
 	                    bottomLeft, Qt::black);
 	w.makeConnections();
 
+	splash->showMessage(QObject::tr("Loading Toolbar..."),
+	                    bottomLeft, Qt::black);
+	w.loadToolbar(0);
+
 	w.show();
 
-	splash->deleteLater();
+	delete splash;
 
 	return a.exec();
 }
