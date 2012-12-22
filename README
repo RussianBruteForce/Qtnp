@@ -1,8 +1,8 @@
-E-mail: <hackeridze@gmail.com> Victor Hackeridze
+E-mail: <bruteforce@sigil.tk> Victor Hackeridze
 
 COMPILE
 	$ qmake
 	$ make
 
 RUN
-	$ ./Qtnp
+	$ ./qtnp
