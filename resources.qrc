@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resources/splash.png</file>
+        <file>resources/GNU_GPLv3_Logo.png</file>
+    </qresource>
+</RCC>
