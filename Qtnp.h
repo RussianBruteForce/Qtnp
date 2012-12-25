@@ -7,6 +7,7 @@
 #include <QCheckBox>
 #include <QSpinBox>
 #include <QMenu>
+#include <QFileDialog>
 #include <QLineEdit>
 
 #include "DigitalClock.h"
@@ -32,18 +33,17 @@ private:
 	DrawCore *image;
 	DigitalClock *clock;
 	ColorWidget *penWidget, *rpenWidget;
-	QSpinBox *tricksessBox;
+	QSpinBox *thicksessBox;
 	QCheckBox *stickyDrawCheckBox;
 	QToolButton *changePensButton, *fullscreenButton,
-	*newFileButton, *addGridButton,
-	*drawGraphicButton,*prevButton, *toolsButton;
+	*newFileButton, *gridButton,
+	*graphicButton,*prevButton, *toolsButton;
 	QMenu *toolsMenu;
 	QLineEdit *statusLine;
 	//QtnpNewFileDialog *new_file_dialog;
 	//QtnpAddGridDialog *add_grid_dialog;
 	//QtnpGraphicDialog *draw_graphic_dialog;
-	bool isFullscreen;
-	QString openedFileLocation;
+	QString _openedFileLocation;
 
 private slots:
 	void newFile();
@@ -51,10 +51,10 @@ private slots:
 	void saveAs();
 	void exit();
 	void fullScreen();
-	void changePens();
+	void swapPens();
 	void saveFileBecause(QString reason);
 	void openFile();
-	void addGrid();
+	void drawGrid();
 	void setTool_NONE();
 	void setTool_PEN();
 	void setTool_LINE();

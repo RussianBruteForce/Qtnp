@@ -7,12 +7,13 @@ DrawCore::DrawCore(QObject *parent)
 
 	newImage(1280,1024,Qt::white);
 
+	_changed = false;
 	gridMaxX = 0;
 	gridMaxY = 0;
 	gridMinX = 0;
 	gridMinY = 0;
 
-	sticking = false;
+	_sticking = false;
 
 	setAlignment(Qt::AlignTop);
 
@@ -31,7 +32,7 @@ DrawCore::DrawCore(QObject *parent)
 /*
  * Preparing for setting new image
  */
-void DrawCore::clearOldImage()
+void DrawCore::prepareImage()
 {
 	painter->end();
 	delete image;
@@ -43,7 +44,7 @@ void DrawCore::clearOldImage()
  */
 void DrawCore::newImage(int x, int y, QColor color)
 {
-	clearOldImage();
+	prepareImage();
 	image = new QImage(x,y,QImage::Format_RGB32);
 	painter = new QPainter(image);
 	painter->fillRect(0,0, x,y, color);
@@ -57,6 +58,8 @@ void DrawCore::newImage(int x, int y, QColor color)
 	cX = width_/2;
 	cY = height_/2;
 	gridStep = -1;
+
+	_changed = false;
 }
 
 /*
@@ -74,6 +77,8 @@ void DrawCore::loadImage(const QString path)
 	cX = width_/2;
 	cY = height_/2;
 	gridStep = -1;
+
+	_changed = false;
 }
 
 /*
@@ -138,7 +143,7 @@ void DrawCore::refresh()
 void DrawCore::mousePressEvent(QMouseEvent *event)
 {
 	if (event->button() == Qt::LeftButton) {
-		switch(active_tool) {
+		switch(activeTool) {
 		case NONE:
 			break;
 		case PEN:
@@ -185,7 +190,7 @@ void DrawCore::mousePressEvent(QMouseEvent *event)
 			break;
 		}
 	} else if (event->button() == Qt::RightButton) {
-		switch(active_tool) {
+		switch(activeTool) {
 		case NONE:
 			break;
 		case PEN:
@@ -232,7 +237,7 @@ void DrawCore::mouseMoveEvent(QMouseEvent *event)
 {
 	if ((event->buttons() & Qt::LeftButton) && painting) {
 		end = event -> pos();
-		switch(active_tool) {
+		switch(activeTool) {
 		case NONE:
 			break;
 		case PEN:
@@ -259,7 +264,7 @@ void DrawCore::mouseMoveEvent(QMouseEvent *event)
 		}
 	} else if ((event->buttons() & Qt::RightButton) && painting) {
 			end = event -> pos();
-			switch(active_tool) {
+			switch(activeTool) {
 			case NONE:
 				break;
 			case PEN:
@@ -294,7 +299,7 @@ void DrawCore::mouseReleaseEvent(QMouseEvent *event)
 {
 	if (event->button() == Qt::LeftButton && painting) {
 		end = event -> pos();
-		switch(active_tool) {
+		switch(activeTool) {
 		case NONE:
 			break;
 		case PEN:
@@ -324,7 +329,7 @@ void DrawCore::mouseReleaseEvent(QMouseEvent *event)
 		}
 	} else if (event->button() == Qt::RightButton && painting){
 		end = event -> pos();
-		switch(active_tool) {
+		switch(activeTool) {
 		case NONE:
 			break;
 		case PEN:
@@ -362,7 +367,7 @@ void DrawCore::drawLine(QPen p)
 {
 	painter->begin(image);
 	painter->setPen(p);
-	if (sticking)
+	if (_sticking)
 		painter->drawLine(closestGridPoint(start), closestGridPoint(end));
 	else painter->drawLine(start, end);
 	painter->end();
@@ -376,7 +381,7 @@ void DrawCore::drawSquare(QPen p)
 {
 	painter->begin(image);
 	painter->setPen(p);
-	if (sticking)
+	if (_sticking)
 		painter->drawRect(QRect(closestGridPoint(start), closestGridPoint(end)));
 	else painter->drawRect(QRect(start, end));
 	painter->end();
@@ -390,7 +395,7 @@ void DrawCore::drawEllipse(QPen p)
 {
 	painter->begin(image);
 	painter->setPen(p);
-	if (sticking)
+	if (_sticking)
 		painter->drawEllipse(QRect(closestGridPoint(start), closestGridPoint(end)));
 	else painter->drawEllipse(QRect(start, end));
 	painter->end();
@@ -422,7 +427,7 @@ void DrawCore::drawCircle(QPen p)
 		y_F = start.y() - R;
 		y_F2 = start.y() + R;
 	}
-	if (sticking)
+	if (_sticking)
 		painter->drawEllipse(QRect(closestGridPoint(QPoint(x_F,y_F)), closestGridPoint(QPoint(x_F2,y_F2))));
 	else painter->drawEllipse(QRect(QPoint(x_F,y_F), QPoint(x_F2,y_F2)));
 	painter->end();
@@ -440,7 +445,7 @@ void DrawCore::setPenColor(QColor color)
 /*
  * Set right pen color
  */
-void DrawCore::setRpenColor(QColor color)
+void DrawCore::setRPenColor(QColor color)
 {
 	rpen.setColor(color);
 }
@@ -457,7 +462,7 @@ void DrawCore::setBrushColor(QColor color)
 /*
  * Set pen trickness to size
  */
-void DrawCore::penTrickness(int size)
+void DrawCore::setThickness(int size)
 {
 	pen.setWidth(size);
 	rpen.setWidth(size);
@@ -482,6 +487,8 @@ void DrawCore::remember(void)
 {
 	if (prevList.size() > 7) prevList.pop_front();
 	prevList.append(*image);
+
+	_changed = true;
 }
 
 /*
@@ -524,24 +531,24 @@ int DrawCore::round(double num)
  */
 void DrawCore::setActiveTool(DrawTool whichTool)
 {
-	active_tool = whichTool;
+	activeTool = whichTool;
 	painting = 0;
 	joggedLineFirstClickDone = true;
-	switch(active_tool) {
+	switch(activeTool) {
 	case NONE:
 		this->setCursor(Qt::ArrowCursor);
 		break;
 	case PEN:
-		this->setCursor(QCursor(QPixmap(":/res/pencil.png")));
+		this->setCursor(QCursor(QPixmap(":/resource/pencil.png")));
 		break;
 	case LINE:
-		this->setCursor(QCursor(QPixmap(":/res/line.png")));
+		this->setCursor(QCursor(QPixmap(":/resource/line.png")));
 		break;
 	case JOGGED_LINE:
-		this->setCursor(QCursor(QPixmap(":/res/jogged.png")));
+		this->setCursor(QCursor(QPixmap(":/resource/jogged.png")));
 		break;
 	case CIRCLE:
-		this->setCursor(QCursor(QPixmap(":/res/circle.png")));
+		this->setCursor(QCursor(QPixmap(":/resource/circle.png")));
 		break;
 	}
 }
@@ -557,10 +564,15 @@ QColor DrawCore::getPenColor(bool pen)
 	else return this->rpen.color();
 }
 
+bool DrawCore::isChanged()
+{
+	return _changed;
+}
+
 /*
  * Draw the grid
  */
-void DrawCore::makeGrid(int step, QColor color,int width)
+void DrawCore::drawGrid(int step, QColor color,int width)
 {
 	int x,y;
 	QPen gridPen;
@@ -596,7 +608,7 @@ void DrawCore::makeGrid(int step, QColor color,int width)
 /*
  * Draw the coordinate plane
  */
-void DrawCore::makeCoordPlane(int coordPlaneStep, QColor clr, int width)
+void DrawCore::drawCoordPlane(int coordPlaneStep, QColor clr, int width)
 {
 	int markSize;
 
@@ -727,7 +739,7 @@ void DrawCore::drawGraphic(QString str, QColor color, int width)
 
 	ExpParser fparser;
 	fparser.setE(str);
-	connect(&fparser,&ExpParser::badExp,this,&DrawCore::badGraphicExp);
+	connect(&fparser,&ExpParser::badExp,this,&DrawCore::functionExeption);
 
 
 	double i = gridMinX;
@@ -758,7 +770,7 @@ void DrawCore::drawGraphic(QString str, QColor color, int width)
 
 		bX = i;
 		bY = fparser.getR(i);
-		emit parserStrings(tr("Last value ") + QString::number(bY));
+		emit parserMsg(tr("Last value ") + QString::number(bY));
 
 		sX = cX+gridStep*bX;
 		sY = cY-gridStep*bY;
@@ -781,14 +793,14 @@ void DrawCore::drawGraphic(QString str, QColor color, int width)
  */
 void DrawCore::setSticky(bool ans)
 {
-	sticking = ans;
+	_sticking = ans;
 }
 
 /*
  * Emit error message to GUI
  */
-void DrawCore::badGraphicExp(QString msg)
+void DrawCore::functionExeption(QString msg)
 {
 	wrongExp = true;
-	emit parserStrings(msg);
+	emit parserMsg(msg);
 }

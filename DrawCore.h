@@ -17,6 +17,7 @@ public:
 	void loadImage(const QString ImageFile);
 	void saveImage(const QString ImageFile);
 	QColor getPenColor(bool pen);
+	bool isChanged();
 
 protected:
 	void mousePressEvent(QMouseEvent *event);
@@ -25,7 +26,7 @@ protected:
 
 private:
 	void refresh();
-	void clearOldImage();
+	void prepareImage();
 	void drawLine(QPen p);
 	void drawSquare(QPen p);
 	void drawEllipse(QPen p);
@@ -34,9 +35,10 @@ private:
 	QPoint closestGridPoint(QPoint p);
 	int round(double num);
 
+	bool _changed;
 	int width_, height_;
-	bool painting, joggedLineFirstClickDone, sticking, wrongExp;
-	DrawTool active_tool;
+	bool painting, joggedLineFirstClickDone, _sticking, wrongExp;
+	DrawTool activeTool;
 	QPoint start, end;
 	QImage *image;
 	QImage imageCopy;
@@ -51,24 +53,24 @@ private:
 
 public slots:
 	void setPenColor(QColor color);
-	void setRpenColor(QColor color);
+	void setRPenColor(QColor color);
 	void setBrushColor(QColor color); // check
-	void penTrickness(int size);
+	void setThickness(int size);
 	void prev();
 	void setActiveTool(DrawTool);
 	void newImage(int x, int y, QColor color);
 	void negative();
 	void grayscale();
-	void makeGrid(int step, QColor color,int width = 1);
-	void makeCoordPlane(int coordPlaneStep, QColor clr, int width = 1);
+	void drawGrid(int step, QColor color,int width = 1);
+	void drawCoordPlane(int coordPlaneStep, QColor clr, int width = 1);
 	void drawGraphic(QString str, QColor color, int width);
 	void setSticky(bool ans);
-	void badGraphicExp(QString msg);
+	void functionExeption(QString msg);
 
 signals:
 	void resetToolMenu();
 	void badGraphicExpError();
-	void parserStrings(QString);
+	void parserMsg(QString);
 };
 
 #endif // DRAWCORE_H
