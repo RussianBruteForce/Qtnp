@@ -28,10 +28,10 @@ Qtnp::Qtnp(QWidget *parent) :
 
 	_openedFileLocation = "0";
 
-	rpenWidget = new ColorWidget(255,255,255);
-	rpenWidget->setToolTip(tr("Right pen color!"));
-	penWidget = new ColorWidget(0,0,0);
-	penWidget->setToolTip(tr("Pen color!"));
+	rpenColor = new ColorWidget(255,255,255);
+	rpenColor->setToolTip(tr("Right pen color!"));
+	penColor = new ColorWidget(0,0,0);
+	penColor->setToolTip(tr("Pen color!"));
 
 	thicksessBox = new QSpinBox(ui->toolBar);
 	thicksessBox->setRange(1,200);
@@ -61,9 +61,9 @@ Qtnp::Qtnp(QWidget *parent) :
 	fullscreenButton->setIcon(QIcon(":/resources/fullscreen.png"));
 	fullscreenButton->setToolTip(tr("Fullscreen"));
 
-	stickyDrawCheckBox = new QCheckBox(ui->toolBar);
-	stickyDrawCheckBox->setToolTip(tr("Stick to web's points"));
-	stickyDrawCheckBox->setChecked(false);
+	stickyDraw = new QCheckBox(ui->toolBar);
+	stickyDraw->setToolTip(tr("Stick to web's points"));
+	stickyDraw->setChecked(false);
 
 
 	toolsMenu = new QMenu(this);
@@ -95,8 +95,8 @@ Qtnp::Qtnp(QWidget *parent) :
 Qtnp::~Qtnp()
 {
 	delete ui;
-	delete rpenWidget;
-	delete penWidget;
+	delete rpenColor;
+	delete penColor;
 }
 
 void Qtnp::makeConnections()
@@ -156,12 +156,12 @@ void Qtnp::makeConnections()
 		        this, &Qtnp::drawGraphic);
 		connect(prevButton, &QToolButton::clicked,
 		        image, &DrawCore::prev);
-		connect(stickyDrawCheckBox, &QCheckBox::toggled,
+		connect(stickyDraw, &QCheckBox::toggled,
 		        image, &DrawCore::setSticky);
 
-		connect(penWidget, &ColorWidget::colorChanged,
+		connect(penColor, &ColorWidget::colorChanged,
 		        image, &DrawCore::setPenColor);
-		connect(rpenWidget, &ColorWidget::colorChanged,
+		connect(rpenColor, &ColorWidget::colorChanged,
 		        image, &DrawCore::setRPenColor);
 
 		connect(changePensButton, &QToolButton::clicked,
@@ -208,10 +208,10 @@ void Qtnp::loadToolbar(bool reverse)
 		ui->toolBar->addSeparator();
 		ui->toolBar->addWidget(prevButton);
 		ui->toolBar->addWidget(toolsButton);
-		ui->toolBar->addWidget(stickyDrawCheckBox);
+		ui->toolBar->addWidget(stickyDraw);
 		ui->toolBar->addSeparator();
-		ui->toolBar->addWidget(penWidget);
-		ui->toolBar->addWidget(rpenWidget);
+		ui->toolBar->addWidget(penColor);
+		ui->toolBar->addWidget(rpenColor);
 		ui->toolBar->addWidget(changePensButton);
 		ui->toolBar->addWidget(thicksessBox);
 		ui->toolBar->addSeparator();
@@ -228,18 +228,44 @@ void Qtnp::newFile()
 
 void Qtnp::save()
 {
-	if(_openedFileLocation == "0") {
-		saveFileBecause(tr("Where to save?"));
-	} else {
-		image->saveImage(_openedFileLocation);
-		statusLine->setText(tr("Save completed"));
-	}
-	statusLine->setText(tr("Save earlier"));
+	if (image->isModified()) {
+		if(_openedFileLocation == "0")
+			saveAs();
+		else {
+			image->saveImage(_openedFileLocation);
+			statusLine->setText(tr("Image saved as ") + _openedFileLocation);
+		}
+	} else statusLine->setText(tr("Saved earlier"));
 }
 
-void Qtnp::saveAs()
+bool Qtnp::saveAs()
 {
-	saveFileBecause(tr("Save current image as..."));
+	QString fileName;
+	QString reason("Save image as...");
+	if(_openedFileLocation == "0")
+		fileName = QFileDialog::getSaveFileName(
+		                           this, reason,
+		                           QDir::homePath(),
+		                           tr("*.png;;*.xbm;;*.xpm;;*.bmp")
+		                           );
+	else    fileName = QFileDialog::getSaveFileName(
+		                           this, reason,
+		                           _openedFileLocation,
+		                           tr("*.png;;*.xbm;;*.xpm;;*.bmp")
+		                           );
+
+	if(!fileName.isEmpty()) {
+		this->setCursor(Qt::WaitCursor);
+		this->setDisabled(true);
+
+		image->saveImage(fileName);
+		_openedFileLocation = fileName;
+		statusLine->setText(tr("Image saved as ") + fileName);
+
+		this->setEnabled(true);
+		this->setCursor(Qt::ArrowCursor);
+		return true;
+	} else return false;
 }
 
 void Qtnp::exit()
@@ -256,39 +282,16 @@ void Qtnp::fullScreen()
 
 void Qtnp::swapPens()
 {
-}
-
-void Qtnp::saveFileBecause(QString reason)
-{
-	QFileDialog::Options options;
-	QString filter;
-	options |= QFileDialog::DontUseNativeDialog;
-	QString fileName = QFileDialog::getSaveFileName(
-	                           this, reason,
-	                           "",
-	                           tr("*.png;;*.xbm;;*.xpm"),
-	                           &filter,
-	                           options
-	                           );
-	if(!fileName.isEmpty()) {
-		QApplication::setOverrideCursor(Qt::WaitCursor);
-		int length(filter.size());
-		for(int i(length - 1); i > 0; i--) {
-			if(filter[i] != fileName[fileName.size() - length + i]) {
-				fileName += filter.mid(1);
-				break;
-			}
-		}
-		image->saveImage(fileName);
-		statusLine->setText(tr("Save completed"));
-		_openedFileLocation = fileName;
-		QApplication::restoreOverrideCursor();
-	}
+	QColor buf = penColor->color();
+	penColor->setColor(rpenColor->color());
+	rpenColor->setColor(buf);
 }
 
 void Qtnp::openFile()
 {
-	QString fileName = QFileDialog::getOpenFileName(this, tr("Open Image..."));
+	QString fileName = QFileDialog::getOpenFileName(this, tr("Open Image..."),
+	                                                QDir::homePath(),
+	                                                tr("Image Files (*.png *.jpg *.bmp *.xpm)"));
 	if (!fileName.isEmpty()) {
 		image->loadImage(fileName);
 		statusLine->setText(tr("Image openned!"));

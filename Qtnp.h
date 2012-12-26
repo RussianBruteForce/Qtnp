@@ -50,9 +50,9 @@ private:
 	Ui::Qtnp *ui;
 	DrawCore *image;
 	DigitalClock *clock;
-	ColorWidget *penWidget, *rpenWidget;
+	ColorWidget *penColor, *rpenColor;
 	QSpinBox *thicksessBox;
-	QCheckBox *stickyDrawCheckBox;
+	QCheckBox *stickyDraw;
 	QToolButton *changePensButton, *fullscreenButton,
 	*newFileButton, *gridButton,
 	*graphicButton,*prevButton, *toolsButton;
@@ -67,11 +67,10 @@ private:
 private slots:
 	void newFile();
 	void save();
-	void saveAs();
+	bool saveAs();
 	void exit();
 	void fullScreen();
 	void swapPens();
-	void saveFileBecause(QString reason);
 	void openFile();
 	void drawGCP();
 	void setTool_NONE();
