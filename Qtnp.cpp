@@ -217,7 +217,7 @@ void Qtnp::loadToolbar(bool reverse)
 		ui->toolBar->addSeparator();
 		ui->toolBar->addWidget(fullscreenButton);
 	} else {
-
+// TODO reverse
 	}
 }
 
@@ -232,40 +232,41 @@ void Qtnp::save()
 		if(_openedFileLocation == "0")
 			saveAs();
 		else {
-			image->saveImage(_openedFileLocation);
-			statusLine->setText(tr("Image saved as ") + _openedFileLocation);
+			if (image->saveImage(_openedFileLocation))
+				statusLine->setText(tr("Image saved as ") + _openedFileLocation);
+			else    statusLine->setText(tr("Couldn't save image as ") + _openedFileLocation);
 		}
 	} else statusLine->setText(tr("Saved earlier"));
 }
 
-bool Qtnp::saveAs()
+void Qtnp::saveAs()
 {
 	QString fileName;
-	QString reason("Save image as...");
+	QString formats = tr("*.png;;*.xbm;;*.xpm;;*.bmp;;*.jpg;;*.jpeg;;*.ppm");
 	if(_openedFileLocation == "0")
 		fileName = QFileDialog::getSaveFileName(
-		                           this, reason,
+		                           this, tr("Save new image as..."),
 		                           QDir::homePath(),
-		                           tr("*.png;;*.xbm;;*.xpm;;*.bmp")
+		                           formats
 		                           );
 	else    fileName = QFileDialog::getSaveFileName(
-		                           this, reason,
+		                           this, tr("Save image as..."),
 		                           _openedFileLocation,
-		                           tr("*.png;;*.xbm;;*.xpm;;*.bmp")
+		                           formats
 		                           );
 
 	if(!fileName.isEmpty()) {
 		this->setCursor(Qt::WaitCursor);
 		this->setDisabled(true);
 
-		image->saveImage(fileName);
-		_openedFileLocation = fileName;
-		statusLine->setText(tr("Image saved as ") + fileName);
+		if (image->saveImage(fileName)) {
+			_openedFileLocation = fileName;
+			statusLine->setText(tr("Image saved as ") + fileName);
+		} else statusLine->setText(tr("Couldn't save image as ") + fileName);
 
 		this->setEnabled(true);
 		this->setCursor(Qt::ArrowCursor);
-		return true;
-	} else return false;
+	}
 }
 
 void Qtnp::exit()
@@ -291,14 +292,13 @@ void Qtnp::openFile()
 {
 	QString fileName = QFileDialog::getOpenFileName(this, tr("Open Image..."),
 	                                                QDir::homePath(),
-	                                                tr("Image Files (*.png *.jpg *.bmp *.xpm)"));
+	                                                tr("Image Files (*.png *.jpg *.jpeg *.bmp *.xpm *.xbm *.gif *.pbm *.pgm *.ppm)"));
 	if (!fileName.isEmpty()) {
-		image->loadImage(fileName);
-		statusLine->setText(tr("Image openned!"));
-		image->resize(image->pixmap()->size());
-		_openedFileLocation = fileName;
-	} else {
-		statusLine->setText(tr("Can't open Image!"));
+		if (image->loadImage(fileName)) {
+			statusLine->setText(tr("Image openned!"));
+			image->resize(image->pixmap()->size());
+			_openedFileLocation = fileName;
+		} else statusLine->setText(tr("Couldn't open image ") + fileName);
 	}
 }
 

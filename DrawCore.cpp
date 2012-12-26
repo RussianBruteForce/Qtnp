@@ -82,20 +82,22 @@ void DrawCore::newImage(int x, int y, QColor color)
 /*
  * Load image from path
  */
-void DrawCore::loadImage(const QString path)
+bool DrawCore::loadImage(const QString path)
 {
-	image->load(path);
-	setPixmap(QPixmap::fromImage(*image));
-	height_ = image->height();
-	width_ = image->width();
-	emit resetToolMenu();
-	setActiveTool(NONE);
-	prevList.append(*image);
-	cX = width_/2;
-	cY = height_/2;
-	gridStep = -1;
+	if(image->load(path)) {
+		setPixmap(QPixmap::fromImage(*image));
+		height_ = image->height();
+		width_ = image->width();
+		emit resetToolMenu();
+		setActiveTool(NONE);
+		prevList.append(*image);
+		cX = width_/2;
+		cY = height_/2;
+		gridStep = -1;
+		_changed = false;
+		return true;
+	} else return false;
 
-	_changed = false;
 }
 
 /*
@@ -140,10 +142,10 @@ void DrawCore::grayscale()
 /*
  * Save image to path
  */
-void DrawCore::saveImage(const QString path)
+bool DrawCore::saveImage(const QString path)
 {
 	refresh();
-	image->save(path);
+	return image->save(path);
 }
 
 /*

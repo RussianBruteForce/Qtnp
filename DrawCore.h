@@ -31,8 +31,8 @@ class DrawCore : public QLabel
 	Q_OBJECT
 public:
 	explicit DrawCore(QObject *parent = 0);
-	void loadImage(const QString path);
-	void saveImage(const QString path);
+	bool loadImage(const QString path);
+	bool saveImage(const QString path);
 	QColor getPenColor(bool pen);
 	bool isModified();
 

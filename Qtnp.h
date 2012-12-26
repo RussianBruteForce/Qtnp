@@ -64,7 +64,7 @@ private:
 private slots:
 	void newFile();
 	void save();
-	bool saveAs();
+	void saveAs();
 	void exit();
 	void fullScreen();
 	void swapPens();
