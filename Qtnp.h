@@ -58,9 +58,6 @@ private:
 	*graphicButton,*prevButton, *toolsButton;
 	QMenu *toolsMenu;
 	QLineEdit *statusLine;
-	//QtnpNewFileDialog *new_file_dialog;
-	//QtnpAddGridDialog *add_grid_dialog;
-	//QtnpGraphicDialog *draw_graphic_dialog;
 	QString _openedFileLocation;
 	DrawGCPDialog *gcpd;
 
