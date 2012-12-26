@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>258</width>
-    <height>129</height>
+    <width>163</width>
+    <height>87</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>GCPWidget</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -25,10 +25,18 @@
      <property name="alignment">
       <set>Qt::AlignCenter</set>
      </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <layout class="QHBoxLayout" name="grid"/>
+      </item>
+     </layout>
     </widget>
    </item>
    <item>
     <widget class="QGroupBox" name="coordinatePlaneGroupBox">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="locale">
       <locale language="English" country="UnitedKingdom"/>
      </property>
@@ -44,6 +52,11 @@
      <property name="checked">
       <bool>false</bool>
      </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <layout class="QHBoxLayout" name="coordinatePlane"/>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>

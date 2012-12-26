@@ -19,6 +19,11 @@
 #define GCPWIDGET_H
 
 #include <QWidget>
+#include <QLabel>
+#include <QSpinBox>
+#include <QHBoxLayout>
+
+#include "ColorWidget.h"
 
 namespace Ui {
 class GCPWidget;
@@ -37,6 +42,14 @@ public slots:
 	
 private:
 	Ui::GCPWidget *ui;
+	QLabel *gridStepL, *coordinatePlaneStepL,
+	*gridColorThicknessL, *coordinatePlaneColorThicknessL;
+	QSpinBox *gridStep, *coordinatePlaneStep,
+	*gridThickness, *coordinatePlaneThickness;
+	ColorWidget *gridColor, *coordinatePlaneColor;
+	QSpacerItem *gSpacer, *cSpacer;
+
+
 
 signals:
 	void drawGrid(int step, QColor color, int width = 1);

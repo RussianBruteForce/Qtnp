@@ -15,9 +15,10 @@
  * along with Qtnp.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Qtnp.h"
 #include <QApplication>
 #include <QSplashScreen>
+
+#include "Qtnp.h"
 
 int main(int argc, char *argv[])
 {
@@ -48,8 +49,6 @@ int main(int argc, char *argv[])
 	w.loadToolbar(0);
 
 	w.show();
-
 	delete splash;
-
 	return a.exec();
 }

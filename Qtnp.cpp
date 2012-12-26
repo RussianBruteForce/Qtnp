@@ -151,7 +151,7 @@ void Qtnp::makeConnections()
 		connect(newFileButton, &QToolButton::clicked,
 		        this, &Qtnp::newFile);
 		connect(gridButton, &QToolButton::clicked,
-		        this, &Qtnp::drawGrid);
+		        this, &Qtnp::drawGCP);
 		connect(graphicButton, &QToolButton::clicked,
 		        this, &Qtnp::drawGraphic);
 		connect(prevButton, &QToolButton::clicked,
@@ -159,9 +159,9 @@ void Qtnp::makeConnections()
 		connect(stickyDrawCheckBox, &QCheckBox::toggled,
 		        image, &DrawCore::setSticky);
 
-		connect(penWidget, &ColorWidget::sendColor,
+		connect(penWidget, &ColorWidget::colorChanged,
 		        image, &DrawCore::setPenColor);
-		connect(rpenWidget, &ColorWidget::sendColor,
+		connect(rpenWidget, &ColorWidget::colorChanged,
 		        image, &DrawCore::setRPenColor);
 
 		connect(changePensButton, &QToolButton::clicked,
@@ -299,8 +299,22 @@ void Qtnp::openFile()
 	}
 }
 
-void Qtnp::drawGrid()
+void Qtnp::drawGCP()
 {
+	this->setCursor(Qt::WaitCursor);
+	this->setDisabled(true);
+
+	gcpd = new DrawGCPDialog(this);
+	connect(gcpd->gcp, &GCPWidget::drawGrid,
+	        image, &DrawCore::drawGrid);
+	connect(gcpd->gcp, &GCPWidget::drawCoordinatePlane,
+	        image, &DrawCore::drawCoordPlane);
+
+	gcpd->exec();
+	gcpd->deleteLater();
+
+	this->setEnabled(true);
+	this->setCursor(Qt::ArrowCursor);
 }
 
 void Qtnp::setTool_NONE()

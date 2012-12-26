@@ -28,6 +28,8 @@ ColorWidget::ColorWidget(int r, int g, int b, int b_s)
 	painterColor->end();
 	setPixmap(*pixmapColor);
 	setAlignment(Qt::AlignTop);
+
+	setFixedSize(boxSize, boxSize);
 }
 
 ColorWidget::~ColorWidget()
@@ -53,12 +55,12 @@ void ColorWidget::mousePressEvent(QMouseEvent *event)
 		clr = QColorDialog::getColor(*currentColor, this);
 		if(clr.isValid()) {
 			setColor(clr);
-			emit sendColor(clr);
+			emit colorChanged(clr);
 		}
 	}
 }
 
-QColor ColorWidget::getCurrentColor()
+QColor ColorWidget::color()
 {
 	return clr;
 }

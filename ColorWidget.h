@@ -25,16 +25,13 @@
 #include <QPixmap>
 #include <QMouseEvent>
 
-
-
-// виджет выбора цвета
 class ColorWidget : public QLabel
 {
 	Q_OBJECT
 public:
 	ColorWidget(int, int, int, int b_s = 30);
 	~ColorWidget();
-	QColor getCurrentColor();
+	QColor color();
 
 private:
 	QColor *currentColor, clr;
@@ -46,7 +43,7 @@ public slots:
 	void setColor(QColor);
 
 signals:
-	void sendColor(QColor);
+	void colorChanged(QColor);
 
 protected:
 	void mousePressEvent(QMouseEvent *event);

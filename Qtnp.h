@@ -30,6 +30,7 @@
 #include "DigitalClock.h"
 #include "DrawCore.h"
 #include "ColorWidget.h"
+#include "DrawGCPDialog.h"
 
 namespace Ui {
 class Qtnp;
@@ -61,6 +62,7 @@ private:
 	//QtnpAddGridDialog *add_grid_dialog;
 	//QtnpGraphicDialog *draw_graphic_dialog;
 	QString _openedFileLocation;
+	DrawGCPDialog *gcpd;
 
 private slots:
 	void newFile();
@@ -71,7 +73,7 @@ private slots:
 	void swapPens();
 	void saveFileBecause(QString reason);
 	void openFile();
-	void drawGrid();
+	void drawGCP();
 	void setTool_NONE();
 	void setTool_PEN();
 	void setTool_LINE();
