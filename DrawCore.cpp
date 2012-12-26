@@ -564,7 +564,7 @@ QColor DrawCore::getPenColor(bool pen)
 	else return this->rpen.color();
 }
 
-bool DrawCore::isChanged()
+bool DrawCore::isModified()
 {
 	return _changed;
 }

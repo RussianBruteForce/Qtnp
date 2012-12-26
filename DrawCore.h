@@ -14,10 +14,10 @@ class DrawCore : public QLabel
 	Q_OBJECT
 public:
 	explicit DrawCore(QObject *parent = 0);
-	void loadImage(const QString ImageFile);
-	void saveImage(const QString ImageFile);
+	void loadImage(const QString path);
+	void saveImage(const QString path);
 	QColor getPenColor(bool pen);
-	bool isChanged();
+	bool isModified();
 
 protected:
 	void mousePressEvent(QMouseEvent *event);
@@ -61,7 +61,7 @@ public slots:
 	void newImage(int x, int y, QColor color);
 	void negative();
 	void grayscale();
-	void drawGrid(int step, QColor color,int width = 1);
+	void drawGrid(int step, QColor color, int width = 1);
 	void drawCoordPlane(int coordPlaneStep, QColor clr, int width = 1);
 	void drawGraphic(QString str, QColor color, int width);
 	void setSticky(bool ans);

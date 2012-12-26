@@ -392,8 +392,20 @@ void Qtnp::textToToolBar(QString text)
 
 void Qtnp::closeEvent(QCloseEvent *event)
 {
-	if (image->isChanged()) {
-		saveFileBecause(tr("Save before closing?"));
+	if (image->isModified()) {
+		int r = QMessageBox::warning(this, tr("Qtnp"),
+		                tr("The image has been modified.\n"
+		                   "Do you want to save your changes?"),
+		                QMessageBox::Yes | QMessageBox::Default,
+		                QMessageBox::No,
+		                QMessageBox::Cancel | QMessageBox::Escape);
+		if (r == QMessageBox::Yes) {
+			saveAs();
+			event->accept();
+		} else if (r == QMessageBox::Cancel) {
+			event->ignore();
+			return;
+		}
 		event->accept();
 	} else event->accept();
 }
