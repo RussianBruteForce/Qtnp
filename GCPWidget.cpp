@@ -101,18 +101,29 @@ GCPWidget::~GCPWidget()
 	cSpacer->~QSpacerItem();
 }
 
+void GCPWidget::makeDedicated()
+{
+	ui->gridGroupBox->setCheckable(true);
+	ui->gridGroupBox->setChecked(false);
+	ui->coordinatePlaneGroupBox->setDisabled(true);
+	connect(ui->gridGroupBox, &QGroupBox::toggled,
+	        ui->coordinatePlaneGroupBox, &QGroupBox::setEnabled);
+}
+
 /*
  * Ask widget for emiting data
  */
 void GCPWidget::askData()
 {
-	emit drawGrid(gridStep->value(),
-	              gridColor->color(),
-	              gridThickness->value());
+	if (!ui->gridGroupBox->isCheckable() || (ui->gridGroupBox->isChecked())) {
+		emit drawGrid(gridStep->value(),
+		              gridColor->color(),
+		              gridThickness->value());
 
-	if (ui->coordinatePlaneGroupBox->isChecked()) {
-		emit drawCoordinatePlane(coordinatePlaneStep->value(),
-		                         coordinatePlaneColor->color(),
-		                         coordinatePlaneThickness->value());
+		if (ui->coordinatePlaneGroupBox->isChecked()) {
+			emit drawCoordinatePlane(coordinatePlaneStep->value(),
+			                         coordinatePlaneColor->color(),
+			                         coordinatePlaneThickness->value());
+		}
 	}
 }

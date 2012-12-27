@@ -3,6 +3,7 @@
 
 #include <QSettings>
 #include <QColor>
+#include <QPoint>
 
 #define BG_COLOR "bgColor"
 #define DBG_COLOR         white
@@ -15,7 +16,7 @@
 #define R_COLOR "rpenColor"
 #define DR_COLOR           white
 #define IMAGE_TEMPLATE "imageTemplate"
-#define DIMAGE_TEMPLATE               0
+#define DIMAGE_TEMPLATE               1
 #define GRID_THICKNESS "gridThickness"
 #define DGRID_THICKNESS               1
 #define CP_THICKNESS "cpThickness"
@@ -53,6 +54,7 @@ public:
 	bool reverseToolBar();
 	bool gridSettingsToCp();
 	QString language();
+	QList<QPoint>* templates();
 	
 signals:
 	
@@ -76,6 +78,7 @@ public slots:
 
 private:
 	QColor white, black;
+	QList<QPoint> _t;
 
 };
 

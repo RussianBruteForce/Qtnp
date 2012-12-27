@@ -125,6 +125,8 @@ void Qtnp::makeConnections()
 void Qtnp::makeUI()
 {
 	image = new DrawCore(ui->scrollArea);
+	QPoint p = s->templates()->at(s->imageTemplate());
+	image->newImage(p.x(), p.y(), s->bgColor());
 	clock = new DigitalClock(ui->toolBar);
 
 	_openedFileLocation = "0";
@@ -192,7 +194,6 @@ void Qtnp::makeUI()
 	this->ui->scrollArea->setBackgroundRole(QPalette::Dark);
 	this->ui->scrollArea->setAlignment(Qt::AlignTop);
 	this->setCentralWidget(this->ui->scrollArea);
-
 }
 
 void Qtnp::loadToolbar(bool reverse)
@@ -233,6 +234,22 @@ void Qtnp::loadToolbar(bool reverse)
 
 void Qtnp::newFile()
 {
+	this->setCursor(Qt::WaitCursor);
+	this->setDisabled(true);
+
+	nfd = new NewFileDialog(*s, this);
+	connect(nfd, &NewFileDialog::newImage,
+	        image, &DrawCore::newImage);
+	connect(nfd->gcp, &GCPWidget::drawGrid,
+	        image, &DrawCore::drawGrid);
+	connect(nfd->gcp, &GCPWidget::drawCoordinatePlane,
+	        image, &DrawCore::drawCoordPlane);
+
+	nfd->exec();
+	nfd->deleteLater();
+
+	this->setEnabled(true);
+	this->setCursor(Qt::ArrowCursor);
 }
 
 void Qtnp::save()

@@ -5,6 +5,13 @@ Settings::Settings(QObject *parent) :
 {
 	white = Qt::white;
 	black = Qt::black;
+
+	_t.append(QPoint(1366, 768));
+	_t.append(QPoint(1280, 1024));
+	_t.append(QPoint(1024, 768));
+	_t.append(QPoint(1920, 1080));
+	_t.append(QPoint(1280, 800));
+	_t.append(QPoint(1440, 900));
 }
 
 QColor Settings::bgColor()
@@ -75,6 +82,11 @@ bool Settings::gridSettingsToCp()
 QString Settings::language()
 {
 	return this->value(LANGUAGE, DLANGUAGE).toString();
+}
+
+QList<QPoint> *Settings::templates()
+{
+	return &_t;
 }
 
 void Settings::restoreDefault()

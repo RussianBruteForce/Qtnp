@@ -22,7 +22,7 @@ DrawCore::DrawCore(QObject *parent)
 	image = new QImage(1,1,QImage::Format_RGB32);
 	painter = new QPainter(image);
 
-	newImage(1280,1024,Qt::white);
+	//newImage(1280,1024,Qt::white);
 
 	_changed = false;
 	gridMaxX = 0;

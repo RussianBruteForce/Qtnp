@@ -37,6 +37,7 @@ class GCPWidget : public QWidget
 public:
 	explicit GCPWidget(Settings &_s, QWidget *parent = 0);
 	~GCPWidget();
+	void makeDedicated();
 
 public slots:
 	void askData();

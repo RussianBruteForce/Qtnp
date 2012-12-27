@@ -31,6 +31,7 @@
 #include "DrawCore.h"
 #include "ColorWidget.h"
 #include "DrawGCPDialog.h"
+#include "NewFileDialog.h"
 #include "Settings.h"
 
 namespace Ui {
@@ -63,6 +64,7 @@ private:
 	QLineEdit *statusLine;
 	QString _openedFileLocation;
 	DrawGCPDialog *gcpd;
+	NewFileDialog *nfd;
 
 private slots:
 	void newFile();
