@@ -21,20 +21,20 @@
 /*
  * Widget for chosing parameters of GRID and COORDINATE PLANE
  */
-GCPWidget::GCPWidget(QWidget *parent) :
+GCPWidget::GCPWidget(Settings &_s, QWidget *parent) :
         QWidget(parent),
         ui(new Ui::GCPWidget)
 {
 	ui->setupUi(this);
-
+	s = &_s;
 
 	gridStepL = new QLabel(this);
 	gridStepL->setText(tr("Step:"));
 	ui->grid->addWidget(gridStepL);
 
 	gridStep = new QSpinBox(this);
-	gridStep->setValue(50);
 	gridStep->setMinimum(3);
+	gridStep->setValue(s->gridStep());
 	ui->grid->addWidget(gridStep);
 
 	gSpacer = new QSpacerItem(1,1,QSizePolicy::Expanding,QSizePolicy::Minimum);
@@ -44,12 +44,12 @@ GCPWidget::GCPWidget(QWidget *parent) :
 	gridColorThicknessL->setText(tr("Color and thickness:"));
 	ui->grid->addWidget(gridColorThicknessL);
 
-	gridColor = new ColorWidget(0,0,0);
+	gridColor = new ColorWidget(s->gridColor());
 	ui->grid->addWidget(gridColor);
 
 	gridThickness = new QSpinBox(this);
 	gridThickness->setMinimum(1);
-	gridThickness->setValue(1);
+	gridThickness->setValue(s->gridThickness());
 	ui->grid->addWidget(gridThickness);
 
 
@@ -58,8 +58,8 @@ GCPWidget::GCPWidget(QWidget *parent) :
 	ui->coordinatePlane->addWidget(coordinatePlaneStepL);
 
 	coordinatePlaneStep = new QSpinBox(this);
-	coordinatePlaneStep->setValue(50);
 	coordinatePlaneStep->setMinimum(3);
+	coordinatePlaneStep->setValue(s->cpStep());
 	ui->coordinatePlane->addWidget(coordinatePlaneStep);
 
 	cSpacer = new QSpacerItem(1,1,QSizePolicy::Expanding,QSizePolicy::Minimum);
@@ -69,25 +69,27 @@ GCPWidget::GCPWidget(QWidget *parent) :
 	coordinatePlaneColorThicknessL->setText(tr("Color and thickness:"));
 	ui->coordinatePlane->addWidget(coordinatePlaneColorThicknessL);
 
-	coordinatePlaneColor = new ColorWidget(0,0,0);
+	coordinatePlaneColor = new ColorWidget(s->cpColor());
 	ui->coordinatePlane->addWidget(coordinatePlaneColor);
 
 	coordinatePlaneThickness = new QSpinBox(this);
 	coordinatePlaneThickness->setMinimum(1);
-	coordinatePlaneThickness->setValue(3);
+	coordinatePlaneThickness->setValue(s->cpThickness());
 	ui->coordinatePlane->addWidget(coordinatePlaneThickness);
 
 	ui->coordinatePlane->setEnabled(false);
 	connect(ui->coordinatePlaneGroupBox, &QGroupBox::toggled,
 	        ui->coordinatePlane, &QHBoxLayout::setEnabled);
 
-	connect(gridColor, &ColorWidget::colorChanged,
-	        coordinatePlaneColor, &ColorWidget::setColor);
-	void (QSpinBox:: *signal)(int) = &QSpinBox::valueChanged;
-	connect(gridStep, signal,
-	        coordinatePlaneStep, &QSpinBox::setValue);
-	connect(gridThickness, signal,
-	        coordinatePlaneThickness, &QSpinBox::setValue);
+	if (s->gridSettingsToCp()) {
+		connect(gridColor, &ColorWidget::colorChanged,
+		        coordinatePlaneColor, &ColorWidget::setColor);
+		void (QSpinBox:: *signal)(int) = &QSpinBox::valueChanged;
+		connect(gridStep, signal,
+		        coordinatePlaneStep, &QSpinBox::setValue);
+		connect(gridThickness, signal,
+		        coordinatePlaneThickness, &QSpinBox::setValue);
+	}
 }
 
 GCPWidget::~GCPWidget()

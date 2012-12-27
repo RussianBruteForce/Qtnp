@@ -17,11 +17,11 @@
 
 #include "ColorWidget.h"
 
-ColorWidget::ColorWidget(int r, int g, int b, int b_s)
+ColorWidget::ColorWidget(QColor c, int b_s)
 {
 	boxSize = b_s;
 	setFrameStyle(QFrame::Box | QFrame::Raised);
-	currentColor = new QColor(r,g,b);
+	currentColor = new QColor(c);
 	pixmapColor = new QPixmap(boxSize, boxSize);
 	painterColor = new QPainter(pixmapColor);
 	painterColor->fillRect(0, 0, boxSize, boxSize, *currentColor);

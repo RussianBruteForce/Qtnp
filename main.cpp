@@ -25,12 +25,12 @@ int main(int argc, char *argv[])
 	QApplication a(argc, argv);
 	QSplashScreen *splash = new QSplashScreen(QPixmap(":/resources/splash.png"));
 	splash->show();
-
 	Qt::Alignment bottomLeft = Qt::AlignBottom | Qt::AlignLeft;
-
 	splash->showMessage(QObject::tr("Setting up the main window..."),
 	                    bottomLeft, Qt::black);
 
+	QCoreApplication::setOrganizationName("qtnp"); // FOR
+	QCoreApplication::setApplicationName("qtnp");  //     CONFIG
 
 //	QTranslator translator;
 //	if (QLocale::system().name().left(2) == "ru") {
@@ -38,15 +38,20 @@ int main(int argc, char *argv[])
 //		qApp->installTranslator(&translator);
 //	}
 
-	Qtnp w; // main window
+	Qtnp w;
+
+	splash->showMessage(QObject::tr("Making UI..."),
+	                    bottomLeft, Qt::black);
+	w.makeUI();
 
 	splash->showMessage(QObject::tr("Making SIGNAL->SLOT connections..."),
 	                    bottomLeft, Qt::black);
 	w.makeConnections();
 
+
 	splash->showMessage(QObject::tr("Loading Toolbar..."),
 	                    bottomLeft, Qt::black);
-	w.loadToolbar(0);
+	w.loadToolbar(w.s->reverseToolBar());
 
 	w.show();
 	delete splash;

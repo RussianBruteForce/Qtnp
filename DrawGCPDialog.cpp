@@ -1,13 +1,13 @@
 #include "DrawGCPDialog.h"
 #include "ui_DrawGCPDialog.h"
 
-DrawGCPDialog::DrawGCPDialog(QWidget *parent) :
+DrawGCPDialog::DrawGCPDialog(Settings &_s, QWidget *parent) :
         QDialog(parent),
         ui(new Ui::DrawGCPDialog)
 {
 	ui->setupUi(this);
 
-	gcp = new GCPWidget(this);
+	gcp = new GCPWidget(_s, this);
 	ui->layout->addWidget(gcp);
 
 	connect(ui->buttonBox, &QDialogButtonBox::accepted,

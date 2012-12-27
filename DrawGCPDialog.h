@@ -14,7 +14,7 @@ class DrawGCPDialog : public QDialog
 	Q_OBJECT
 	
 public:
-	explicit DrawGCPDialog(QWidget *parent = 0);
+	explicit DrawGCPDialog(Settings &_s, QWidget *parent = 0);
 	~DrawGCPDialog();
 
 	GCPWidget *gcp;

@@ -31,6 +31,7 @@
 #include "DrawCore.h"
 #include "ColorWidget.h"
 #include "DrawGCPDialog.h"
+#include "Settings.h"
 
 namespace Ui {
 class Qtnp;
@@ -44,7 +45,9 @@ public:
 	explicit Qtnp(QWidget *parent = 0);
 	~Qtnp();
 	void makeConnections();
+	void makeUI();
 	void loadToolbar(bool reverse);
+	Settings *s;
 	
 private:
 	Ui::Qtnp *ui;

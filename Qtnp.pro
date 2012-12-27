@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     fparser/fparser.cpp \
     ColorWidget.cpp \
     GCPWidget.cpp \
-    DrawGCPDialog.cpp
+    DrawGCPDialog.cpp \
+    Settings.cpp
 
 HEADERS  += Qtnp.h \
     DigitalClock.h \
@@ -51,7 +52,8 @@ HEADERS  += Qtnp.h \
     fparser/muparser/muParser.h \
     ColorWidget.h \
     GCPWidget.h \
-    DrawGCPDialog.h
+    DrawGCPDialog.h \
+    Settings.h
 
 FORMS    += Qtnp.ui \
     GCPWidget.ui \

@@ -24,6 +24,7 @@
 #include <QHBoxLayout>
 
 #include "ColorWidget.h"
+#include "Settings.h"
 
 namespace Ui {
 class GCPWidget;
@@ -34,7 +35,7 @@ class GCPWidget : public QWidget
 	Q_OBJECT
 	
 public:
-	explicit GCPWidget(QWidget *parent = 0);
+	explicit GCPWidget(Settings &_s, QWidget *parent = 0);
 	~GCPWidget();
 
 public slots:
@@ -48,6 +49,7 @@ private:
 	*gridThickness, *coordinatePlaneThickness;
 	ColorWidget *gridColor, *coordinatePlaneColor;
 	QSpacerItem *gSpacer, *cSpacer;
+	Settings *s;
 
 
 

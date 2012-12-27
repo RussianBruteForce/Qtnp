@@ -29,7 +29,7 @@ class ColorWidget : public QLabel
 {
 	Q_OBJECT
 public:
-	ColorWidget(int, int, int, int b_s = 30);
+	ColorWidget(QColor c, int b_s = 30);
 	~ColorWidget();
 	QColor color();
 

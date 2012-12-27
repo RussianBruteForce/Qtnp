@@ -23,71 +23,7 @@ Qtnp::Qtnp(QWidget *parent) :
         ui(new Ui::Qtnp)
 {
 	ui->setupUi(this);
-	image = new DrawCore(ui->scrollArea);
-	clock = new DigitalClock(ui->toolBar);
-
-	_openedFileLocation = "0";
-
-	rpenColor = new ColorWidget(255,255,255);
-	rpenColor->setToolTip(tr("Right pen color!"));
-	penColor = new ColorWidget(0,0,0);
-	penColor->setToolTip(tr("Pen color!"));
-
-	thicksessBox = new QSpinBox(ui->toolBar);
-	thicksessBox->setRange(1,200);
-	thicksessBox->setValue(1);
-
-	prevButton = new QToolButton(ui->toolBar);
-	prevButton->setIcon(QIcon(":/resources/prev.png"));
-	prevButton->setToolTip(tr("Previous"));
-
-	newFileButton = new QToolButton(ui->toolBar);
-	newFileButton->setIcon(QIcon(":/resources/new.png"));
-	newFileButton->setToolTip(tr("New"));
-
-	gridButton = new QToolButton(ui->toolBar);
-	gridButton->setIcon(QIcon(":/resources/grid.png"));
-	gridButton->setToolTip(tr("Grid"));
-
-	graphicButton = new QToolButton(ui->toolBar);
-	graphicButton->setIcon(QIcon(":/resources/graphic.png"));
-	graphicButton->setToolTip(tr("Graphic"));
-
-	changePensButton = new QToolButton(ui->toolBar);
-	changePensButton->setIcon(QIcon(":/resources/change_pens_ico.png"));
-	changePensButton->setToolTip(tr("Swap pens"));
-
-	fullscreenButton = new QToolButton(ui->toolBar);
-	fullscreenButton->setIcon(QIcon(":/resources/fullscreen.png"));
-	fullscreenButton->setToolTip(tr("Fullscreen"));
-
-	stickyDraw = new QCheckBox(ui->toolBar);
-	stickyDraw->setToolTip(tr("Stick to web's points"));
-	stickyDraw->setChecked(false);
-
-
-	toolsMenu = new QMenu(this);
-	toolsMenu->addAction(QIcon(":/resources/cursor.png"),tr("Cursor"),this,SLOT(setTool_NONE()));
-	toolsMenu->addAction(QIcon(":/resources/line_ico.png"),tr("Line"),this,SLOT(setTool_LINE()));
-	toolsMenu->addAction(QIcon(":/resources/circle.png"),tr("Circle"),this,SLOT(setTool_CIRCLE()));
-	toolsMenu->addAction(QIcon(":/resources/jogged_ico.png"),tr("Jogged Line"),this,SLOT(setTool_JOGGED_LINE()));
-	toolsMenu->addAction(QIcon(":/resources/pencil_ico.png"),tr("Pen"),this,SLOT(setTool_PEN()));
-	toolsMenu->setToolTip(tr("Tools"));
-
-	toolsButton = new QToolButton(ui->toolBar);
-	toolsButton->setToolTip(tr("Tools"));
-	toolsButton->setMenu(toolsMenu);
-	toolsButton->setPopupMode(QToolButton::InstantPopup);
-	this->setTool_NONE();
-
-
-	statusLine = new QLineEdit(ui->toolBar);
-	statusLine->setReadOnly(true);
-
-	this->ui->scrollArea->setWidget(image);
-	this->ui->scrollArea->setBackgroundRole(QPalette::Dark);
-	this->ui->scrollArea->setAlignment(Qt::AlignTop);
-	this->setCentralWidget(this->ui->scrollArea);
+	s = new Settings;
 
 	resize(1050,850);
 }
@@ -184,6 +120,79 @@ void Qtnp::makeConnections()
 
 	connect(image, &DrawCore::resetToolMenu,
 	        this, &Qtnp::setTool_NONE);
+}
+
+void Qtnp::makeUI()
+{
+	image = new DrawCore(ui->scrollArea);
+	clock = new DigitalClock(ui->toolBar);
+
+	_openedFileLocation = "0";
+
+	rpenColor = new ColorWidget(s->rpenColor());
+	image->setRPenColor(s->rpenColor());
+	rpenColor->setToolTip(tr("Right pen color"));
+	penColor = new ColorWidget(s->penColor());
+	image->setPenColor(s->penColor());
+	penColor->setToolTip(tr("Pen color"));
+
+	thicksessBox = new QSpinBox(ui->toolBar);
+	thicksessBox->setRange(1,200);
+	thicksessBox->setValue(s->thickness());
+	image->setThickness(s->thickness());
+
+	prevButton = new QToolButton(ui->toolBar);
+	prevButton->setIcon(QIcon(":/resources/prev.png"));
+	prevButton->setToolTip(tr("Previous"));
+
+	newFileButton = new QToolButton(ui->toolBar);
+	newFileButton->setIcon(QIcon(":/resources/new.png"));
+	newFileButton->setToolTip(tr("New"));
+
+	gridButton = new QToolButton(ui->toolBar);
+	gridButton->setIcon(QIcon(":/resources/grid.png"));
+	gridButton->setToolTip(tr("Grid"));
+
+	graphicButton = new QToolButton(ui->toolBar);
+	graphicButton->setIcon(QIcon(":/resources/graphic.png"));
+	graphicButton->setToolTip(tr("Graphic"));
+
+	changePensButton = new QToolButton(ui->toolBar);
+	changePensButton->setIcon(QIcon(":/resources/change_pens_ico.png"));
+	changePensButton->setToolTip(tr("Swap pens"));
+
+	fullscreenButton = new QToolButton(ui->toolBar);
+	fullscreenButton->setIcon(QIcon(":/resources/fullscreen.png"));
+	fullscreenButton->setToolTip(tr("Fullscreen"));
+
+	stickyDraw = new QCheckBox(ui->toolBar);
+	stickyDraw->setToolTip(tr("Stick to web's points"));
+	stickyDraw->setChecked(false);
+
+
+	toolsMenu = new QMenu(this);
+	toolsMenu->addAction(QIcon(":/resources/cursor.png"),tr("Cursor"),this,SLOT(setTool_NONE()));
+	toolsMenu->addAction(QIcon(":/resources/line_ico.png"),tr("Line"),this,SLOT(setTool_LINE()));
+	toolsMenu->addAction(QIcon(":/resources/circle.png"),tr("Circle"),this,SLOT(setTool_CIRCLE()));
+	toolsMenu->addAction(QIcon(":/resources/jogged_ico.png"),tr("Jogged Line"),this,SLOT(setTool_JOGGED_LINE()));
+	toolsMenu->addAction(QIcon(":/resources/pencil_ico.png"),tr("Pen"),this,SLOT(setTool_PEN()));
+	toolsMenu->setToolTip(tr("Tools"));
+
+	toolsButton = new QToolButton(ui->toolBar);
+	toolsButton->setToolTip(tr("Tools"));
+	toolsButton->setMenu(toolsMenu);
+	toolsButton->setPopupMode(QToolButton::InstantPopup);
+	this->setTool_NONE();
+
+
+	statusLine = new QLineEdit(ui->toolBar);
+	statusLine->setReadOnly(true);
+
+	this->ui->scrollArea->setWidget(image);
+	this->ui->scrollArea->setBackgroundRole(QPalette::Dark);
+	this->ui->scrollArea->setAlignment(Qt::AlignTop);
+	this->setCentralWidget(this->ui->scrollArea);
+
 }
 
 void Qtnp::loadToolbar(bool reverse)
@@ -307,7 +316,7 @@ void Qtnp::drawGCP()
 	this->setCursor(Qt::WaitCursor);
 	this->setDisabled(true);
 
-	gcpd = new DrawGCPDialog(this);
+	gcpd = new DrawGCPDialog(*s, this);
 	connect(gcpd->gcp, &GCPWidget::drawGrid,
 	        image, &DrawCore::drawGrid);
 	connect(gcpd->gcp, &GCPWidget::drawCoordinatePlane,
