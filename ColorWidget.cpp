@@ -47,6 +47,7 @@ void ColorWidget::setColor(QColor color)
 	painterColor->fillRect(0, 0, boxSize, boxSize, *currentColor);
 	painterColor->end();
 	setPixmap(*pixmapColor);
+	emit colorChanged(clr);
 }
 
 void ColorWidget::mousePressEvent(QMouseEvent *event)

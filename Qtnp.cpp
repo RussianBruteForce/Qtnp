@@ -309,8 +309,8 @@ void Qtnp::fullScreen()
 
 void Qtnp::swapPens()
 {
-	QColor buf = penColor->color();
-	penColor->setColor(rpenColor->color());
+	QColor buf = image->getPenColor(0);
+	penColor->setColor(image->getPenColor(1));
 	rpenColor->setColor(buf);
 }
 
