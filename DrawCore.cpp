@@ -75,6 +75,7 @@ void DrawCore::newImage(int x, int y, QColor color)
 	cX = width_/2;
 	cY = height_/2;
 	gridStep = -1;
+	cpStep = -1;
 
 	_changed = false;
 }
@@ -94,6 +95,7 @@ bool DrawCore::loadImage(const QString path)
 		cX = width_/2;
 		cY = height_/2;
 		gridStep = -1;
+		cpStep = -1;
 		_changed = false;
 		return true;
 	} else return false;
@@ -629,6 +631,7 @@ void DrawCore::drawGrid(int step, QColor color,int width)
  */
 void DrawCore::drawCoordPlane(int coordPlaneStep, QColor clr, int width)
 {
+	cpStep = coordPlaneStep;
 	int markSize;
 
 	if (coordPlaneStep >= 8) {
@@ -754,7 +757,10 @@ QPoint DrawCore::getGridPointCoordinates(QPoint gPoint, int step)
 void DrawCore::drawGraphic(QString str, QColor color, int width)
 {
 	wrongExp = false;
-	if (gridStep == -1 || str.isEmpty()) return;
+	if (cpStep == -1) {
+		emit parserMsg("No coordinate plane drawed!");
+		return;
+	}
 
 	ExpParser fparser;
 	fparser.setE(str);
@@ -783,7 +789,7 @@ void DrawCore::drawGraphic(QString str, QColor color, int width)
 	sY = cY-gridStep*bY;
 
 	QPolygon grphc;
-	grphc.append(QPoint(nearbyint(sX),nearbyint(sY)));
+	grphc.append(QPoint(round(sX),round(sY)));
 
 	for (; i < gridMaxX; i += 0.05) {
 
@@ -793,7 +799,7 @@ void DrawCore::drawGraphic(QString str, QColor color, int width)
 
 		sX = cX+gridStep*bX;
 		sY = cY-gridStep*bY;
-		grphc.append(QPoint(nearbyint(sX),nearbyint(sY)));
+		grphc.append(QPoint(round(sX),round(sY)));
 	}
 
 	painter->setRenderHint(QPainter::Antialiasing);

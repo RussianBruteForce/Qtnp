@@ -33,6 +33,12 @@
 #define DCP_COLOR         black
 
 /*
+ * Graphic color for new graphics
+ */
+#define GRAPHIC_COLOR "graphicColor"
+#define DGRAPHIC_COLOR              black
+
+/*
  * Pen color
  */
 #define P_COLOR "penColor"
@@ -53,12 +59,14 @@
 /*
  * Thicknesses for instruments
  */
+#define THICKNESS "thickness"
+#define DTHICKNESS           3
 #define GRID_THICKNESS "gridThickness"
 #define DGRID_THICKNESS               1
 #define CP_THICKNESS "cpThickness"
 #define DCP_THICKNESS             3
-#define THICKNESS "thickness"
-#define DTHICKNESS           3
+#define GRAPHIC_THICKNESS "graphicThickness"
+#define DGRAPHIC_THICKNESS                  3
 
 /*
  * Steps
@@ -100,12 +108,14 @@ public:
 	QColor bgColor();
 	QColor gridColor();
 	QColor cpColor();
+	QColor graphicColor();
 	QColor penColor();
 	QColor rpenColor();
 	int imageTemplate();
 	int thickness();
 	int gridThickness();
 	int cpThickness();
+	int graphicThickness();
 	int gridStep();
 	int cpStep();
 	bool reverseToolBar();
@@ -121,12 +131,14 @@ public slots:
 	void setBgColor(QColor c);
 	void setGridColor(QColor c);
 	void setCpColor(QColor c);
+	void setGraphicColor(QColor c);
 	void setPenColor(QColor c);
 	void setRpenColor(QColor c);
 	void setImageTemplate(int t);
 	void setThickness(int t);
 	void setGridThickness(int t);
 	void setCpThickness(int t);
+	void setGraphicThickness(int t);
 	void setGridStep(int s);
 	void setCpStep(int s);
 	void setReverseToolBar(bool r);

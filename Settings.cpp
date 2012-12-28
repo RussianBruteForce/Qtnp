@@ -29,6 +29,11 @@ QColor Settings::cpColor()
 	return this->value(CP_COLOR, DCP_COLOR).value<QColor>();
 }
 
+QColor Settings::graphicColor()
+{
+	return this->value(GRAPHIC_COLOR, DGRAPHIC_COLOR).value<QColor>();
+}
+
 QColor Settings::penColor()
 {
 	return this->value(P_COLOR, DP_COLOR).value<QColor>();
@@ -57,6 +62,11 @@ int Settings::gridThickness()
 int Settings::cpThickness()
 {
 	return this->value(CP_THICKNESS, DCP_THICKNESS).toInt();
+}
+
+int Settings::graphicThickness()
+{
+	return this->value(GRAPHIC_THICKNESS, DGRAPHIC_THICKNESS).toInt();
 }
 
 int Settings::gridStep()
@@ -94,11 +104,13 @@ void Settings::restoreDefault()
 	setBgColor(DBG_COLOR);
 	setGridColor(DGRID_COLOR);
 	setCpColor(DCP_COLOR);
+	setGraphicColor(DGRAPHIC_COLOR);
 	setPenColor(DP_COLOR);
 	setRpenColor(DR_COLOR);
 	setImageTemplate(DIMAGE_TEMPLATE);
 	setGridThickness(DGRID_THICKNESS);
 	setCpThickness(DCP_THICKNESS);
+	setGraphicThickness(DGRAPHIC_THICKNESS);
 	setGridStep(DGRID_STEP);
 	setCpStep(DCP_STEP);
 	setReverseToolBar(DREVERSE_TOOLBAR);
@@ -119,6 +131,11 @@ void Settings::setGridColor(QColor c)
 void Settings::setCpColor(QColor c)
 {
 	this->setValue(CP_COLOR, c);
+}
+
+void Settings::setGraphicColor(QColor c)
+{
+	this->setValue(GRAPHIC_COLOR, c);
 }
 
 void Settings::setPenColor(QColor c)
@@ -149,6 +166,11 @@ void Settings::setGridThickness(int t)
 void Settings::setCpThickness(int t)
 {
 	this->setValue(CP_THICKNESS, t);
+}
+
+void Settings::setGraphicThickness(int t)
+{
+	this->setValue(GRAPHIC_THICKNESS, t);
 }
 
 void Settings::setGridStep(int s)

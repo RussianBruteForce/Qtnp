@@ -66,7 +66,7 @@ private:
 	QList<QImage> prevList;
 	int cX, cY;
 	int gridMaxX, gridMaxY, gridMinX, gridMinY;
-	int gridStep;
+	int gridStep, cpStep;
 
 public slots:
 	void setPenColor(QColor color);

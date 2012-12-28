@@ -346,6 +346,22 @@ void Qtnp::drawGCP()
 	this->setCursor(Qt::ArrowCursor);
 }
 
+void Qtnp::drawGraphic()
+{
+	this->setCursor(Qt::WaitCursor);
+	this->setDisabled(true);
+
+	gd = new DrawGraphicDialog(*s, this);
+	connect(gd, &DrawGraphicDialog::drawGraphic,
+	        image, &DrawCore::drawGraphic);
+
+	gd->exec();
+	gd->deleteLater();
+
+	this->setEnabled(true);
+	this->setCursor(Qt::ArrowCursor);
+}
+
 void Qtnp::setTool_NONE()
 {
 	toolsButton->setIcon(QIcon(":/resources/cursor.png"));
@@ -434,27 +450,28 @@ void Qtnp::about()
 	                           ));
 }
 
-void Qtnp::drawGraphic()
-{
-}
-
 void Qtnp::wrongExp()
 {
+	this->setDisabled(true);
 	QMessageBox::warning(this, tr("WRONG EXPRESSION"),
 	                     tr("Wrong expression!\n"
 	                        "It's can't be drawn"),
 	                     QMessageBox::Ok);
+	this->setEnabled(true);
 }
 
 void Qtnp::closeEvent(QCloseEvent *event)
 {
 	if (image->isModified()) {
+		this->setDisabled(true);
 		int r = QMessageBox::warning(this, tr("Qtnp"),
 		                tr("The image has been modified.\n"
 		                   "Do you want to save your changes?"),
 		                QMessageBox::Yes | QMessageBox::Default,
 		                QMessageBox::No,
 		                QMessageBox::Cancel | QMessageBox::Escape);
+		this->setEnabled(true);
+
 		if (r == QMessageBox::Yes) {
 			saveAs();
 			event->accept();

@@ -27,12 +27,13 @@
 #include <QFileDialog>
 #include <QLineEdit>
 
+#include "Settings.h"
 #include "DigitalClock.h"
 #include "DrawCore.h"
 #include "ColorWidget.h"
 #include "DrawGCPDialog.h"
 #include "NewFileDialog.h"
-#include "Settings.h"
+#include "DrawGraphicDialog.h"
 
 namespace Ui {
 class Qtnp;
@@ -64,6 +65,7 @@ private:
 	QLineEdit *statusLine;
 	QString _openedFileLocation;
 	DrawGCPDialog *gcpd;
+	DrawGraphicDialog *gd;
 	NewFileDialog *nfd;
 
 private slots:
@@ -75,6 +77,7 @@ private slots:
 	void swapPens();
 	void openFile();
 	void drawGCP();
+	void drawGraphic();
 	void setTool_NONE();
 	void setTool_PEN();
 	void setTool_LINE();
@@ -89,7 +92,6 @@ private slots:
 	void setStyle_plastique();
 	void setStyle_motif();
 	void about();
-	void drawGraphic();
 	void wrongExp();
 
 protected:
