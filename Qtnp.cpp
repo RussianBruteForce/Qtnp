@@ -49,6 +49,8 @@ void Qtnp::makeConnections()
 		        this, &Qtnp::save);
 		connect(ui->actionSave_as, &QAction::triggered,
 		        this, &Qtnp::saveAs);
+		connect(ui->actionSettings, &QAction::triggered,
+		        this, &Qtnp::settings);
 		connect(ui->actionExit, &QAction::triggered,
 		        this, &Qtnp::exit);
 		connect(ui->actionFullscreen, &QAction::triggered,
@@ -302,9 +304,14 @@ void Qtnp::exit()
 
 void Qtnp::fullScreen()
 {
-	if (!this->isFullScreen())
+	if (!this->isFullScreen()) {
 		this->showFullScreen();
-	else this->showNormal();
+		ui->menuBar->setVisible(false);
+	}
+	else {
+		this->showNormal();
+		ui->menuBar->setVisible(true);
+	}
 }
 
 void Qtnp::swapPens()
@@ -357,6 +364,20 @@ void Qtnp::drawGraphic()
 
 	gd->exec();
 	gd->deleteLater();
+
+	this->setEnabled(true);
+	this->setCursor(Qt::ArrowCursor);
+}
+
+void Qtnp::settings()
+{
+	this->setCursor(Qt::WaitCursor);
+	this->setDisabled(true);
+
+	sd = new SettingsDialog(*s, this);
+
+	sd->exec();
+	sd->deleteLater();
 
 	this->setEnabled(true);
 	this->setCursor(Qt::ArrowCursor);

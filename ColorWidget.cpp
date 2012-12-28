@@ -42,26 +42,25 @@ ColorWidget::~ColorWidget()
 void ColorWidget::setColor(QColor color)
 {
 	*currentColor = color;
-	clr = color;
 	painterColor->begin(pixmapColor);
 	painterColor->fillRect(0, 0, boxSize, boxSize, *currentColor);
 	painterColor->end();
 	setPixmap(*pixmapColor);
-	emit colorChanged(clr);
+	emit colorChanged(*currentColor);
 }
 
 void ColorWidget::mousePressEvent(QMouseEvent *event)
 {
 	if(event->button() == Qt::LeftButton) {
-		clr = QColorDialog::getColor(*currentColor, this);
-		if(clr.isValid()) {
-			setColor(clr);
-			emit colorChanged(clr);
+		*currentColor = QColorDialog::getColor(*currentColor, this);
+		if(currentColor->isValid()) {
+			setColor(*currentColor);
+			emit colorChanged(*currentColor);
 		}
 	}
 }
 
 QColor ColorWidget::color()
 {
-	return clr;
+	return *currentColor;
 }

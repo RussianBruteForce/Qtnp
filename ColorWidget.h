@@ -34,7 +34,7 @@ public:
 	QColor color();
 
 private:
-	QColor *currentColor, clr;
+	QColor *currentColor;
 	QPixmap *pixmapColor;
 	QPainter *painterColor;
 	int boxSize;

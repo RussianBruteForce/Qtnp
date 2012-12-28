@@ -84,9 +84,9 @@ bool Settings::reverseToolBar()
 	return this->value(REVERSE_TOOLBAR, DREVERSE_TOOLBAR).toBool();
 }
 
-bool Settings::gridSettingsToCp()
+bool Settings::syncCPToGrid()
 {
-	return this->value(GRID_S_TO_CP, DGRID_S_TO_CP).toBool();
+	return this->value(SYNC_CP_TO_GRID, DSYNC_CP_TO_GRID).toBool();
 }
 
 QString Settings::language()
@@ -99,7 +99,7 @@ QList<QPoint> *Settings::templates()
 	return &_t;
 }
 
-void Settings::restoreDefault()
+void Settings::restoreDefaults()
 {
 	setBgColor(DBG_COLOR);
 	setGridColor(DGRID_COLOR);
@@ -114,7 +114,7 @@ void Settings::restoreDefault()
 	setGridStep(DGRID_STEP);
 	setCpStep(DCP_STEP);
 	setReverseToolBar(DREVERSE_TOOLBAR);
-	setGridSettingsToCp(DGRID_S_TO_CP);
+	setSyncCPToGrid(DSYNC_CP_TO_GRID);
 	setLanguage(DLANGUAGE);
 }
 
@@ -188,9 +188,9 @@ void Settings::setReverseToolBar(bool r)
 	this->setValue(REVERSE_TOOLBAR, r);
 }
 
-void Settings::setGridSettingsToCp(bool p)
+void Settings::setSyncCPToGrid(bool p)
 {
-	this->setValue(GRID_S_TO_CP, p);
+	this->setValue(SYNC_CP_TO_GRID, p);
 }
 
 void Settings::setLanguage(QString l)

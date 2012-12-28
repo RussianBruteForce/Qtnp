@@ -31,7 +31,8 @@ SOURCES += main.cpp\
     DrawGCPDialog.cpp \
     Settings.cpp \
     NewFileDialog.cpp \
-    DrawGraphicDialog.cpp
+    DrawGraphicDialog.cpp \
+    SettingsDialog.cpp
 
 HEADERS  += Qtnp.h \
     DigitalClock.h \
@@ -57,13 +58,15 @@ HEADERS  += Qtnp.h \
     DrawGCPDialog.h \
     Settings.h \
     NewFileDialog.h \
-    DrawGraphicDialog.h
+    DrawGraphicDialog.h \
+    SettingsDialog.h
 
 FORMS    += Qtnp.ui \
     GCPWidget.ui \
     DrawGCPDialog.ui \
     NewFileDialog.ui \
-    DrawGraphicDialog.ui
+    DrawGraphicDialog.ui \
+    SettingsDialog.ui
 
 RESOURCES += \
     resources.qrc

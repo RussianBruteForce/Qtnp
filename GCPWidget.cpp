@@ -81,7 +81,7 @@ GCPWidget::GCPWidget(Settings &_s, QWidget *parent) :
 	connect(ui->coordinatePlaneGroupBox, &QGroupBox::toggled,
 	        ui->coordinatePlane, &QHBoxLayout::setEnabled);
 
-	if (s->gridSettingsToCp()) {
+	if (s->syncCPToGrid()) {
 		connect(gridColor, &ColorWidget::colorChanged,
 		        coordinatePlaneColor, &ColorWidget::setColor);
 		void (QSpinBox:: *signal)(int) = &QSpinBox::valueChanged;

@@ -88,8 +88,8 @@
 /*
  * Repeat grid's settings automaticaly for coordinate plane in GCPWidget
  */
-#define GRID_S_TO_CP "gridSettingsToCp"
-#define DGRID_S_TO_CP                  true
+#define SYNC_CP_TO_GRID "syncCPToGrid"
+#define DSYNC_CP_TO_GRID                  true
 
 /*
  * ui language
@@ -119,14 +119,14 @@ public:
 	int gridStep();
 	int cpStep();
 	bool reverseToolBar();
-	bool gridSettingsToCp();
+	bool syncCPToGrid();
 	QString language();
 	QList<QPoint>* templates();
 	
 signals:
 	
 public slots:
-	void restoreDefault();
+	void restoreDefaults();
 
 	void setBgColor(QColor c);
 	void setGridColor(QColor c);
@@ -142,7 +142,7 @@ public slots:
 	void setGridStep(int s);
 	void setCpStep(int s);
 	void setReverseToolBar(bool r);
-	void setGridSettingsToCp(bool p);
+	void setSyncCPToGrid(bool p);
 	void setLanguage(QString l);
 
 private:

@@ -34,6 +34,7 @@
 #include "DrawGCPDialog.h"
 #include "NewFileDialog.h"
 #include "DrawGraphicDialog.h"
+#include "SettingsDialog.h"
 
 namespace Ui {
 class Qtnp;
@@ -67,6 +68,7 @@ private:
 	DrawGCPDialog *gcpd;
 	DrawGraphicDialog *gd;
 	NewFileDialog *nfd;
+	SettingsDialog *sd;
 
 private slots:
 	void newFile();
@@ -78,6 +80,7 @@ private slots:
 	void openFile();
 	void drawGCP();
 	void drawGraphic();
+	void settings();
 	void setTool_NONE();
 	void setTool_PEN();
 	void setTool_LINE();
