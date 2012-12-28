@@ -5,34 +5,91 @@
 #include <QColor>
 #include <QPoint>
 
+/*
+ * Define Qtnp version
+ */
+#define VERSION "2.0.0-alpha"
+
+/*
+ * Config file settings:
+ */
+
+/*
+ * Background color for new images
+ */
 #define BG_COLOR "bgColor"
 #define DBG_COLOR         white
+
+/*
+ * Grid color for new grids
+ */
 #define GRID_COLOR "gridColor"
 #define DGRID_COLOR           black
+
+/*
+ * Coordinate plane color for new coordinate planes
+ */
 #define CP_COLOR "cpColor"
 #define DCP_COLOR         black
+
+/*
+ * Pen color
+ */
 #define P_COLOR "penColor"
 #define DP_COLOR          black
+
+/*
+ * Right pen color
+ */
 #define R_COLOR "rpenColor"
 #define DR_COLOR           white
+
+/*
+ * Default omage for new images
+ */
 #define IMAGE_TEMPLATE "imageTemplate"
 #define DIMAGE_TEMPLATE               1
+
+/*
+ * Thicknesses for instruments
+ */
 #define GRID_THICKNESS "gridThickness"
 #define DGRID_THICKNESS               1
 #define CP_THICKNESS "cpThickness"
 #define DCP_THICKNESS             3
+#define THICKNESS "thickness"
+#define DTHICKNESS           3
+
+/*
+ * Steps
+ */
 #define GRID_STEP "gridStep"
 #define DGRID_STEP          50
 #define CP_STEP "cpStep"
 #define DCP_STEP        50
+
+/*
+ * Reverse toolsbar's buttons place
+ * false for RIGHT_TO_LEFT
+ * true for LEFT_TO_RIGHT
+ * Starting with FULLSCREEN_BUTTON
+ */
 #define REVERSE_TOOLBAR "reverseToolBar"
 #define DREVERSE_TOOLBAR                false
-#define LANGUAGE "language"
-#define DLANGUAGE          "en"
-#define THICKNESS "thickness"
-#define DTHICKNESS           3
+
+/*
+ * Repeat grid's settings automaticaly for coordinate plane in GCPWidget
+ */
 #define GRID_S_TO_CP "gridSettingsToCp"
 #define DGRID_S_TO_CP                  true
+
+/*
+ * ui language
+ */
+#define LANGUAGE "language"
+#define DLANGUAGE          "en"
+
+
 
 class Settings : public QSettings
 {

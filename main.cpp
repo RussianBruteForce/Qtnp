@@ -17,12 +17,22 @@
 
 #include <QApplication>
 #include <QSplashScreen>
+#include <ostream>
 
 #include "Qtnp.h"
 
 int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
+
+	QStringList args = a.arguments();
+	for (int i = 0; i < args.size(); i++) {
+		if (args.at(i) == "-v" || args.at(i) == "--version" ) {
+			std::cout << "Qtnp version: " << VERSION << std::endl;
+			return 0;
+		}
+	}
+
 	QSplashScreen *splash = new QSplashScreen(QPixmap(":/resources/splash.png"));
 	splash->show();
 	Qt::Alignment bottomLeft = Qt::AlignBottom | Qt::AlignLeft;
