@@ -446,10 +446,6 @@ void Qtnp::wrongExp()
 	                     QMessageBox::Ok);
 }
 
-void Qtnp::textToToolBar(QString text)
-{
-}
-
 void Qtnp::closeEvent(QCloseEvent *event)
 {
 	if (image->isModified()) {

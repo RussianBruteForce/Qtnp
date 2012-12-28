@@ -91,7 +91,6 @@ private slots:
 	void about();
 	void drawGraphic();
 	void wrongExp();
-	void textToToolBar(QString text);
 
 protected:
 	void closeEvent(QCloseEvent* event);
