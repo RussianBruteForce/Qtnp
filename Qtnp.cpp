@@ -229,7 +229,26 @@ void Qtnp::loadToolbar(bool reverse)
 		ui->toolBar->addSeparator();
 		ui->toolBar->addWidget(fullscreenButton);
 	} else {
-// TODO reverse
+		ui->toolBar->addWidget(fullscreenButton);
+		ui->toolBar->addSeparator();
+		ui->toolBar->addWidget(changePensButton);
+		ui->toolBar->addWidget(rpenColor);
+		ui->toolBar->addWidget(penColor);
+		ui->toolBar->addSeparator();
+		ui->toolBar->addWidget(stickyDraw);
+		ui->toolBar->addWidget(toolsButton);
+		ui->toolBar->addWidget(prevButton);
+		ui->toolBar->addSeparator();
+		ui->toolBar->addWidget(graphicButton);
+		ui->toolBar->addWidget(gridButton);
+		ui->toolBar->addSeparator();
+		ui->toolBar->addWidget(newFileButton);
+		ui->toolBar->addSeparator();
+		ui->toolBar->addWidget(clock);
+		ui->toolBar->addWidget(spacerWidget);
+		statusLine->setAlignment(Qt::AlignRight);
+		statusLine->setText("CHECK OLOLO");
+		ui->toolBar->addWidget(statusLine);
 	}
 }
 
