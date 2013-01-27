@@ -33,6 +33,8 @@ SettingsDialog::SettingsDialog(Settings &_s, QWidget *parent) :
 	        this, &SettingsDialog::save);
 	connect(ui->restoreDefaultsB, &QPushButton::clicked,
 	        this, &SettingsDialog::restoreDefaults);
+	connect(ui->setPresentationDir, &QPushButton::clicked,
+	        this, &SettingsDialog::setPresentationDir);
 }
 
 SettingsDialog::~SettingsDialog()
@@ -74,6 +76,7 @@ void SettingsDialog::save()
 
 
 	s->setSyncCPToGrid(ui->sync->isChecked());
+	s->setAutoPresentation(ui->autoPresentation->isChecked());
 	s->setReverseToolBar(ui->reverse->isChecked());
 
 	if (ui->language->currentIndex() == 0)
@@ -84,6 +87,9 @@ void SettingsDialog::save()
 		s->setLanguage("kk");
 
 	s->setImageTemplate(ui->templatesCB->currentIndex());
+
+	s->setPresentationDirectory(ui->presentationDir->text());
+
 	this->accept();
 }
 
@@ -104,6 +110,7 @@ void SettingsDialog::updateUI()
 
 	ui->reverse->setChecked(s->reverseToolBar());
 	ui->sync->setChecked(s->syncCPToGrid());
+	ui->autoPresentation->setChecked(s->autoPresentation());
 
 	if (s->language() == "en")
 		ui->language->setCurrentIndex(0);
@@ -113,6 +120,7 @@ void SettingsDialog::updateUI()
 		ui->language->setCurrentIndex(2);
 
 	ui->templatesCB->setCurrentIndex(s->imageTemplate());
+	ui->presentationDir->setText(s->presentationDirectory());
 
 }
 
@@ -120,4 +128,14 @@ void SettingsDialog::restoreDefaults()
 {
 	s->restoreDefaults();
 	this->updateUI();
+}
+
+void SettingsDialog::setPresentationDir()
+{
+	ui->presentationDir->setText(
+	                        QFileDialog::getExistingDirectory(this, tr("Open Directory"),
+	                                                          ui->presentationDir->text(),
+	                                                          QFileDialog::ShowDirsOnly
+	                                                          | QFileDialog::DontResolveSymlinks)
+	                        );
 }

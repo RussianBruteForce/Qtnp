@@ -33,7 +33,8 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	QSplashScreen *splash = new QSplashScreen(QPixmap(":/resources/splash.png"));
+	QPixmap pixmap(":/resources/splash.png");
+	QSplashScreen *splash = new QSplashScreen(pixmap);
 	splash->show();
 	Qt::Alignment bottomLeft = Qt::AlignBottom | Qt::AlignLeft;
 	splash->showMessage(QObject::tr("Setting up the main window..."),
@@ -54,6 +55,10 @@ int main(int argc, char *argv[])
 	                    bottomLeft, Qt::black);
 	w.makeUI();
 
+	splash->showMessage(QObject::tr("Prepare presentation"),
+	                    bottomLeft, Qt::black);
+	w.preparePresentation();
+
 	splash->showMessage(QObject::tr("Making SIGNAL->SLOT connections..."),
 	                    bottomLeft, Qt::black);
 	w.makeConnections();
@@ -64,6 +69,7 @@ int main(int argc, char *argv[])
 	w.loadToolbar(w.s->reverseToolBar());
 
 	w.show();
+	splash->finish(&w);
 	delete splash;
 	return a.exec();
 }

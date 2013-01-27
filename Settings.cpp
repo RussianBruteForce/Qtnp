@@ -89,9 +89,19 @@ bool Settings::syncCPToGrid()
 	return this->value(SYNC_CP_TO_GRID, DSYNC_CP_TO_GRID).toBool();
 }
 
+bool Settings::autoPresentation()
+{
+	return this->value(AUTO_PRESENTATION, DAUTO_PRESENTATION).toBool();
+}
+
 QString Settings::language()
 {
 	return this->value(LANGUAGE, DLANGUAGE).toString();
+}
+
+QString Settings::presentationDirectory()
+{
+	return this->value(PRESENTATION_DIRECTORY, DPRESENTATION_DIRECTORY).toString();
 }
 
 QList<QPoint> *Settings::templates()
@@ -115,7 +125,9 @@ void Settings::restoreDefaults()
 	setCpStep(DCP_STEP);
 	setReverseToolBar(DREVERSE_TOOLBAR);
 	setSyncCPToGrid(DSYNC_CP_TO_GRID);
+	setAutoPresentation(DAUTO_PRESENTATION);
 	setLanguage(DLANGUAGE);
+	setPresentationDirectory(DPRESENTATION_DIRECTORY);
 }
 
 void Settings::setBgColor(QColor c)
@@ -193,7 +205,17 @@ void Settings::setSyncCPToGrid(bool p)
 	this->setValue(SYNC_CP_TO_GRID, p);
 }
 
+void Settings::setAutoPresentation(bool p)
+{
+	this->setValue(AUTO_PRESENTATION, p);
+}
+
 void Settings::setLanguage(QString l)
 {
 	this->setValue(LANGUAGE, l);
+}
+
+void Settings::setPresentationDirectory(QString d)
+{
+	this->setValue(PRESENTATION_DIRECTORY, d);
 }

@@ -26,6 +26,8 @@
 #include <QMenu>
 #include <QFileDialog>
 #include <QLineEdit>
+#include <QDir>
+#include <QStringList>
 
 #include "Settings.h"
 #include "DigitalClock.h"
@@ -50,6 +52,7 @@ public:
 	void makeConnections();
 	void makeUI();
 	void loadToolbar(bool reverse);
+	void preparePresentation();
 	Settings *s;
 	
 private:
@@ -61,7 +64,8 @@ private:
 	QCheckBox *stickyDraw;
 	QToolButton *changePensButton, *fullscreenButton,
 	*newFileButton, *gridButton,
-	*graphicButton,*prevButton, *toolsButton;
+	*graphicButton,*prevButton, *toolsButton,
+	*nImage, *pImage;
 	QMenu *toolsMenu;
 	QLineEdit *statusLine;
 	QString _openedFileLocation;
@@ -69,6 +73,8 @@ private:
 	DrawGraphicDialog *gd;
 	NewFileDialog *nfd;
 	SettingsDialog *sd;
+	QStringList presentationImages;
+	uint _currentPresentationImage;
 
 private slots:
 	void newFile();
@@ -96,6 +102,8 @@ private slots:
 	void setStyle_motif();
 	void about();
 	void wrongExp();
+	void nextImage();
+	void prevImage();
 
 protected:
 	void closeEvent(QCloseEvent* event);

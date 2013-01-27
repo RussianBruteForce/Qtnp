@@ -18,6 +18,8 @@
 #include "Qtnp.h"
 #include "ui_Qtnp.h"
 
+#include "QDebug"
+
 Qtnp::Qtnp(QWidget *parent) :
         QMainWindow(parent),
         ui(new Ui::Qtnp)
@@ -110,6 +112,11 @@ void Qtnp::makeConnections()
 		        image, &DrawCore::setThickness);
 		connect(fullscreenButton, &QToolButton::clicked,
 		        this, &Qtnp::fullScreen);
+
+		connect(nImage, &QToolButton::clicked,
+		        this, &Qtnp::nextImage);
+		connect(pImage, &QToolButton::clicked,
+		        this, &Qtnp::prevImage);
 	}
 
 
@@ -144,6 +151,13 @@ void Qtnp::makeUI()
 	thicksessBox->setRange(1,200);
 	thicksessBox->setValue(s->thickness());
 	image->setThickness(s->thickness());
+
+	nImage = new QToolButton(ui->toolBar);
+	nImage->setText("->");
+	nImage->setToolTip(tr("Next image"));
+	pImage = new QToolButton(ui->toolBar);
+	pImage->setText("<-");
+	pImage->setToolTip(tr("Previous image"));
 
 	prevButton = new QToolButton(ui->toolBar);
 	prevButton->setIcon(QIcon(":/resources/prev.png"));
@@ -208,8 +222,12 @@ void Qtnp::loadToolbar(bool reverse)
 
 	if (!reverse) {
 		statusLine->setAlignment(Qt::AlignLeft);
-		statusLine->setText("CHECK OLOLO");
+		statusLine->setText("Toolbar loaded");
 		ui->toolBar->addWidget(statusLine);
+		ui->toolBar->addSeparator();
+		ui->toolBar->addWidget(pImage);
+		ui->toolBar->addWidget(nImage);
+		ui->toolBar->addSeparator();
 		ui->toolBar->addWidget(spacerWidget);
 		ui->toolBar->addWidget(clock);
 		ui->toolBar->addSeparator();
@@ -246,9 +264,33 @@ void Qtnp::loadToolbar(bool reverse)
 		ui->toolBar->addSeparator();
 		ui->toolBar->addWidget(clock);
 		ui->toolBar->addWidget(spacerWidget);
+		ui->toolBar->addSeparator();
+		ui->toolBar->addWidget(pImage);
+		ui->toolBar->addWidget(nImage);
+		ui->toolBar->addSeparator();
 		statusLine->setAlignment(Qt::AlignRight);
-		statusLine->setText("CHECK OLOLO");
+		statusLine->setText("Reverse toolbar loaded");
 		ui->toolBar->addWidget(statusLine);
+	}
+}
+
+void Qtnp::preparePresentation()
+{
+	_currentPresentationImage = -1;
+	pImage->setDisabled(true);
+	QDir *d = new QDir(s->presentationDirectory());
+	QStringList nf;
+	nf += "*.png";
+	nf += "*.jpg";
+	nf += "*.bmp";
+	presentationImages = d->entryList(nf ,QDir::Files, QDir::Name);
+	if (presentationImages.size() == 0)
+		nImage->setDisabled(true);
+	else {
+		nImage->setEnabled(true);
+		if (s->autoPresentation()) {
+			nextImage();
+		}
 	}
 }
 
@@ -398,6 +440,8 @@ void Qtnp::settings()
 	sd->exec();
 	sd->deleteLater();
 
+	preparePresentation();
+
 	this->setEnabled(true);
 	this->setCursor(Qt::ArrowCursor);
 }
@@ -498,6 +542,30 @@ void Qtnp::wrongExp()
 	                        "It's can't be drawn"),
 	                     QMessageBox::Ok);
 	this->setEnabled(true);
+}
+
+void Qtnp::nextImage()
+{
+	if (_currentPresentationImage + 1 < presentationImages.size())
+		image->loadImage(QString(s->presentationDirectory() + "/") + presentationImages.at(++_currentPresentationImage));
+	if (_currentPresentationImage + 1 == presentationImages.size())
+		nImage->setDisabled(true);
+	else nImage->setEnabled(true);
+	if (_currentPresentationImage == 0)
+		pImage->setDisabled(true);
+	else pImage->setEnabled(true);
+}
+
+void Qtnp::prevImage()
+{
+	if (_currentPresentationImage > 0)
+		image->loadImage(QString(s->presentationDirectory() + "/") + presentationImages.at(--_currentPresentationImage));
+	if (_currentPresentationImage == 0)
+		pImage->setDisabled(true);
+	else pImage->setEnabled(true);
+	if (_currentPresentationImage + 1 == presentationImages.size())
+		nImage->setDisabled(true);
+	else nImage->setEnabled(true);
 }
 
 void Qtnp::closeEvent(QCloseEvent *event)

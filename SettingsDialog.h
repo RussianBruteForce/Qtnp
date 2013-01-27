@@ -2,6 +2,7 @@
 #define SETTINGSDIALOG_H
 
 #include <QDialog>
+#include <QFileDialog>
 
 #include "Settings.h"
 #include "ColorWidget.h"
@@ -30,6 +31,7 @@ public slots:
 	void save();
 	void updateUI();
 	void restoreDefaults();
+	void setPresentationDir();
 };
 
 #endif // SETTINGSDIALOG_H

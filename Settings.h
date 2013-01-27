@@ -4,6 +4,7 @@
 #include <QSettings>
 #include <QColor>
 #include <QPoint>
+#include <QDir>
 
 /*
  * Define Qtnp version
@@ -89,13 +90,26 @@
  * Repeat grid's settings automaticaly for coordinate plane in GCPWidget
  */
 #define SYNC_CP_TO_GRID "syncCPToGrid"
-#define DSYNC_CP_TO_GRID                  true
+#define DSYNC_CP_TO_GRID              true
+
+
+/*
+ * Start presentation automaticaly
+ */
+#define AUTO_PRESENTATION "autoPresentation"
+#define DAUTO_PRESENTATION                  false
 
 /*
  * ui language
  */
 #define LANGUAGE "language"
 #define DLANGUAGE          "en"
+
+/*
+ * Presentation directory
+ */
+#define PRESENTATION_DIRECTORY "presentationDirectory"
+#define DPRESENTATION_DIRECTORY                       QDir::homePath()
 
 
 
@@ -120,7 +134,9 @@ public:
 	int cpStep();
 	bool reverseToolBar();
 	bool syncCPToGrid();
+	bool autoPresentation();
 	QString language();
+	QString presentationDirectory();
 	QList<QPoint>* templates();
 	
 signals:
@@ -143,7 +159,9 @@ public slots:
 	void setCpStep(int s);
 	void setReverseToolBar(bool r);
 	void setSyncCPToGrid(bool p);
+	void setAutoPresentation(bool p);
 	void setLanguage(QString l);
+	void setPresentationDirectory(QString d);
 
 private:
 	QColor white, black;
