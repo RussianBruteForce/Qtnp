@@ -25,11 +25,14 @@ int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
 
+	QString argOpen;
 	QStringList args = a.arguments();
 	for (int i = 0; i < args.size(); i++) {
 		if (args.at(i) == "-v" || args.at(i) == "--version" ) {
 			std::cout << "Qtnp version: " << VERSION << std::endl;
 			return 0;
+		} else if (i > 0) {
+			argOpen = args.at(i);
 		}
 	}
 
@@ -68,6 +71,7 @@ int main(int argc, char *argv[])
 	                    bottomLeft, Qt::black);
 	w.loadToolbar(w.s->reverseToolBar());
 
+	if (!argOpen.isNull()) w.image->loadImage(argOpen);
 	w.show();
 	splash->finish(&w);
 	delete splash;

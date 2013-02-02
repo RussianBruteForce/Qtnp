@@ -54,10 +54,10 @@ public:
 	void loadToolbar(bool reverse);
 	void preparePresentation();
 	Settings *s;
+	DrawCore *image;
 	
 private:
 	Ui::Qtnp *ui;
-	DrawCore *image;
 	DigitalClock *clock;
 	ColorWidget *penColor, *rpenColor;
 	QSpinBox *thicksessBox;
