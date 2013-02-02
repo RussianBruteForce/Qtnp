@@ -64,7 +64,7 @@ private:
 	QCheckBox *stickyDraw;
 	QToolButton *changePensButton, *fullscreenButton,
 	*newFileButton, *gridButton,
-	*graphicButton,*prevButton, *toolsButton,
+	*graphicButton, *prevButton, *toolsButton,
 	*nImage, *pImage;
 	QMenu *toolsMenu;
 	QLineEdit *statusLine;

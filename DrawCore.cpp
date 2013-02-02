@@ -560,16 +560,16 @@ void DrawCore::setActiveTool(DrawTool whichTool)
 		this->setCursor(Qt::ArrowCursor);
 		break;
 	case PEN:
-		this->setCursor(QCursor(QPixmap(":/resource/pencil.png")));
+		this->setCursor(Qt::CrossCursor);
 		break;
 	case LINE:
-		this->setCursor(QCursor(QPixmap(":/resource/line.png")));
+		this->setCursor(Qt::CrossCursor);
 		break;
 	case JOGGED_LINE:
-		this->setCursor(QCursor(QPixmap(":/resource/jogged.png")));
+		this->setCursor(Qt::CrossCursor);
 		break;
 	case CIRCLE:
-		this->setCursor(QCursor(QPixmap(":/resource/circle.png")));
+		this->setCursor(Qt::CrossCursor);
 		break;
 	}
 }
@@ -792,7 +792,6 @@ void DrawCore::drawGraphic(QString str, QColor color, int width)
 	grphc.append(QPoint(round(sX),round(sY)));
 
 	for (; i < gridMaxX; i += 0.05) {
-
 		bX = i;
 		bY = fparser.getR(i);
 		emit parserMsg(tr("Last value ") + QString::number(bY));
@@ -803,7 +802,7 @@ void DrawCore::drawGraphic(QString str, QColor color, int width)
 	}
 
 	painter->setRenderHint(QPainter::Antialiasing);
-	// TODO: drawing point-by-point
+//	TODO: drawing point-by-point
 	painter->drawPolyline(grphc);
 
 	painter->end();
