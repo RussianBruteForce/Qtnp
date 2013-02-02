@@ -153,25 +153,31 @@ void Qtnp::makeUI()
 	image->setThickness(s->thickness());
 
 	nImage = new QToolButton(ui->toolBar);
-	nImage->setText("->");
+	nImage->setToolButtonStyle(Qt::ToolButtonIconOnly);
+	nImage->setIcon(QIcon(":/resources/arrow_right.png"));
 	nImage->setToolTip(tr("Next image"));
 	pImage = new QToolButton(ui->toolBar);
-	pImage->setText("<-");
+	pImage->setToolButtonStyle(Qt::ToolButtonIconOnly);
+	pImage->setIcon(QIcon(":/resources/arrow_left.png"));
 	pImage->setToolTip(tr("Previous image"));
 
 	prevButton = new QToolButton(ui->toolBar);
+	prevButton->setToolButtonStyle(Qt::ToolButtonIconOnly);
 	prevButton->setIcon(QIcon(":/resources/prev.png"));
 	prevButton->setToolTip(tr("Previous"));
 
 	newFileButton = new QToolButton(ui->toolBar);
+	newFileButton->setToolButtonStyle(Qt::ToolButtonIconOnly);
 	newFileButton->setIcon(QIcon(":/resources/new.png"));
 	newFileButton->setToolTip(tr("New"));
 
 	gridButton = new QToolButton(ui->toolBar);
+	gridButton->setToolButtonStyle(Qt::ToolButtonIconOnly);
 	gridButton->setIcon(QIcon(":/resources/grid.png"));
 	gridButton->setToolTip(tr("Grid"));
 
 	graphicButton = new QToolButton(ui->toolBar);
+	graphicButton->setToolButtonStyle(Qt::ToolButtonIconOnly);
 	graphicButton->setIcon(QIcon(":/resources/graphic.png"));
 	graphicButton->setToolTip(tr("Graphic"));
 
@@ -180,6 +186,7 @@ void Qtnp::makeUI()
 	changePensButton->setToolTip(tr("Swap pens"));
 
 	fullscreenButton = new QToolButton(ui->toolBar);
+	fullscreenButton->setToolButtonStyle(Qt::ToolButtonIconOnly);
 	fullscreenButton->setIcon(QIcon(":/resources/fullscreen.png"));
 	fullscreenButton->setToolTip(tr("Fullscreen"));
 
@@ -197,6 +204,7 @@ void Qtnp::makeUI()
 	toolsMenu->setToolTip(tr("Tools"));
 
 	toolsButton = new QToolButton(ui->toolBar);
+	toolsButton->setToolButtonStyle(Qt::ToolButtonIconOnly);
 	toolsButton->setToolTip(tr("Tools"));
 	toolsButton->setMenu(toolsMenu);
 	toolsButton->setPopupMode(QToolButton::InstantPopup);
@@ -210,6 +218,17 @@ void Qtnp::makeUI()
 	this->ui->scrollArea->setBackgroundRole(QPalette::Dark);
 	this->ui->scrollArea->setAlignment(Qt::AlignTop);
 	this->setCentralWidget(this->ui->scrollArea);
+
+	// Icons to menu
+	ui->actionFullscreen->setIcon(QIcon(":/resources/fullscreen.png"));
+	ui->actionNew->setIcon(QIcon(":/resources/new.png"));
+	ui->actionOpen->setIcon(QIcon(":/resources/open.png"));
+	ui->actionExit->setIcon(QIcon(":/resources/exit.png"));
+	ui->actionSave->setIcon(QIcon(":/resources/save.png"));
+	ui->actionSettings->setIcon(QIcon(":/resources/settings.png"));
+	ui->actionAbout_Qtnp->setIcon(QIcon(":/resources/about.png"));
+	ui->menuTheme->setIcon(QIcon(":/resources/themes.png"));
+	ui->menuFile->setIcon(QIcon(":/resources/file.png"));
 }
 
 void Qtnp::loadToolbar(bool reverse)
@@ -368,10 +387,12 @@ void Qtnp::fullScreen()
 	if (!this->isFullScreen()) {
 		this->showFullScreen();
 		ui->menuBar->setVisible(false);
+		fullscreenButton->setIcon(QIcon(":/resources/normal.png"));
 	}
 	else {
 		this->showNormal();
 		ui->menuBar->setVisible(true);
+		fullscreenButton->setIcon(QIcon(":/resources/fullscreen.png"));
 	}
 }
 
@@ -519,19 +540,21 @@ void Qtnp::setStyle_motif()
 void Qtnp::about()
 {
 	QMessageBox::about(this, tr("About Qtnp"),
-	                   tr(
-	                           "<p align=\"center\"><span style=\" font-size:14pt; font-weight:600; color:#20AA20;\">Cute Noob-Painter Qt5</span></p>"
-	                           "<br>"
-	                           "&nbsp; Qtnp  Copyright &copy; 2012  Victor &lt;BruteForce&gt;<br>"
-	                           "&nbsp; This program comes with ABSOLUTELY NO WARRANTY.<br>"
-	                           "&nbsp; This is free software, and you are welcome to<br>"
-	                           "&nbsp; redistribute it under certain conditions.<br>"
-	                           "&nbsp; For more look at <a href=\"http://www.gnu.org/licenses/gpl-3.0.html\">www.gnu.org</a><br>"
-	                           "<p align=\"center\"><img src=\":resources/GNU_GPLv3_Logo.png\" width=\"250\" height=\"124\" /></p>"
-	                           "&nbsp; Official git repo: <a href=\"https://github.com/RussianBruteForce/Qtnp\">https://github.com/RussianBruteForce/Qtnp</a><br>"
-	                           "<br>"
-	                           "&nbsp; E-mail: <a href=\"mailto:bruteforce@sigil.tk\">bruteforce@sigil.tk</a>"
-	                           ));
+			   tr(
+					   "<p align=\"center\"><span style=\" font-size:14pt; font-weight:600; color:#20AA20;\">Cute Noob-Painter Qt5</span></p>"
+					   "<br>"
+					   "&nbsp; Qtnp  Copyright &copy; 2012  Victor &lt;BruteForce&gt;<br>"
+					   "&nbsp; This program comes with ABSOLUTELY NO WARRANTY.<br>"
+					   "&nbsp; This is free software, and you are welcome to<br>"
+					   "&nbsp; redistribute it under certain conditions.<br>"
+					   "&nbsp; For more look at <a href=\"http://www.gnu.org/licenses/gpl-3.0.html\">www.gnu.org</a><br>"
+					   "<p align=\"center\"><img src=\":resources/GNU_GPLv3_Logo.png\" width=\"250\" height=\"124\" /></p>"
+					   "&nbsp; Official git repo: <a href=\"https://github.com/RussianBruteForce/Qtnp\">https://github.com/RussianBruteForce/Qtnp</a><br>"
+					   "<br>"
+					   "&nbsp; E-mail: <a href=\"mailto:bruteforce@sigil.tk\">bruteforce@sigil.tk</a>"
+					   "<br>"
+					   "&nbsp; Icons by <a href=\"http://icomoon.io\">icomoon.io</a> under <a href=\"http://creativecommons.org/licenses/by/3.0\">CC BY 3.0</a>"
+					   ));
 }
 
 void Qtnp::wrongExp()

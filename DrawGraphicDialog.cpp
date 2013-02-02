@@ -6,6 +6,7 @@ DrawGraphicDialog::DrawGraphicDialog(Settings &_s, QWidget *parent) :
         ui(new Ui::DrawGraphicDialog)
 {
 	ui->setupUi(this);
+	setWindowIcon(QIcon(":/resources/graphic.png"));
 	s = &_s;
 
 	graphicColor = new ColorWidget(s->graphicColor());

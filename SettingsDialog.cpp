@@ -6,6 +6,7 @@ SettingsDialog::SettingsDialog(Settings &_s, QWidget *parent) :
         ui(new Ui::SettingsDialog)
 {
 	ui->setupUi(this);
+	setWindowIcon(QIcon(":/resources/settings.png"));
 	s = &_s;
 
 	bg = new ColorWidget(s->bgColor());

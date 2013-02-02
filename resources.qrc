@@ -12,13 +12,17 @@
         <file>resources/jogged_ico.png</file>
         <file>resources/line_ico.png</file>
         <file>resources/new.png</file>
-        <file>resources/next.png</file>
         <file>resources/open.png</file>
         <file>resources/pencil_ico.png</file>
         <file>resources/prev.png</file>
         <file>resources/save.png</file>
-        <file>resources/save_as.png</file>
         <file>resources/template.png</file>
         <file>resources/cursor.png</file>
+        <file>resources/settings.png</file>
+        <file>resources/arrow_left.png</file>
+        <file>resources/arrow_right.png</file>
+        <file>resources/normal.png</file>
+        <file>resources/themes.png</file>
+        <file>resources/file.png</file>
     </qresource>
 </RCC>

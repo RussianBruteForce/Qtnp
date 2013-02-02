@@ -6,6 +6,7 @@ NewFileDialog::NewFileDialog(Settings &_s, QWidget *parent) :
         ui(new Ui::NewFileDialog)
 {
 	ui->setupUi(this);
+	setWindowIcon(QIcon(":/resources/new.png"));
 	s = &_s;
 	gcp = new GCPWidget(*s, this);
 	gcp->makeDedicated();
