@@ -47,7 +47,7 @@ class Qtnp : public QMainWindow
 	Q_OBJECT
 	
 public:
-	explicit Qtnp(QWidget *parent = 0);
+    explicit Qtnp(Settings &settings, QWidget *parent = 0);
 	~Qtnp();
 	void makeConnections();
 	void makeUI();

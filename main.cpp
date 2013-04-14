@@ -17,6 +17,7 @@
 
 #include <QApplication>
 #include <QSplashScreen>
+#include <QTranslator>
 #include <ostream>
 
 #include "Qtnp.h"
@@ -44,28 +45,28 @@ int main(int argc, char *argv[])
 	                    bottomLeft, Qt::black);
 
 	QCoreApplication::setOrganizationName("qtnp"); // FOR
-	QCoreApplication::setApplicationName("qtnp");  //     CONFIG
+    QCoreApplication::setApplicationName("qtnp");  //     CONFIG
 
-//	QTranslator translator;
-//	if (QLocale::system().name().left(2) == "ru") {
-//		translator.load(":/res/qtnp_ru"); // русский/russian
-//		qApp->installTranslator(&translator);
-//	}
+    QTranslator translator;
+    Settings *s = new Settings;
+    if (s->language() == "ru") {
+        translator.load(":/resources/ru_RU.qm"); // русский/russian
+        qApp->installTranslator(&translator);
+    }
 
-	Qtnp w;
+    Qtnp w(*s);
 
 	splash->showMessage(QObject::tr("Making UI..."),
 	                    bottomLeft, Qt::black);
 	w.makeUI();
 
-	splash->showMessage(QObject::tr("Prepare presentation"),
+    splash->showMessage(QObject::tr("Prepare presentation..."),
 	                    bottomLeft, Qt::black);
 	w.preparePresentation();
 
 	splash->showMessage(QObject::tr("Making SIGNAL->SLOT connections..."),
 	                    bottomLeft, Qt::black);
 	w.makeConnections();
-
 
 	splash->showMessage(QObject::tr("Loading Toolbar..."),
 	                    bottomLeft, Qt::black);

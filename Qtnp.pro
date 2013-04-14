@@ -70,3 +70,6 @@ FORMS    += Qtnp.ui \
 
 RESOURCES += \
     resources.qrc
+
+TRANSLATIONS += \
+    ru_RU.ts

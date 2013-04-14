@@ -24,5 +24,7 @@
         <file>resources/normal.png</file>
         <file>resources/themes.png</file>
         <file>resources/file.png</file>
+        <file>resources/ru_RU.qm</file>
+        <file>resources/icon.png</file>
     </qresource>
 </RCC>

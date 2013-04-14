@@ -22,8 +22,7 @@ SettingsDialog::SettingsDialog(Settings &_s, QWidget *parent) :
 	ui->cpL->addWidget(cp);
 
 	ui->language->addItem("English");
-	ui->language->addItem("Russian");
-	ui->language->addItem("Kazakh");
+    ui->language->addItem("Russian");
 
 	setupTemplates();
 
@@ -83,9 +82,7 @@ void SettingsDialog::save()
 	if (ui->language->currentIndex() == 0)
 		s->setLanguage("en");
 	else if (ui->language->currentIndex() == 1)
-		s->setLanguage("ru");
-	else if (ui->language->currentIndex() == 2)
-		s->setLanguage("kk");
+        s->setLanguage("ru");
 
 	s->setImageTemplate(ui->templatesCB->currentIndex());
 
@@ -116,9 +113,7 @@ void SettingsDialog::updateUI()
 	if (s->language() == "en")
 		ui->language->setCurrentIndex(0);
 	else if (s->language() == "ru")
-		ui->language->setCurrentIndex(1);
-	else if (s->language() == "kk")
-		ui->language->setCurrentIndex(2);
+        ui->language->setCurrentIndex(1);
 
 	ui->templatesCB->setCurrentIndex(s->imageTemplate());
 	ui->presentationDir->setText(s->presentationDirectory());
