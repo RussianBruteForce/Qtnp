@@ -52,7 +52,7 @@
 #define DR_COLOR           white
 
 /*
- * Default omage for new images
+ * Default template for new images
  */
 #define IMAGE_TEMPLATE "imageTemplate"
 #define DIMAGE_TEMPLATE               1
