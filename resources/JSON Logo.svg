@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="160" height="199.75266" id="svg-001" version="1.1" inkscape:version="0.48.1 r9760" sodipodi:docname="json-logo.svg">
+  <title id="title-001">JSON Logo</title>
+  <defs id="gradients-001">
+    <radialGradient inkscape:collect="always" xlink:href="#linearGradient8393" id="radialGradient1359" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1,0,0,0.33195,0,350.7679)" cx="-639.67908" cy="525.06256" fx="-639.67908" fy="525.06256" r="60.861691"/>
+    <linearGradient inkscape:collect="always" id="linearGradient8393">
+      <stop style="stop-color:#000000;stop-opacity:1;" offset="0" id="stop8395"/>
+      <stop style="stop-color:#000000;stop-opacity:0;" offset="1" id="stop8397"/>
+    </linearGradient>
+    <linearGradient inkscape:collect="always" xlink:href="#linearGradient8385" id="linearGradient1403" gradientUnits="userSpaceOnUse" gradientTransform="matrix(0.99884,0,0,0.998699,156.7836,-139.1912)" x1="-642.33075" y1="395.76303" x2="-570.35742" y2="537.68951"/>
+    <linearGradient id="linearGradient8385">
+      <stop style="stop-color:#000000;stop-opacity:1;" offset="0" id="stop8387"/>
+      <stop style="stop-color:#ffffff;stop-opacity:1;" offset="1" id="stop8389"/>
+    </linearGradient>
+    <linearGradient y2="376.52051" x2="-578.36444" y1="535.61951" x1="-564.26062" gradientTransform="matrix(0.99884,0,0,0.998699,156.7836,-139.1912)" gradientUnits="userSpaceOnUse" id="linearGradient3068" xlink:href="#linearGradient8385" inkscape:collect="always"/>
+  </defs>
+  <sodipodi:namedview id="base" pagecolor="#ffffff" bordercolor="#666666" borderopacity="1.0" inkscape:pageopacity="0.0" inkscape:pageshadow="2" inkscape:zoom="0.35" inkscape:cx="80" inkscape:cy="99.876326" inkscape:document-units="px" inkscape:current-layer="svg-001" showgrid="false" fit-margin-top="0" fit-margin-left="0" fit-margin-right="0" fit-margin-bottom="0" inkscape:window-width="1401" inkscape:window-height="935" inkscape:window-x="0" inkscape:window-y="53" inkscape:window-maximized="0"/>
+  <metadata id="metadata-json-logo">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+        <dc:title>JSON Logo</dc:title>
+        <dc:date>2011-09-05 22:42:49</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>fzap</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <cc:license rdf:resource="http://creativecommons.org/licenses/publicdomain/"/>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>PD</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>openclipart.org</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:description>JSON-Logo adapted from the JSON-Website: http://json.org</dc:description>
+        <dc:language>en_GB</dc:language>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>json</rdf:li>
+            <rdf:li>logo</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+      <cc:License rdf:about="http://creativecommons.org/licenses/publicdomain/">
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks"/>
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g inkscape:label="Ebene 1" inkscape:groupmode="layer" id="layer1" transform="translate(-270,-432.48586)">
+    <g id="g1364" transform="translate(802.22414,182.8333)">
+      <path inkscape:connector-curvature="0" id="path7508" style="color:#000000;fill:url(#linearGradient1403);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.5;marker:none;visibility:visible;display:inline;overflow:visible" d="m -452.35954,368.75213 c 23.21169,9.13191 53.06862,-13.63189 53.06862,-50.58675 0,-43.88609 -27.62085,-68.41369 -53.09762,-68.41369 -40.89242,0 -79.8356,33.79608 -79.8356,80.03589 0,51.396 44.64038,79.86497 79.8356,79.86497 -7.96447,-1.14675 -51.64906,-6.83395 -52.00578,-67.96677 -0.23987,-41.3466 30.63043,-57.86551 51.94813,-50.59905 0.47743,0.17707 23.51392,9.26451 23.51392,38.95053 0,29.55992 -23.42727,38.71487 -23.42727,38.71487 z" sodipodi:nodetypes="cssscccsc"/>
+      <path id="path7510" style="color:#000000;fill:url(#linearGradient3068);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.5;marker:none;visibility:visible;display:inline;overflow:visible" d="m -452.40087,291.05337 c -23.39005,-8.06188 -52.04302,11.21581 -52.04302,49.82881 0,63.04798 46.72055,68.77037 52.38416,68.77037 40.89242,0 79.83559,-33.79608 79.83559,-80.03589 0,-51.396 -44.64038,-79.86497 -79.83559,-79.86497 9.74811,-1.35 52.54087,10.54991 52.54087,69.0368 0,38.14117 -31.95286,58.90496 -52.73547,50.03344 -0.47743,-0.17707 -23.51392,-9.26451 -23.51392,-38.95053 0,-29.55992 23.36738,-38.81803 23.36738,-38.81803 z" sodipodi:nodetypes="cssscccsc" inkscape:connector-curvature="0"/>
+    </g>
+    <path sodipodi:type="arc" style="opacity:0.1;color:#000000;fill:url(#radialGradient1359);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.5;marker:none;visibility:visible;display:inline;overflow:visible" id="path1335" sodipodi:cx="-639.67908" sodipodi:cy="525.06256" sodipodi:rx="60.861691" sodipodi:ry="20.203051" d="m -578.81739,525.06256 a 60.861691,20.203051 0 1 1 -121.72338,0 60.861691,20.203051 0 1 1 121.72338,0 z" transform="translate(990.11254,86.972897)" inkscape:export-filename="/home/fzap/yinyang-reloaded.png" inkscape:export-xdpi="168.75" inkscape:export-ydpi="168.75"/>
+  </g>
+</svg>

@@ -25,10 +25,10 @@ Qtnp::Qtnp(Settings &settings, QWidget *parent) :
         ui(new Ui::Qtnp)
 {
 	ui->setupUi(this);
-    setWindowIcon(QIcon(":/resources/icon.png"));
+	setWindowIcon(QIcon(":/resources/icon.png"));
 
-    //s = new Settings;
-    s = &settings;
+	//s = new Settings;
+	s = &settings;
 
 	resize(1050,850);
 }
@@ -244,7 +244,7 @@ void Qtnp::loadToolbar(bool reverse)
 
 	if (!reverse) {
 		statusLine->setAlignment(Qt::AlignLeft);
-        statusLine->setText(tr("Toolbar loaded"));
+		statusLine->setText(tr("Toolbar loaded"));
 		ui->toolBar->addWidget(statusLine);
 		ui->toolBar->addSeparator();
 		ui->toolBar->addWidget(pImage);
@@ -291,7 +291,7 @@ void Qtnp::loadToolbar(bool reverse)
 		ui->toolBar->addWidget(nImage);
 		ui->toolBar->addSeparator();
 		statusLine->setAlignment(Qt::AlignRight);
-        statusLine->setText(tr("Reverse toolbar loaded"));
+		statusLine->setText(tr("Reverse toolbar loaded"));
 		ui->toolBar->addWidget(statusLine);
 	}
 }

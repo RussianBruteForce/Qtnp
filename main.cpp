@@ -45,22 +45,22 @@ int main(int argc, char *argv[])
 	                    bottomLeft, Qt::black);
 
 	QCoreApplication::setOrganizationName("qtnp"); // FOR
-    QCoreApplication::setApplicationName("qtnp");  //     CONFIG
+	QCoreApplication::setApplicationName("qtnp");  //     CONFIG
 
-    QTranslator translator;
-    Settings *s = new Settings;
-    if (s->language() == "ru") {
-        translator.load(":/resources/ru_RU.qm"); // русский/russian
-        qApp->installTranslator(&translator);
-    }
+	QTranslator translator;
+	Settings *s = new Settings;
+	if (s->language() == "ru") {
+		translator.load(":/resources/ru_RU.qm"); // русский/russian
+		qApp->installTranslator(&translator);
+	}
 
-    Qtnp w(*s);
+	Qtnp w(*s);
 
 	splash->showMessage(QObject::tr("Making UI..."),
 	                    bottomLeft, Qt::black);
 	w.makeUI();
 
-    splash->showMessage(QObject::tr("Prepare presentation..."),
+	splash->showMessage(QObject::tr("Prepare presentation..."),
 	                    bottomLeft, Qt::black);
 	w.preparePresentation();
 
