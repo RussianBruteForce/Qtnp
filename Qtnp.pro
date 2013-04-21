@@ -11,6 +11,9 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = qtnp
 TEMPLATE = app
 
+win32 {
+  RC_FILE = winico.rc
+}
 
 SOURCES += main.cpp\
         Qtnp.cpp \
