@@ -50,9 +50,11 @@ private:
 	void drawCircle(QPen p);
 	void remember();
 	QPoint closestGridPoint(QPoint p);
+	QPoint getCoordinatesOfGridPoint(QPoint gridPoint,int step);
+	QPoint getGridPointByCoordinates(QPoint coordinate, int step);
 	int round(double num);
 
-	bool _changed;
+	bool _modified;
 	int width_, height_;
 	bool painting, joggedLineFirstClickDone, _sticking, wrongExp;
 	DrawTool activeTool;
@@ -62,9 +64,8 @@ private:
 	QPen pen, rpen;
 	QBrush brush;
 	QPainter *painter;
-	QPoint getGridPointCoordinates(QPoint gridPoint,int step);
 	QList<QImage> prevList;
-	int cX, cY;
+	int cX, cY; // image's center
 	int gridMaxX, gridMaxY, gridMinX, gridMinY;
 	int gridStep, cpStep;
 
@@ -80,7 +81,7 @@ public slots:
 	void grayscale();
 	void drawGrid(int step, QColor color, int width = 1);
 	void drawCoordPlane(int coordPlaneStep, QColor clr, int width = 1);
-	void drawGraphic(QString str, QColor color, int width);
+	void drawGraphic(QString func, QColor color, int width);
 	void setSticky(bool ans);
 	void functionExeption(QString msg);
 

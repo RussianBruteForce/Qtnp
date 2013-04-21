@@ -16,6 +16,7 @@
  */
 
 #include "DrawCore.h"
+#include <QDebug>
 
 DrawCore::DrawCore(QObject *parent)
 {
@@ -24,7 +25,7 @@ DrawCore::DrawCore(QObject *parent)
 
 	//newImage(1280,1024,Qt::white);
 
-	_changed = false;
+	_modified = false;
 	gridMaxX = 0;
 	gridMaxY = 0;
 	gridMinX = 0;
@@ -47,7 +48,7 @@ DrawCore::DrawCore(QObject *parent)
 }
 
 /*
- * Preparing for setting new image
+ * Prepares for setting new image
  */
 void DrawCore::prepareImage()
 {
@@ -57,7 +58,7 @@ void DrawCore::prepareImage()
 }
 
 /*
- * Create new emty image x*y with colored background
+ * Creates new emty image x*y with colored background
  */
 void DrawCore::newImage(int x, int y, QColor color)
 {
@@ -77,11 +78,11 @@ void DrawCore::newImage(int x, int y, QColor color)
 	gridStep = -1;
 	cpStep = -1;
 
-	_changed = false;
+	_modified = false;
 }
 
 /*
- * Load image from path
+ * Loads image from path
  */
 bool DrawCore::loadImage(const QString path)
 {
@@ -96,14 +97,14 @@ bool DrawCore::loadImage(const QString path)
 		cY = height_/2;
 		gridStep = -1;
 		cpStep = -1;
-		_changed = false;
+		_modified = false;
 		return true;
 	} else return false;
 
 }
 
 /*
- * Apply NEGATIVE to image
+ * Applies NEGATIVE to image
  */
 void DrawCore::negative()
 {
@@ -122,7 +123,7 @@ void DrawCore::negative()
 }
 
 /*
- * Apply GRAYSCALE to image
+ * Applies GRAYSCALE to image
  */
 void DrawCore::grayscale()
 {
@@ -142,7 +143,7 @@ void DrawCore::grayscale()
 
 
 /*
- * Save image to path
+ * Saves image to path
  */
 bool DrawCore::saveImage(const QString path)
 {
@@ -151,7 +152,7 @@ bool DrawCore::saveImage(const QString path)
 }
 
 /*
- * Update label's pixmap
+ * Updates label's pixmap
  */
 void DrawCore::refresh()
 {
@@ -382,7 +383,7 @@ void DrawCore::mouseReleaseEvent(QMouseEvent *event)
 }
 
 /*
- * Draw line with pen p
+ * Draws line with pen p
  */
 void DrawCore::drawLine(QPen p)
 {
@@ -396,7 +397,7 @@ void DrawCore::drawLine(QPen p)
 }
 
 /*
- * Draw square with pen p
+ * Draws square with pen p
  */
 void DrawCore::drawSquare(QPen p)
 {
@@ -410,7 +411,7 @@ void DrawCore::drawSquare(QPen p)
 }
 
 /*
- * Draw ellipse with pen p
+ * Draws ellipse with pen p
  */
 void DrawCore::drawEllipse(QPen p)
 {
@@ -424,10 +425,15 @@ void DrawCore::drawEllipse(QPen p)
 }
 
 /*
- * Draw circle with pen p
+ * Draws circle with pen p
  */
 void DrawCore::drawCircle(QPen p)
 {
+	if (_sticking) {
+		start = closestGridPoint(start);
+		end = closestGridPoint(end);
+	}
+
 	painter->begin(image);
 	painter->setPen(p);
 	int x_R, y_R, x_F, y_F, x_F2, y_F2;
@@ -448,15 +454,13 @@ void DrawCore::drawCircle(QPen p)
 		y_F = start.y() - R;
 		y_F2 = start.y() + R;
 	}
-	if (_sticking)
-		painter->drawEllipse(QRect(closestGridPoint(QPoint(x_F,y_F)), closestGridPoint(QPoint(x_F2,y_F2))));
-	else painter->drawEllipse(QRect(QPoint(x_F,y_F), QPoint(x_F2,y_F2)));
+	painter->drawEllipse(QRect(QPoint(x_F,y_F), QPoint(x_F2,y_F2)));
 	painter->end();
 	setPixmap(QPixmap::fromImage(*image));
 }
 
 /*
- * Set the pen color
+ * Sets the pen color
  */
 void DrawCore::setPenColor(QColor color)
 {
@@ -464,7 +468,7 @@ void DrawCore::setPenColor(QColor color)
 }
 
 /*
- * Set right pen color
+ * Sets right pen color
  */
 void DrawCore::setRPenColor(QColor color)
 {
@@ -472,7 +476,7 @@ void DrawCore::setRPenColor(QColor color)
 }
 
 /*
- * Set color to brush
+ * Sets color to brush
  */
 void DrawCore::setBrushColor(QColor color)
 {
@@ -481,7 +485,7 @@ void DrawCore::setBrushColor(QColor color)
 }
 
 /*
- * Set pen trickness to size
+ * Sets pen trickness to size
  */
 void DrawCore::setThickness(int size)
 {
@@ -502,53 +506,71 @@ void DrawCore::prev(void)
 }
 
 /*
- * Remember current image
+ * Remembers current image
  */
 void DrawCore::remember(void)
 {
 	if (prevList.size() > 7) prevList.pop_front();
 	prevList.append(*image);
 
-	_changed = true;
+	_modified = true;
 }
 
 /*
- * Return the closest point of grid
+ * Returns the closest point of grid
  */
 QPoint DrawCore::closestGridPoint(QPoint p)
 {
-	double x,y;
-	if (p.x() > cX)
-		x = (p.x()-cX)/gridStep;
-	else if (p.x() < cX)
-		x = -1*(cX-p.x())/gridStep;
-	else
-		x = 0;
-	if (p.y() > cY)
-		y = -1*(p.y()-cY)/gridStep;
-	else if (p.y() < cY)
-		y = (cY-p.y())/gridStep;
-	else
-		y = 0;
-
-	return getGridPointCoordinates(QPoint(round(x),round(y)), gridStep);
+	QPoint buf = getGridPointByCoordinates(p, gridStep);
+	qDebug() << p << buf << getCoordinatesOfGridPoint(QPoint(round(buf.x()), round(buf.y())), gridStep);
+	return getCoordinatesOfGridPoint(buf, gridStep);
 }
 
 /*
- * Rounding num to near integer
+ * Returns coordinates of grid point on image
+ */
+QPoint DrawCore::getCoordinatesOfGridPoint(QPoint gPoint, int step)
+{
+	return QPoint(cX+step*gPoint.x(), cY-step*gPoint.y());
+}
+
+/*
+ * Returns grid point by coordinates
+ */
+QPoint DrawCore::getGridPointByCoordinates(QPoint coordinate, int step)
+{
+	QPoint ret;
+	double x, y;
+	if (coordinate.x() > cX)
+		x =((double)(coordinate.x()-cX)/step);
+	else if (coordinate.x() < cX)
+		x = (-1*(double)(cX-coordinate.x())/step);
+	else
+		x = (0);
+	if (coordinate.y() > cY) {
+		y = (-1*(double)(coordinate.y()-cY)/step);
+		qDebug() << coordinate.y() << cY << ret.y();
+	} else if (coordinate.y() < cY)
+		y = ((double)(cY-coordinate.y())/step);
+	else
+		y = (0);
+
+	ret.setX(round(x));
+	ret.setY(round(y));
+
+	return ret;
+}
+
+/*
+ * Rounds num to near integer
  */
 int DrawCore::round(double num)
 {
-//	int mul = 10;
-//	if (num > 0)
-//		return floor(num * mul + .5) / mul;
-//	else
-//		return ceil(num * mul - .5) / mul;
 	return nearbyint(num);
 }
 
 /*
- * Set choosen tool active
+ * Sets choosen tool active
  */
 void DrawCore::setActiveTool(DrawTool whichTool)
 {
@@ -575,7 +597,7 @@ void DrawCore::setActiveTool(DrawTool whichTool)
 }
 
 /*
- * Return pen's color, where pen is code:
+ * Returns pen's color, where pen is code:
  * *0 for left
  * *1 for right
  */
@@ -587,11 +609,11 @@ QColor DrawCore::getPenColor(bool pen)
 
 bool DrawCore::isModified()
 {
-	return _changed;
+	return _modified;
 }
 
 /*
- * Draw the grid
+ * Draws the grid
  */
 void DrawCore::drawGrid(int step, QColor color,int width)
 {
@@ -627,7 +649,7 @@ void DrawCore::drawGrid(int step, QColor color,int width)
 }
 
 /*
- * Draw the coordinate plane
+ * Draws the coordinate plane
  */
 void DrawCore::drawCoordPlane(int coordPlaneStep, QColor clr, int width)
 {
@@ -744,17 +766,9 @@ void DrawCore::drawCoordPlane(int coordPlaneStep, QColor clr, int width)
 }
 
 /*
- * Return grid coordinate
+ * Draws graphic of func
  */
-QPoint DrawCore::getGridPointCoordinates(QPoint gPoint, int step)
-{
-	return QPoint(cX+step*gPoint.x(), cY-step*gPoint.y());
-}
-
-/*
- * Draw graphic of str
- */
-void DrawCore::drawGraphic(QString str, QColor color, int width)
+void DrawCore::drawGraphic(QString func, QColor color, int width)
 {
 	wrongExp = false;
 	if (cpStep == -1) {
@@ -763,7 +777,7 @@ void DrawCore::drawGraphic(QString str, QColor color, int width)
 	}
 
 	ExpParser fparser;
-	fparser.setE(str);
+	fparser.setE(func);
 	connect(&fparser,&ExpParser::badExp,this,&DrawCore::functionExeption);
 
 
@@ -813,7 +827,7 @@ void DrawCore::drawGraphic(QString str, QColor color, int width)
 }
 
 /*
- * Set all tools sticky to grid
+ * Sets all tools sticky to grid
  */
 void DrawCore::setSticky(bool ans)
 {
@@ -821,7 +835,7 @@ void DrawCore::setSticky(bool ans)
 }
 
 /*
- * Emit error message to GUI
+ * Emits error message to GUI
  */
 void DrawCore::functionExeption(QString msg)
 {
