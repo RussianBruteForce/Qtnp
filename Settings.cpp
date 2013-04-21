@@ -6,6 +6,9 @@ Settings::Settings(QObject *parent) :
 	white = Qt::white;
 	black = Qt::black;
 
+	_t.append(QPoint(320, 240));
+	_t.append(QPoint(640, 480));
+	_t.append(QPoint(800, 600));
 	_t.append(QPoint(1366, 768));
 	_t.append(QPoint(1280, 1024));
 	_t.append(QPoint(1024, 768));

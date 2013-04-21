@@ -21,6 +21,12 @@ SettingsDialog::SettingsDialog(Settings &_s, QWidget *parent) :
 	cp = new ColorWidget(s->cpColor());
 	ui->cpL->addWidget(cp);
 
+	penColor = new ColorWidget(s->penColor());
+	ui->penColorL->addWidget(penColor);
+
+	rpenColor = new ColorWidget(s->rpenColor());
+	ui->rpenColorL->addWidget(rpenColor);
+
 	ui->language->addItem("English");
     ui->language->addItem("Russian");
 
@@ -65,6 +71,8 @@ void SettingsDialog::save()
 	s->setGraphicColor(graphic->color());
 	s->setGridColor(grid->color());
 	s->setCpColor(cp->color());
+	s->setPenColor(penColor->color());
+	s->setRpenColor(rpenColor->color());
 
 	s->setThickness(ui->penT->value());
 	s->setGraphicThickness(ui->graphicT->value());

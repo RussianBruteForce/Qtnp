@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>333</width>
-    <height>389</height>
+    <width>392</width>
+    <height>490</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -52,9 +52,23 @@
             <item>
              <layout class="QHBoxLayout" name="graphicL">
               <item>
-               <widget class="QLabel" name="lG">
+               <widget class="QLabel" name="lG_3">
                 <property name="text">
                  <string>Graphic:</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="penColorL">
+              <item>
+               <widget class="QLabel" name="lG">
+                <property name="text">
+                 <string>Pen color</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -84,9 +98,23 @@
             <item>
              <layout class="QHBoxLayout" name="cpL">
               <item>
-               <widget class="QLabel" name="lCP">
+               <widget class="QLabel" name="lCP_3">
                 <property name="text">
                  <string>Coordinate plane:</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="rpenColorL">
+              <item>
+               <widget class="QLabel" name="lCP">
+                <property name="text">
+                 <string>Right pen color:</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

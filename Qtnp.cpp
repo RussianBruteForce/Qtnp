@@ -30,7 +30,7 @@ Qtnp::Qtnp(Settings &settings, QWidget *parent) :
 	//s = new Settings;
 	s = &settings;
 
-	resize(1050,850);
+	//resize(1050,850);
 }
 
 Qtnp::~Qtnp()

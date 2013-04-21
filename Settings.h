@@ -55,7 +55,7 @@
  * Default template for new images
  */
 #define IMAGE_TEMPLATE "imageTemplate"
-#define DIMAGE_TEMPLATE               1
+#define DIMAGE_TEMPLATE               5
 
 /*
  * Thicknesses for instruments

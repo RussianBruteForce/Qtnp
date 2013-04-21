@@ -22,7 +22,7 @@ public:
 private:
 	Ui::SettingsDialog *ui;
 	Settings *s;
-	ColorWidget *bg, *graphic, *grid, *cp;
+	ColorWidget *bg, *graphic, *grid, *cp, *penColor, *rpenColor;
 
 	void setupTemplates();
 	void addTemplate(QPoint resolution, QString addon);
