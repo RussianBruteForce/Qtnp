@@ -16,7 +16,6 @@
  */
 
 #include "DrawCore.h"
-#include <QDebug>
 
 DrawCore::DrawCore(QObject *parent)
 {
@@ -522,7 +521,6 @@ void DrawCore::remember(void)
 QPoint DrawCore::closestGridPoint(QPoint p)
 {
 	QPoint buf = getGridPointByCoordinates(p, gridStep);
-	qDebug() << p << buf << getCoordinatesOfGridPoint(QPoint(round(buf.x()), round(buf.y())), gridStep);
 	return getCoordinatesOfGridPoint(buf, gridStep);
 }
 
@@ -547,10 +545,9 @@ QPoint DrawCore::getGridPointByCoordinates(QPoint coordinate, int step)
 		x = (-1*(double)(cX-coordinate.x())/step);
 	else
 		x = (0);
-	if (coordinate.y() > cY) {
+	if (coordinate.y() > cY)
 		y = (-1*(double)(coordinate.y()-cY)/step);
-		qDebug() << coordinate.y() << cY << ret.y();
-	} else if (coordinate.y() < cY)
+	else if (coordinate.y() < cY)
 		y = ((double)(cY-coordinate.y())/step);
 	else
 		y = (0);
