@@ -1,4 +1,4 @@
-/*
+﻿/*
  *This file is part of Qtnp.
  *
  * Qtnp is free software: you can redistribute it and/or modify
@@ -17,6 +17,8 @@
 
 #ifndef DRAWCORE_H
 #define DRAWCORE_H
+
+#include <QDebug>
 
 #include <QLabel>
 #include <QPen>
@@ -53,6 +55,9 @@ private:
 	QPoint getCoordinatesOfGridPoint(QPoint gridPoint,int step);
 	QPoint getGridPointByCoordinates(QPoint coordinate, int step);
 	int round(double num);
+	QPolygon findAllPointsOfGraphic(QString function_string, double step);
+	QList<QPolygon> splitGraphicToPolygons(QPolygon points_of_graphic);
+	double getGraphicStep();
 
 	bool _modified;
 	int width_, height_;

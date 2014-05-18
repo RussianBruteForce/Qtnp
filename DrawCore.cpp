@@ -1,4 +1,4 @@
-/*
+﻿/*
  *This file is part of Qtnp.
  *
  * Qtnp is free software: you can redistribute it and/or modify
@@ -21,6 +21,8 @@ DrawCore::DrawCore(QObject *parent)
 {
 	image = new QImage(1,1,QImage::Format_RGB32);
 	painter = new QPainter(image);
+
+	prevList.reserve(3);
 
 	//newImage(1280,1024,Qt::white);
 
@@ -566,6 +568,84 @@ int DrawCore::round(double num)
 	return nearbyint(num);
 }
 
+QPolygon DrawCore::findAllPointsOfGraphic(QString function_string, double step)
+{
+	QPolygon grphc;
+	ExpParser fparser;
+	fparser.setE(function_string);
+	connect(&fparser,&ExpParser::badExp,this,&DrawCore::functionExeption);
+
+	double i = gridMinX;
+	double sX, sY, bX, bY;
+
+	bX = gridMinX;
+	bY = fparser.getR(i);
+	if (wrongExp) {
+		emit badGraphicExpError();
+		//TODO return NULL;
+	}
+
+	sX = cX+gridStep*bX;
+	sY = cY-gridStep*bY;
+
+	grphc.append(QPoint(round(sX),round(sY)));
+
+	for (; i < gridMaxX; i += step) {
+		bX = i;
+		bY = fparser.getR(i);
+		emit parserMsg(tr("Last value ") + QString::number(bY));
+
+		sX = cX+gridStep*bX;
+		sY = cY-gridStep*bY;
+		grphc.append(QPoint(round(sX),round(sY)));
+	}
+	return grphc;
+}
+
+QList<QPolygon> DrawCore::splitGraphicToPolygons(QPolygon points_of_graphic)
+{
+	//if (points_of_graphic == NULL)
+	// TODO	return NULL;
+	QList<QPolygon> polygons;
+	polygons.append(points_of_graphic);
+	QPolygon *current = &polygons.last();
+	for (int i = 1; i < current->size(); i++) {
+		if (abs(
+				current->at(i-1).x()
+				-
+				current->at(i).x()) <= 0
+		    ||
+		    abs(
+				current->at(i-1).y()
+				-
+				current->at(i).y()) <= 0
+		    ||
+		    abs(
+				current->at(i-1).y()
+				-
+				current->at(i).y()) > height_
+		    ||
+		    abs(
+				current->at(i-1).x()
+				-
+				current->at(i).x()) > width_
+		    ) {
+			current->removeAt(i);
+			polygons.append(current->mid(0, i));
+			polygons.append(current->mid(i, current->size()-i));
+			polygons.removeAt(polygons.size() - 3);
+			current = &polygons.last();
+			qDebug() << "HERE!";
+		}
+	}
+	return polygons;
+}
+
+double DrawCore::getGraphicStep()
+{
+	return (double)1/cpStep;
+}
+
 /*
  * Sets choosen tool active
  */
@@ -773,21 +853,6 @@ void DrawCore::drawGraphic(QString func, QColor color, int width)
 		return;
 	}
 
-	ExpParser fparser;
-	fparser.setE(func);
-	connect(&fparser,&ExpParser::badExp,this,&DrawCore::functionExeption);
-
-
-	double i = gridMinX;
-	double sX, sY, bX, bY;
-
-	bX = gridMinX;
-	bY = fparser.getR(i);
-	if (wrongExp) {
-		emit badGraphicExpError();
-		return;
-	}
-
 	painter->begin(image);
 	QPen gpen;
 	gpen.setColor(color);
@@ -796,25 +861,18 @@ void DrawCore::drawGraphic(QString func, QColor color, int width)
 	gpen.setCapStyle(Qt::RoundCap);
 	painter->setPen(gpen);
 
-	sX = cX+gridStep*bX;
-	sY = cY-gridStep*bY;
-
-	QPolygon grphc;
-	grphc.append(QPoint(round(sX),round(sY)));
-
-	for (; i < gridMaxX; i += 0.05) {
-		bX = i;
-		bY = fparser.getR(i);
-		emit parserMsg(tr("Last value ") + QString::number(bY));
-
-		sX = cX+gridStep*bX;
-		sY = cY-gridStep*bY;
-		grphc.append(QPoint(round(sX),round(sY)));
-	}
-
 	painter->setRenderHint(QPainter::Antialiasing);
 //	TODO: drawing point-by-point
-	painter->drawPolyline(grphc);
+
+	QList<QPolygon> polygons = splitGraphicToPolygons(
+					   findAllPointsOfGraphic(
+						   func,
+						   getGraphicStep()));
+
+	//TODO reaction to NULL
+	qDebug() << "PSIZE" << polygons.size();
+	for (auto i : polygons)
+		painter->drawPolyline(i);
 
 	painter->end();
 	setPixmap(QPixmap::fromImage(*image));
