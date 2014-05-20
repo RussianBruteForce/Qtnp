@@ -1,4 +1,4 @@
-/*
+﻿/*
  *This file is part of Qtnp.
  *
  * Qtnp is free software: you can redistribute it and/or modify
@@ -25,7 +25,8 @@ enum DrawTool{
 	SQUARE,
 	ELLIPSE,
 	JOGGED_LINE,
-	CIRCLE
+	CIRCLE,
+	FILL
 };
 
 #endif // DRAWTOOLS_H

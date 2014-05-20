@@ -19,8 +19,8 @@
 
 DrawCore::DrawCore(QObject *parent)
 {
-	image = new QImage(1,1,QImage::Format_RGB32);
-	painter = new QPainter(image);
+	//image = new QPixmap(1,1);
+	//painter = new QPainter(image);
 
 	prevList.reserve(3);
 
@@ -53,10 +53,12 @@ DrawCore::DrawCore(QObject *parent)
  */
 void DrawCore::prepareImage()
 {
-	painter->end();
-	delete image;
-	delete painter;
+	//TODO
+//	painter->end();
+//	delete image;
+//	delete painter;
 }
+
 
 /*
  * Creates new emty image x*y with colored background
@@ -64,11 +66,12 @@ void DrawCore::prepareImage()
 void DrawCore::newImage(int x, int y, QColor color)
 {
 	prepareImage();
-	image = new QImage(x,y,QImage::Format_RGB32);
+	//TODO NO LEAK
+	image = new QPixmap(x,y);
 	painter = new QPainter(image);
 	painter->fillRect(0,0, x,y, color);
 	painter->end();
-	setPixmap(QPixmap::fromImage(*image));
+	setPixmap(*image);
 	height_ = image->height();
 	width_ = image->width();
 	emit resetToolMenu();
@@ -88,7 +91,7 @@ void DrawCore::newImage(int x, int y, QColor color)
 bool DrawCore::loadImage(const QString path)
 {
 	if(image->load(path)) {
-		setPixmap(QPixmap::fromImage(*image));
+		setPixmap(*image);
 		height_ = image->height();
 		width_ = image->width();
 		emit resetToolMenu();
@@ -109,16 +112,18 @@ bool DrawCore::loadImage(const QString path)
  */
 void DrawCore::negative()
 {
+	QImage img = image->toImage();
 	int x,y;
 	QRgb pixel;
 
 	for(x=0; x<width_; x++){
 		for(y=0; y<height_; y++){
-			pixel = image->pixel(x,y);
+			pixel = img.pixel(x,y);
 			pixel = qRgb(255-qRed(pixel),255-qGreen(pixel),255-qBlue(pixel));
-			image->setPixel(x,y,pixel);
+			img.setPixel(x,y,pixel);
 		}
 	}
+	*image = QPixmap::fromImage(img);
 	remember();
 	refresh();
 }
@@ -128,16 +133,18 @@ void DrawCore::negative()
  */
 void DrawCore::grayscale()
 {
+	QImage img = image->toImage();
 	int x,y,r,g,b;
 	QRgb pixel;
 	for(x=0; x<width_; x++){
 		for(y=0; y<height_; y++){
-			pixel = image->pixel(x,y);
+			pixel = img.pixel(x,y);
 			r = g = b = (int) (0.299 * qRed(pixel) + 0.587 * qGreen(pixel) + 0.114 * qBlue(pixel));
 			pixel = qRgb(r,g,b);
-			image->setPixel(x,y,pixel);
+			img.setPixel(x,y,pixel);
 		}
 	}
+	*image = QPixmap::fromImage(img);
 	remember();
 	refresh();
 }
@@ -148,8 +155,7 @@ void DrawCore::grayscale()
  */
 bool DrawCore::saveImage(const QString path)
 {
-	refresh();
-	return image->save(path);
+	return pixmap()->save(path);
 }
 
 /*
@@ -157,7 +163,7 @@ bool DrawCore::saveImage(const QString path)
  */
 void DrawCore::refresh()
 {
-	setPixmap(QPixmap::fromImage(*image));
+	setPixmap(*image);
 }
 
 /*
@@ -172,31 +178,31 @@ void DrawCore::mousePressEvent(QMouseEvent *event)
 		case PEN:
 			painting = 1;
 			remember();
-			start = end = event -> pos();
+			start = end = event->pos();
 			break;
 		case LINE:
 			painting = 1;
 			remember();
 			imageCopy = *image;
-			start = end = event -> pos();
+			start = end = event->pos();
 			break;
 		case SQUARE:
 			painting = 1;
 			remember();
 			imageCopy = *image;
-			start = end = event -> pos();
+			start = end = event->pos();
 			break;
 		case ELLIPSE:
 			painting = 1;
 			remember();
 			imageCopy = *image;
-			start = end = event -> pos();
+			start = end = event->pos();
 			break;
 		case CIRCLE:
 			painting = 1;
 			remember();
 			imageCopy = *image;
-			start = end = event -> pos();
+			start = end = event->pos();
 			break;
 		case JOGGED_LINE:
 			painting = 1;
@@ -211,6 +217,13 @@ void DrawCore::mousePressEvent(QMouseEvent *event)
 				imageCopy = *image;
 			}
 			break;
+		case FILL:
+			qDebug() << "MOUSE L PRESS EVENT";
+			remember();
+			imageCopy = *image;
+			start = event->pos();
+			fill(pen.color().rgb());
+			break;
 		}
 	} else if (event->button() == Qt::RightButton) {
 		switch(activeTool) {
@@ -219,35 +232,42 @@ void DrawCore::mousePressEvent(QMouseEvent *event)
 		case PEN:
 			painting = 1;
 			remember();
-			start = end = event -> pos();
+			start = end = event->pos();
 			break;
 		case LINE:
 			painting = 1;
 			remember();
 			imageCopy = *image;
-			start = end = event -> pos();
+			start = end = event->pos();
 			break;
 		case SQUARE:
 			painting = 1;
 			remember();
 			imageCopy = *image;
-			start = end = event -> pos();
+			start = end = event->pos();
 			break;
 		case ELLIPSE:
 			painting = 1;
 			remember();
 			imageCopy = *image;
-			start = end = event -> pos();
+			start = end = event->pos();
 			break;
 		case CIRCLE:
 			painting = 1;
 			remember();
 			imageCopy = *image;
-			start = end = event -> pos();
+			start = end = event->pos();
 			break;
 		case JOGGED_LINE:
 			painting = 0;
 			joggedLineFirstClickDone = true;
+			break;
+		case FILL:
+			qDebug() << "MOUSE R PRESS EVENT";
+			remember();
+			imageCopy = *image;
+			start = event->pos();
+			fill(rpen.color().rgb());
 			break;
 		}
 	}
@@ -259,7 +279,7 @@ void DrawCore::mousePressEvent(QMouseEvent *event)
 void DrawCore::mouseMoveEvent(QMouseEvent *event)
 {
 	if ((event->buttons() & Qt::LeftButton) && painting) {
-		end = event -> pos();
+		end = event->pos();
 		switch(activeTool) {
 		case NONE:
 			break;
@@ -286,7 +306,7 @@ void DrawCore::mouseMoveEvent(QMouseEvent *event)
 			break;
 		}
 	} else if ((event->buttons() & Qt::RightButton) && painting) {
-			end = event -> pos();
+			end = event->pos();
 			switch(activeTool) {
 			case NONE:
 				break;
@@ -321,7 +341,7 @@ void DrawCore::mouseMoveEvent(QMouseEvent *event)
 void DrawCore::mouseReleaseEvent(QMouseEvent *event)
 {
 	if (event->button() == Qt::LeftButton && painting) {
-		end = event -> pos();
+		end = event->pos();
 		switch(activeTool) {
 		case NONE:
 			break;
@@ -351,7 +371,7 @@ void DrawCore::mouseReleaseEvent(QMouseEvent *event)
 			break;
 		}
 	} else if (event->button() == Qt::RightButton && painting){
-		end = event -> pos();
+		end = event->pos();
 		switch(activeTool) {
 		case NONE:
 			break;
@@ -394,7 +414,7 @@ void DrawCore::drawLine(QPen p)
 		painter->drawLine(closestGridPoint(start), closestGridPoint(end));
 	else painter->drawLine(start, end);
 	painter->end();
-	setPixmap(QPixmap::fromImage(*image));
+	refresh();
 }
 
 /*
@@ -408,7 +428,7 @@ void DrawCore::drawSquare(QPen p)
 		painter->drawRect(QRect(closestGridPoint(start), closestGridPoint(end)));
 	else painter->drawRect(QRect(start, end));
 	painter->end();
-	setPixmap(QPixmap::fromImage(*image));
+	refresh();
 }
 
 /*
@@ -422,7 +442,7 @@ void DrawCore::drawEllipse(QPen p)
 		painter->drawEllipse(QRect(closestGridPoint(start), closestGridPoint(end)));
 	else painter->drawEllipse(QRect(start, end));
 	painter->end();
-	setPixmap(QPixmap::fromImage(*image));
+	refresh();
 }
 
 /*
@@ -457,7 +477,80 @@ void DrawCore::drawCircle(QPen p)
 	}
 	painter->drawEllipse(QRect(QPoint(x_F,y_F), QPoint(x_F2,y_F2)));
 	painter->end();
-	setPixmap(QPixmap::fromImage(*image));
+	refresh();
+}
+
+/*
+ * next non-recursive scan line fill method
+ */
+typedef struct { int xl, xr, y, dy; } LINESEGMENT;
+
+#define MAXDEPTH 10000
+
+#define PUSH(XL, XR, Y, DY) \
+    if( sp < stack+MAXDEPTH && Y+(DY) >= 0 && Y+(DY) <= DrawCore::height_ -1) \
+    { sp->xl = XL; sp->xr = XR; sp->y = Y; sp->dy = DY; ++sp; }
+
+#define POP(XL, XR, Y, DY) \
+    { --sp; XL = sp->xl; XR = sp->xr; Y = sp->y+(DY = sp->dy); }
+
+void DrawCore::fill(QRgb color)
+{
+	QImage img = image->toImage();
+
+	QRgb oldColor = img.pixel(start);
+	if (oldColor == color)
+		return;
+
+	int x = start.x(), y = start.y();
+	if (
+			x < 0 ||
+			y < 0 ||
+			x >= width_-3 ||
+			y >= height_ -3
+		) return;
+
+	int left, x1, x2, dy;
+
+	LINESEGMENT stack[MAXDEPTH], *sp = stack;
+
+
+	PUSH(x, x, y, 1);       /* needed in some cases */
+	PUSH(x, x, y+1, -1);    /* seed segment (popped 1st) */
+
+	while (sp > stack) {
+		POP(x1, x2, y, dy);
+
+		for (x = x1; x >= 0 && img.pixel(x, y) == oldColor; --x)
+			img.setPixel(x, y, color);
+
+		if (x >= x1)
+			goto SKIP;
+
+		left = x+1;
+		if (left < x1)
+			PUSH(y, left, x1-1, -dy);    /* leak on left? */
+
+		x = x1+1;
+
+		do {
+			for ( ; x<=width_-1 && img->pixel(x, y) == oldColor; ++x )
+				img.setPixel(x, y, color);
+
+			PUSH(left, x-1, y, dy);
+
+			if (x > x2+1 )
+				PUSH(x2+1, x-1, y, -dy);    /* leak on right? */
+
+SKIP:			for (++x; x <= x2 && img.pixel(x, y) != oldColor; ++x) {;}
+
+			left = x;
+		} while(x <= x2);
+	}
+
+	image = QPixmap::fromImage(img);
+	remember();
+	refresh();
 }
 
 /*
@@ -670,6 +763,9 @@ void DrawCore::setActiveTool(DrawTool whichTool)
 	case CIRCLE:
 		this->setCursor(Qt::CrossCursor);
 		break;
+	case FILL:
+		this->setCursor(Qt::CrossCursor);
+		break;
 	}
 }
 
@@ -719,7 +815,6 @@ void DrawCore::drawGrid(int step, QColor color,int width)
 	}
 
 	painter->end();
-	setPixmap(QPixmap::fromImage(*image));
 
 	remember();
 	refresh();
@@ -766,7 +861,6 @@ void DrawCore::drawCoordPlane(int coordPlaneStep, QColor clr, int width)
 		painter->drawLine(QPoint(width_*0.973,cY),QPoint(width_*(1-(0.037*1.5)),cY-height_*0.01));
 		painter->drawLine(QPoint(width_*0.973,cY),QPoint(width_*(1-(0.037*1.5)),cY+height_*0.01));
 	}
-
 
 	QFont markFont("Monospace");
 	if (coordPlaneStep >= 20) {
@@ -836,7 +930,6 @@ void DrawCore::drawCoordPlane(int coordPlaneStep, QColor clr, int width)
 	}
 
 	painter->end();
-	setPixmap(QPixmap::fromImage(*image));
 
 	remember();
 	refresh();
@@ -875,7 +968,6 @@ void DrawCore::drawGraphic(QString func, QColor color, int width)
 		painter->drawPolyline(i);
 
 	painter->end();
-	setPixmap(QPixmap::fromImage(*image));
 
 	remember();
 	refresh();

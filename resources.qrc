@@ -26,5 +26,6 @@
         <file>resources/file.png</file>
         <file>resources/ru_RU.qm</file>
         <file>resources/icon.png</file>
+        <file>resources/fill_ico.png</file>
     </qresource>
 </RCC>

@@ -1,4 +1,4 @@
-/*
+﻿/*
  *This file is part of Qtnp.
  *
  * Qtnp is free software: you can redistribute it and/or modify
@@ -94,6 +94,7 @@ private slots:
 	void setTool_ELLIPSE();
 	void setTool_CIRCLE();
 	void setTool_JOGGED_LINE();
+	void setTool_FILL();
 	void setStyle_win();
 	void setStyle_winxp();
 	void setStyle_gtk();

@@ -50,6 +50,7 @@ private:
 	void drawSquare(QPen p);
 	void drawEllipse(QPen p);
 	void drawCircle(QPen p);
+	void fill(QRgb color);
 	void remember();
 	QPoint closestGridPoint(QPoint p);
 	QPoint getCoordinatesOfGridPoint(QPoint gridPoint,int step);
@@ -64,12 +65,12 @@ private:
 	bool painting, joggedLineFirstClickDone, _sticking, wrongExp;
 	DrawTool activeTool;
 	QPoint start, end;
-	QImage *image;
-	QImage imageCopy;
+	QPixmap *image;
+	QPixmap imageCopy;
 	QPen pen, rpen;
 	QBrush brush;
 	QPainter *painter;
-	QList<QImage> prevList;
+	QList<QPixmap> prevList;
 	int cX, cY; // image's center
 	int gridMaxX, gridMaxY, gridMinX, gridMinY;
 	int gridStep, cpStep;

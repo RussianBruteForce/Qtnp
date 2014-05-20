@@ -1,4 +1,4 @@
-/*
+﻿/*
  *This file is part of Qtnp.
  *
  * Qtnp is free software: you can redistribute it and/or modify
@@ -204,6 +204,7 @@ void Qtnp::makeUI()
 	toolsMenu->addAction(QIcon(":/resources/circle.png"),tr("Circle"),this,SLOT(setTool_CIRCLE()));
 	toolsMenu->addAction(QIcon(":/resources/jogged_ico.png"),tr("Jogged Line"),this,SLOT(setTool_JOGGED_LINE()));
 	toolsMenu->addAction(QIcon(":/resources/pencil_ico.png"),tr("Pen"),this,SLOT(setTool_PEN()));
+	toolsMenu->addAction(QIcon(":/resources/fill_ico.png"),tr("Fill"),this,SLOT(setTool_FILL()));
 	toolsMenu->setToolTip(tr("Tools"));
 
 	toolsButton = new QToolButton(ui->toolBar);
@@ -509,6 +510,12 @@ void Qtnp::setTool_JOGGED_LINE()
 {
 	toolsButton->setIcon(QIcon(":/resources/jogged_ico.png"));
 	image->setActiveTool(JOGGED_LINE);
+}
+
+void Qtnp::setTool_FILL()
+{
+	toolsButton->setIcon(QIcon(":/resources/fill_ico.png"));
+	image->setActiveTool(FILL);
 }
 
 void Qtnp::setStyle_win()
