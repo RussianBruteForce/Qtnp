@@ -9,7 +9,7 @@ NewFileDialog::NewFileDialog(Settings &_s, QWidget *parent, int toolbarHeight) :
 	setWindowIcon(QIcon(":/resources/new.png"));
 	s = &_s;
 
-	TBHeight = toolbarHeight;
+	this->toolbarHeight = toolbarHeight;
 
 	gcp = new GCPWidget(*s, this);
 	gcp->makeDedicated();
@@ -30,7 +30,7 @@ NewFileDialog::NewFileDialog(Settings &_s, QWidget *parent, int toolbarHeight) :
 	connect(ui->templatesCB, signal,
 	        this, &NewFileDialog::setTemplate);
 	connect(ui->removeTBHeight, &QCheckBox::stateChanged,
-		this, &NewFileDialog::removeTBHeight);
+		this, &NewFileDialog::removetoolbarHeight);
 }
 
 NewFileDialog::~NewFileDialog()
@@ -66,11 +66,11 @@ void NewFileDialog::draw()
 	this->accept();
 }
 
-void NewFileDialog::removeTBHeight(int state)
+void NewFileDialog::removetoolbarHeight(int state)
 {
 	if (state == Qt::Checked) {
 		fullHeight = ui->heightSB->value();
-		ui->heightSB->setValue(fullHeight - TBHeight - 2);
+		ui->heightSB->setValue(fullHeight - toolbarHeight - 21);
 	} else
 		ui->heightSB->setValue(fullHeight);
 }

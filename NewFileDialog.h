@@ -24,14 +24,14 @@ private:
 	Ui::NewFileDialog *ui;
 	Settings *s;
 	ColorWidget *backgroundColor;
-	int TBHeight, fullHeight;
+	int toolbarHeight, fullHeight;
 
 	void setupTemplates();
 	void addTemplate(QPoint resolution, QString addon);
 
 public slots:
 	void draw();
-	void removeTBHeight(int state);
+	void removetoolbarHeight(int state);
 
 private slots:
 	void setTemplate(int t);
