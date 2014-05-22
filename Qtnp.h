@@ -68,13 +68,13 @@ private:
 	*nImage, *pImage;
 	QMenu *toolsMenu;
 	QLineEdit *statusLine;
-	QString _openedFileLocation;
+	QString openedFileLocation;
 	DrawGCPDialog *gcpd;
 	DrawGraphicDialog *gd;
 	NewFileDialog *nfd;
 	SettingsDialog *sd;
 	QStringList presentationImages;
-	int _currentPresentationImage;
+	int currentPresentationImage;
 
 private slots:
 	void newFile();

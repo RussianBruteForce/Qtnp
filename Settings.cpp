@@ -6,15 +6,15 @@ Settings::Settings(QObject *parent) :
 	white = Qt::white;
 	black = Qt::black;
 
-	_t.append(QPoint(320, 240));
-	_t.append(QPoint(640, 480));
-	_t.append(QPoint(800, 600));
-	_t.append(QPoint(1366, 768));
-	_t.append(QPoint(1280, 1024));
-	_t.append(QPoint(1024, 768));
-	_t.append(QPoint(1920, 1080));
-	_t.append(QPoint(1280, 800));
-	_t.append(QPoint(1440, 900));
+	standartImageTemplates.append(QPoint(320, 240));
+	standartImageTemplates.append(QPoint(640, 480));
+	standartImageTemplates.append(QPoint(800, 600));
+	standartImageTemplates.append(QPoint(1366, 768));
+	standartImageTemplates.append(QPoint(1280, 1024));
+	standartImageTemplates.append(QPoint(1024, 768));
+	standartImageTemplates.append(QPoint(1920, 1080));
+	standartImageTemplates.append(QPoint(1280, 800));
+	standartImageTemplates.append(QPoint(1440, 900));
 }
 
 QColor Settings::bgColor()
@@ -124,7 +124,7 @@ QString Settings::presentationDirectory()
 
 QList<QPoint> *Settings::templates()
 {
-	return &_t;
+	return &standartImageTemplates;
 }
 
 void Settings::restoreDefaults()

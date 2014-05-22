@@ -188,7 +188,7 @@ public slots:
 
 private:
 	QColor white, black;
-	QList<QPoint> _t;
+	QList<QPoint> standartImageTemplates;
 
 };
 

@@ -141,7 +141,7 @@ void Qtnp::makeUI()
 	image->newImage(p.x(), p.y(), s->bgColor());
 	clock = new DigitalClock(ui->toolBar);
 
-	_openedFileLocation = "0";
+	openedFileLocation = "0";
 
 	rpenColor = new ColorWidget(s->rpenColor());
 	image->setRPenColor(s->rpenColor());
@@ -299,7 +299,7 @@ void Qtnp::loadToolbar(bool reverse)
 
 void Qtnp::preparePresentation()
 {
-	_currentPresentationImage = -1;
+	currentPresentationImage = -1;
 	pImage->setDisabled(true);
 	auto *d = new QDir(s->presentationDirectory());
 	QStringList nf;
@@ -342,12 +342,12 @@ void Qtnp::newFile()
 void Qtnp::save()
 {
 	if (image->isModified()) {
-		if(_openedFileLocation == "0")
+		if(openedFileLocation == "0")
 			saveAs();
 		else {
-			if (image->saveImage(_openedFileLocation))
-				statusLine->setText(tr("Image saved as ") + _openedFileLocation);
-			else    statusLine->setText(tr("Couldn't save image as ") + _openedFileLocation);
+			if (image->saveImage(openedFileLocation))
+				statusLine->setText(tr("Image saved as ") + openedFileLocation);
+			else    statusLine->setText(tr("Couldn't save image as ") + openedFileLocation);
 		}
 	} else statusLine->setText(tr("Saved earlier"));
 }
@@ -356,7 +356,7 @@ void Qtnp::saveAs()
 {
 	QString fileName;
 	auto formats = tr("*.png;;*.xbm;;*.xpm;;*.bmp;;*.jpg;;*.jpeg;;*.ppm");
-	if(_openedFileLocation == "0")
+	if(openedFileLocation == "0")
 		fileName = QFileDialog::getSaveFileName(
 		                           this, tr("Save new image as..."),
 		                           QDir::homePath(),
@@ -365,7 +365,7 @@ void Qtnp::saveAs()
 	else
 		fileName = QFileDialog::getSaveFileName(
 		                           this, tr("Save image as..."),
-		                           _openedFileLocation,
+					   openedFileLocation,
 		                           formats
 		                           );
 
@@ -374,7 +374,7 @@ void Qtnp::saveAs()
 		this->setDisabled(true);
 
 		if (image->saveImage(fileName)) {
-			_openedFileLocation = fileName;
+			openedFileLocation = fileName;
 			statusLine->setText(tr("Image saved as ") + fileName);
 		} else
 			statusLine->setText(tr("Couldn't save image as ") + fileName);
@@ -419,7 +419,7 @@ void Qtnp::openFile()
 		if (image->loadImage(fileName)) {
 			statusLine->setText(tr("Image openned!"));
 			image->resize(image->pixmap()->size());
-			_openedFileLocation = fileName;
+			openedFileLocation = fileName;
 		} else statusLine->setText(tr("Couldn't open image ") + fileName);
 	}
 }
@@ -582,18 +582,18 @@ void Qtnp::wrongExp()
 
 void Qtnp::nextImage()
 {
-	if (_currentPresentationImage + 1 < presentationImages.size())
+	if (currentPresentationImage + 1 < presentationImages.size())
 		image->loadImage(QString(s->presentationDirectory() + "/")
 				 +
 				 presentationImages.at(
-					 ++_currentPresentationImage));
+					 ++currentPresentationImage));
 
-	if (_currentPresentationImage + 1 == presentationImages.size())
+	if (currentPresentationImage + 1 == presentationImages.size())
 		nImage->setDisabled(true);
 	else
 		nImage->setEnabled(true);
 
-	if (_currentPresentationImage == 0)
+	if (currentPresentationImage == 0)
 		pImage->setDisabled(true);
 	else
 		pImage->setEnabled(true);
@@ -601,12 +601,12 @@ void Qtnp::nextImage()
 
 void Qtnp::prevImage()
 {
-	if (_currentPresentationImage > 0)
-		image->loadImage(QString(s->presentationDirectory() + "/") + presentationImages.at(--_currentPresentationImage));
-	if (_currentPresentationImage == 0)
+	if (currentPresentationImage > 0)
+		image->loadImage(QString(s->presentationDirectory() + "/") + presentationImages.at(--currentPresentationImage));
+	if (currentPresentationImage == 0)
 		pImage->setDisabled(true);
 	else pImage->setEnabled(true);
-	if (_currentPresentationImage + 1 == presentationImages.size())
+	if (currentPresentationImage + 1 == presentationImages.size())
 		nImage->setDisabled(true);
 	else nImage->setEnabled(true);
 }
