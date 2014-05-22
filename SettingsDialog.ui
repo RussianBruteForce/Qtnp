@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>392</width>
-    <height>490</height>
+    <width>445</width>
+    <height>648</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -150,6 +150,12 @@
               </item>
               <item>
                <widget class="QSpinBox" name="penT">
+                <property name="maximumSize">
+                 <size>
+                  <width>60</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
                 <property name="minimum">
                  <number>1</number>
                 </property>
@@ -174,6 +180,12 @@
               </item>
               <item>
                <widget class="QSpinBox" name="graphicT">
+                <property name="maximumSize">
+                 <size>
+                  <width>60</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
                 <property name="minimum">
                  <number>1</number>
                 </property>
@@ -202,6 +214,12 @@
               </item>
               <item>
                <widget class="QSpinBox" name="gridT">
+                <property name="maximumSize">
+                 <size>
+                  <width>60</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
                 <property name="minimum">
                  <number>1</number>
                 </property>
@@ -226,6 +244,12 @@
               </item>
               <item>
                <widget class="QSpinBox" name="cpT">
+                <property name="maximumSize">
+                 <size>
+                  <width>60</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
                 <property name="minimum">
                  <number>1</number>
                 </property>
@@ -261,6 +285,12 @@
             </item>
             <item>
              <widget class="QSpinBox" name="gridS">
+              <property name="maximumSize">
+               <size>
+                <width>60</width>
+                <height>16777215</height>
+               </size>
+              </property>
               <property name="minimum">
                <number>1</number>
               </property>
@@ -285,11 +315,53 @@
             </item>
             <item>
              <widget class="QSpinBox" name="cpS">
+              <property name="maximumSize">
+               <size>
+                <width>60</width>
+                <height>16777215</height>
+               </size>
+              </property>
               <property name="minimum">
                <number>1</number>
               </property>
               <property name="maximum">
                <number>9999</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="opacity">
+         <property name="title">
+          <string>Opacity</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_7">
+          <item>
+           <layout class="QHBoxLayout" name="penTL_4">
+            <item>
+             <widget class="QLabel" name="lBG_6">
+              <property name="text">
+               <string>Numbers of coordinate plane:</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QDoubleSpinBox" name="cpNumbersO">
+              <property name="maximumSize">
+               <size>
+                <width>60</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="singleStep">
+               <double>0.050000000000000</double>
               </property>
              </widget>
             </item>

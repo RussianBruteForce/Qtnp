@@ -83,6 +83,7 @@ void SettingsDialog::save()
 	s->setGridStep(ui->gridS->value());
 	s->setCpStep(ui->cpS->value());
 
+	s->setNumbersOpacity(ui->cpNumbersO->value());
 
 	s->setSyncCPToGrid(ui->sync->isChecked());
 	s->setAutoPresentation(ui->autoPresentation->isChecked());
@@ -115,6 +116,8 @@ void SettingsDialog::updateUI()
 
 	ui->gridS->setValue(s->gridStep());
 	ui->cpS->setValue(s->cpStep());
+
+	ui->cpNumbersO->setValue(s->numbersOpacity());
 
 	ui->reverse->setChecked(s->reverseToolBar());
 	ui->sync->setChecked(s->syncCPToGrid());

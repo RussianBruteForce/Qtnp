@@ -141,9 +141,12 @@ void Settings::restoreDefaults()
 	setGraphicThickness(DGRAPHIC_THICKNESS);
 	setGridStep(DGRID_STEP);
 	setCpStep(DCP_STEP);
+	setNumbersOpacity(DNUMBERSOPACITY);
 	setReverseToolBar(DREVERSE_TOOLBAR);
 	setSyncCPToGrid(DSYNC_CP_TO_GRID);
 	setAutoPresentation(DAUTO_PRESENTATION);
+	setRealCP(DREALCP);
+	setRealGrid(DREALGRID);
 	setLanguage(DLANGUAGE);
 	setPresentationDirectory(DPRESENTATION_DIRECTORY);
 }
@@ -215,7 +218,7 @@ void Settings::setCpStep(int s)
 
 void Settings::setNumbersOpacity(qreal o)
 {
-	this->setValue(NUMBERSOPACITY, 0);
+	this->setValue(NUMBERSOPACITY, o);
 }
 
 void Settings::setReverseToolBar(bool r)
