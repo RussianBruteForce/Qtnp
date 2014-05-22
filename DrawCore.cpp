@@ -17,16 +17,16 @@
 
 #include "DrawCore.h"
 
-DrawCore::DrawCore(QObject *parent)
+DrawCore::DrawCore()
 {
-	//image = new QPixmap(1,1);
-	//painter = new QPainter(image);
+	image = nullptr;
+	painter = nullptr;
 
 	prevList.reserve(3);
 
 	//newImage(1280,1024,Qt::white);
 
-	_modified = false;
+	modified = false;
 	gridMaxX = 0;
 	gridMaxY = 0;
 	gridMinX = 0;
@@ -49,40 +49,34 @@ DrawCore::DrawCore(QObject *parent)
 }
 
 /*
- * Prepares for setting new image
- */
-void DrawCore::prepareImage()
-{
-	//TODO
-//	painter->end();
-//	delete image;
-//	delete painter;
-}
-
-
-/*
  * Creates new emty image x*y with colored background
  */
 void DrawCore::newImage(int x, int y, QColor color)
 {
-	prepareImage();
-	//TODO NO LEAK
+	if (!image)
+		delete image;
 	image = new QPixmap(x,y);
+
+	if (!painter)
+		delete painter;
 	painter = new QPainter(image);
+
 	painter->fillRect(0,0, x,y, color);
 	painter->end();
-	setPixmap(*image);
-	height_ = image->height();
-	width_ = image->width();
+	//refresh();
+	height = image->height();
+	width = image->width();
 	emit resetToolMenu();
-	setActiveTool(NONE);
+	setActiveTool(DrawTool::NONE);
 	prevList.append(*image);
-	cX = width_/2;
-	cY = height_/2;
+	cX = width/2;
+	cY = height/2;
 	gridStep = -1;
 	cpStep = -1;
 
-	_modified = false;
+	modified = false;
+
+	refresh();
 }
 
 /*
@@ -92,19 +86,19 @@ bool DrawCore::loadImage(const QString path)
 {
 	if(image->load(path)) {
 		setPixmap(*image);
-		height_ = image->height();
-		width_ = image->width();
+		height = image->height();
+		width = image->width();
 		emit resetToolMenu();
-		setActiveTool(NONE);
+		setActiveTool(DrawTool::NONE);
 		prevList.append(*image);
-		cX = width_/2;
-		cY = height_/2;
+		cX = width/2;
+		cY = height/2;
 		gridStep = -1;
 		cpStep = -1;
-		_modified = false;
+		modified = false;
 		return true;
-	} else return false;
-
+	} else
+		return false;
 }
 
 /*
@@ -112,12 +106,12 @@ bool DrawCore::loadImage(const QString path)
  */
 void DrawCore::negative()
 {
-	QImage img = image->toImage();
+	auto img = image->toImage();
 	int x,y;
 	QRgb pixel;
 
-	for(x=0; x<width_; x++){
-		for(y=0; y<height_; y++){
+	for(x=0; x<width; x++){
+		for(y=0; y<height; y++){
 			pixel = img.pixel(x,y);
 			pixel = qRgb(255-qRed(pixel),255-qGreen(pixel),255-qBlue(pixel));
 			img.setPixel(x,y,pixel);
@@ -133,11 +127,11 @@ void DrawCore::negative()
  */
 void DrawCore::grayscale()
 {
-	QImage img = image->toImage();
+	auto img = image->toImage();
 	int x,y,r,g,b;
 	QRgb pixel;
-	for(x=0; x<width_; x++){
-		for(y=0; y<height_; y++){
+	for(x=0; x<width; x++){
+		for(y=0; y<height; y++){
 			pixel = img.pixel(x,y);
 			r = g = b = (int) (0.299 * qRed(pixel) + 0.587 * qGreen(pixel) + 0.114 * qBlue(pixel));
 			pixel = qRgb(r,g,b);
@@ -173,38 +167,38 @@ void DrawCore::mousePressEvent(QMouseEvent *event)
 {
 	if (event->button() == Qt::LeftButton) {
 		switch(activeTool) {
-		case NONE:
+		case DrawTool::NONE:
 			break;
-		case PEN:
+		case DrawTool::PEN:
 			painting = 1;
 			remember();
 			start = end = event->pos();
 			break;
-		case LINE:
-			painting = 1;
-			remember();
-			imageCopy = *image;
-			start = end = event->pos();
-			break;
-		case SQUARE:
+		case DrawTool::LINE:
 			painting = 1;
 			remember();
 			imageCopy = *image;
 			start = end = event->pos();
 			break;
-		case ELLIPSE:
+		case DrawTool::SQUARE:
 			painting = 1;
 			remember();
 			imageCopy = *image;
 			start = end = event->pos();
 			break;
-		case CIRCLE:
+		case DrawTool::ELLIPSE:
 			painting = 1;
 			remember();
 			imageCopy = *image;
 			start = end = event->pos();
 			break;
-		case JOGGED_LINE:
+		case DrawTool::CIRCLE:
+			painting = 1;
+			remember();
+			imageCopy = *image;
+			start = end = event->pos();
+			break;
+		case DrawTool::JOGGED_LINE:
 			painting = 1;
 			remember();
 			if (joggedLineFirstClickDone == true) {
@@ -217,57 +211,60 @@ void DrawCore::mousePressEvent(QMouseEvent *event)
 				imageCopy = *image;
 			}
 			break;
-		case FILL:
-			qDebug() << "MOUSE L PRESS EVENT";
+		case DrawTool::FILL:
 			remember();
 			imageCopy = *image;
 			start = event->pos();
 			fill(pen.color().rgb());
 			break;
+		default:
+			break;
 		}
 	} else if (event->button() == Qt::RightButton) {
 		switch(activeTool) {
-		case NONE:
+		case DrawTool::NONE:
 			break;
-		case PEN:
+		case DrawTool::PEN:
 			painting = 1;
 			remember();
 			start = end = event->pos();
 			break;
-		case LINE:
-			painting = 1;
-			remember();
-			imageCopy = *image;
-			start = end = event->pos();
-			break;
-		case SQUARE:
+		case DrawTool::LINE:
 			painting = 1;
 			remember();
 			imageCopy = *image;
 			start = end = event->pos();
 			break;
-		case ELLIPSE:
+		case DrawTool::SQUARE:
 			painting = 1;
 			remember();
 			imageCopy = *image;
 			start = end = event->pos();
 			break;
-		case CIRCLE:
+		case DrawTool::ELLIPSE:
 			painting = 1;
 			remember();
 			imageCopy = *image;
 			start = end = event->pos();
 			break;
-		case JOGGED_LINE:
+		case DrawTool::CIRCLE:
+			painting = 1;
+			remember();
+			imageCopy = *image;
+			start = end = event->pos();
+			break;
+		case DrawTool::JOGGED_LINE:
 			painting = 0;
 			joggedLineFirstClickDone = true;
 			break;
-		case FILL:
+		case DrawTool::FILL:
 			qDebug() << "MOUSE R PRESS EVENT";
 			remember();
 			imageCopy = *image;
 			start = event->pos();
 			fill(rpen.color().rgb());
+			break;
+		default:
 			break;
 		}
 	}
@@ -281,58 +278,62 @@ void DrawCore::mouseMoveEvent(QMouseEvent *event)
 	if ((event->buttons() & Qt::LeftButton) && painting) {
 		end = event->pos();
 		switch(activeTool) {
-		case NONE:
+		case DrawTool::NONE:
 			break;
-		case PEN:
+		case DrawTool::PEN:
 			drawLine(pen);
 			start = end;
 			break;
-		case LINE:
+		case DrawTool::LINE:
 			*image = imageCopy;
 			drawLine(pen);
 			break;
-		case SQUARE:
+		case DrawTool::SQUARE:
 			*image = imageCopy;
 			drawSquare(pen);
 			break;
-		case ELLIPSE:
+		case DrawTool::ELLIPSE:
 			*image = imageCopy;
 			drawEllipse(pen);
 			break;
-		case CIRCLE:
+		case DrawTool::CIRCLE:
 			*image = imageCopy;
 			drawLine(pen);
 			drawCircle(pen);
 			break;
+		default:
+			break;
 		}
 	} else if ((event->buttons() & Qt::RightButton) && painting) {
-			end = event->pos();
-			switch(activeTool) {
-			case NONE:
-				break;
-			case PEN:
-				drawLine(rpen);
-				start = end;
-				break;
-			case LINE:
-				*image = imageCopy;
-				drawLine(rpen);
-				break;
-			case SQUARE:
-				*image = imageCopy;
-				drawSquare(rpen);
-				break;
-			case ELLIPSE:
-				*image = imageCopy;
-				drawEllipse(rpen);
-				break;
-			case CIRCLE:
-				*image = imageCopy;
-				drawLine(rpen);
-				drawCircle(rpen);
-				break;
-			}
+		end = event->pos();
+		switch(activeTool) {
+		case DrawTool::NONE:
+			break;
+		case DrawTool::PEN:
+			drawLine(rpen);
+			start = end;
+			break;
+		case DrawTool::LINE:
+			*image = imageCopy;
+			drawLine(rpen);
+			break;
+		case DrawTool::SQUARE:
+			*image = imageCopy;
+			drawSquare(rpen);
+			break;
+		case DrawTool::ELLIPSE:
+			*image = imageCopy;
+			drawEllipse(rpen);
+			break;
+		case DrawTool::CIRCLE:
+			*image = imageCopy;
+			drawLine(rpen);
+			drawCircle(rpen);
+			break;
+		default:
+			break;
 		}
+	}
 }
 
 /*
@@ -343,61 +344,65 @@ void DrawCore::mouseReleaseEvent(QMouseEvent *event)
 	if (event->button() == Qt::LeftButton && painting) {
 		end = event->pos();
 		switch(activeTool) {
-		case NONE:
+		case DrawTool::NONE:
 			break;
-		case PEN:
+		case DrawTool::PEN:
 			drawLine(pen);
 			painting = 0;
 			break;
-		case LINE:
+		case DrawTool::LINE:
 			*image = imageCopy;
 			drawLine(pen);
 			painting = 0;
 			break;
-		case SQUARE:
+		case DrawTool::SQUARE:
 			*image = imageCopy;
 			drawSquare(pen);
 			painting = 0;
 			break;
-		case ELLIPSE:
+		case DrawTool::ELLIPSE:
 			*image = imageCopy;
 			drawEllipse(pen);
 			painting = 0;
 			break;
-		case CIRCLE:
+		case DrawTool::CIRCLE:
 			*image = imageCopy;
 			drawCircle(pen);
 			painting = 0;
+			break;
+		default:
 			break;
 		}
 	} else if (event->button() == Qt::RightButton && painting){
 		end = event->pos();
 		switch(activeTool) {
-		case NONE:
+		case DrawTool::NONE:
 			break;
-		case PEN:
+		case DrawTool::PEN:
 			drawLine(rpen);
 			painting = 0;
 			break;
-		case LINE:
+		case DrawTool::LINE:
 			*image = imageCopy;
 			drawLine(rpen);
 			painting = 0;
 			break;
-		case SQUARE:
+		case DrawTool::SQUARE:
 			*image = imageCopy;
 			drawSquare(rpen);
 			painting = 0;
 			break;
-		case ELLIPSE:
+		case DrawTool::ELLIPSE:
 			*image = imageCopy;
 			drawEllipse(rpen);
 			painting = 0;
 			break;
-		case CIRCLE:
+		case DrawTool::CIRCLE:
 			*image = imageCopy;
 			drawCircle(rpen);
 			painting = 0;
+			break;
+		default:
 			break;
 		}
 	}
@@ -412,7 +417,8 @@ void DrawCore::drawLine(QPen p)
 	painter->setPen(p);
 	if (_sticking)
 		painter->drawLine(closestGridPoint(start), closestGridPoint(end));
-	else painter->drawLine(start, end);
+	else
+		painter->drawLine(start, end);
 	painter->end();
 	refresh();
 }
@@ -426,7 +432,8 @@ void DrawCore::drawSquare(QPen p)
 	painter->setPen(p);
 	if (_sticking)
 		painter->drawRect(QRect(closestGridPoint(start), closestGridPoint(end)));
-	else painter->drawRect(QRect(start, end));
+	else
+		painter->drawRect(QRect(start, end));
 	painter->end();
 	refresh();
 }
@@ -440,7 +447,8 @@ void DrawCore::drawEllipse(QPen p)
 	painter->setPen(p);
 	if (_sticking)
 		painter->drawEllipse(QRect(closestGridPoint(start), closestGridPoint(end)));
-	else painter->drawEllipse(QRect(start, end));
+	else
+		painter->drawEllipse(QRect(start, end));
 	painter->end();
 	refresh();
 }
@@ -488,7 +496,7 @@ typedef struct { int xl, xr, y, dy; } LINESEGMENT;
 #define MAXDEPTH 10000
 
 #define PUSH(XL, XR, Y, DY) \
-    if( sp < stack+MAXDEPTH && Y+(DY) >= 0 && Y+(DY) <= DrawCore::height_ -1) \
+    if( sp < stack+MAXDEPTH && Y+(DY) >= 0 && Y+(DY) <= DrawCore::height -1) \
     { sp->xl = XL; sp->xr = XR; sp->y = Y; sp->dy = DY; ++sp; }
 
 #define POP(XL, XR, Y, DY) \
@@ -496,24 +504,23 @@ typedef struct { int xl, xr, y, dy; } LINESEGMENT;
 
 void DrawCore::fill(QRgb color)
 {
-	QImage img = image->toImage();
+	auto img = image->toImage();
 
-	QRgb oldColor = img.pixel(start);
+	auto oldColor = img.pixel(start);
 	if (oldColor == color)
 		return;
 
-	int x = start.x(), y = start.y();
+	auto x = start.x(), y = start.y();
 	if (
 			x < 0 ||
 			y < 0 ||
-			x >= width_-3 ||
-			y >= height_ -3
-		) return;
+			x >= width-1 ||
+			y >= height-1)
+		return;
 
 	int left, x1, x2, dy;
 
 	LINESEGMENT stack[MAXDEPTH], *sp = stack;
-
 
 	PUSH(x, x, y, 1);       /* needed in some cases */
 	PUSH(x, x, y+1, -1);    /* seed segment (popped 1st) */
@@ -534,7 +541,7 @@ void DrawCore::fill(QRgb color)
 		x = x1+1;
 
 		do {
-			for ( ; x<=width_-1 && img->pixel(x, y) == oldColor; ++x )
+			for ( ; x<=width-1 && img.pixel(x, y) == oldColor; ++x )
 				img.setPixel(x, y, color);
 
 			PUSH(left, x-1, y, dy);
@@ -548,7 +555,7 @@ SKIP:			for (++x; x <= x2 && img.pixel(x, y) != oldColor; ++x) {;}
 		} while(x <= x2);
 	}
 
-	image = QPixmap::fromImage(img);
+	*image = QPixmap::fromImage(img);
 	remember();
 	refresh();
 }
@@ -607,7 +614,7 @@ void DrawCore::remember(void)
 	if (prevList.size() > 7) prevList.pop_front();
 	prevList.append(*image);
 
-	_modified = true;
+	modified = true;
 }
 
 /*
@@ -615,8 +622,9 @@ void DrawCore::remember(void)
  */
 QPoint DrawCore::closestGridPoint(QPoint p)
 {
-	QPoint buf = getGridPointByCoordinates(p, gridStep);
-	return getCoordinatesOfGridPoint(buf, gridStep);
+	return getCoordinatesOfGridPoint(
+				getGridPointByCoordinates(p, gridStep),
+				gridStep);
 }
 
 /*
@@ -666,7 +674,8 @@ QPolygon DrawCore::findAllPointsOfGraphic(QString function_string, double step)
 	QPolygon grphc;
 	ExpParser fparser;
 	fparser.setE(function_string);
-	connect(&fparser,&ExpParser::badExp,this,&DrawCore::functionExeption);
+	connect(&fparser,&ExpParser::badExp,
+		this,&DrawCore::functionExeption);
 
 	double i = gridMinX;
 	double sX, sY, bX, bY;
@@ -675,7 +684,7 @@ QPolygon DrawCore::findAllPointsOfGraphic(QString function_string, double step)
 	bY = fparser.getR(i);
 	if (wrongExp) {
 		emit badGraphicExpError();
-		//TODO return NULL;
+		//TODO return std::nullptr_t;
 	}
 
 	sX = cX+gridStep*bX;
@@ -697,11 +706,11 @@ QPolygon DrawCore::findAllPointsOfGraphic(QString function_string, double step)
 
 QList<QPolygon> DrawCore::splitGraphicToPolygons(QPolygon points_of_graphic)
 {
-	//if (points_of_graphic == NULL)
-	// TODO	return NULL;
+	//if (points_of_graphic == std::nullptr_t)
+	// TODO	return std::nullptr_t;
 	QList<QPolygon> polygons;
 	polygons.append(points_of_graphic);
-	QPolygon *current = &polygons.last();
+	auto *current = &polygons.last();
 	for (int i = 1; i < current->size(); i++) {
 		if (abs(
 				current->at(i-1).x()
@@ -716,12 +725,12 @@ QList<QPolygon> DrawCore::splitGraphicToPolygons(QPolygon points_of_graphic)
 		    abs(
 				current->at(i-1).y()
 				-
-				current->at(i).y()) > height_
+				current->at(i).y()) > height
 		    ||
 		    abs(
 				current->at(i-1).x()
 				-
-				current->at(i).x()) > width_
+				current->at(i).x()) > width
 		    ) {
 			current->removeAt(i);
 			polygons.append(current->mid(0, i));
@@ -748,23 +757,25 @@ void DrawCore::setActiveTool(DrawTool whichTool)
 	painting = 0;
 	joggedLineFirstClickDone = true;
 	switch(activeTool) {
-	case NONE:
+	case DrawTool::NONE:
 		this->setCursor(Qt::ArrowCursor);
 		break;
-	case PEN:
+	case DrawTool::PEN:
 		this->setCursor(Qt::CrossCursor);
 		break;
-	case LINE:
+	case DrawTool::LINE:
 		this->setCursor(Qt::CrossCursor);
 		break;
-	case JOGGED_LINE:
+	case DrawTool::JOGGED_LINE:
 		this->setCursor(Qt::CrossCursor);
 		break;
-	case CIRCLE:
+	case DrawTool::CIRCLE:
 		this->setCursor(Qt::CrossCursor);
 		break;
-	case FILL:
+	case DrawTool::FILL:
 		this->setCursor(Qt::CrossCursor);
+		break;
+	default:
 		break;
 	}
 }
@@ -782,36 +793,36 @@ QColor DrawCore::getPenColor(bool pen)
 
 bool DrawCore::isModified()
 {
-	return _modified;
+	return modified;
 }
 
 /*
  * Draws the grid
  */
-void DrawCore::drawGrid(int step, QColor color,int width)
+void DrawCore::drawGrid(int step, QColor color, int penWidth)
 {
 	int x,y;
 	QPen gridPen;
 	gridPen.setColor(color);
-	gridPen.setWidth(width);
+	gridPen.setWidth(penWidth);
 
 	gridStep = step;
 
 	painter->begin(image);
 	painter->setPen(gridPen);
 
-	for(x=cX; x<width_; x+=step) {
-		painter->drawLine(QPoint(x,0), QPoint(x,height_));
+	for(x=cX; x<width; x+=step) {
+		painter->drawLine(QPoint(x,0), QPoint(x,height));
 	}
-	for(y=cY; y<height_; y+=step) {
-		painter->drawLine(QPoint(0,y), QPoint(width_,y));
+	for(y=cY; y<height; y+=step) {
+		painter->drawLine(QPoint(0,y), QPoint(width,y));
 	}
 
 	for(x=cX; x>0; x-=step) {
-		painter->drawLine(QPoint(x,0), QPoint(x,height_));
+		painter->drawLine(QPoint(x,0), QPoint(x,height));
 	}
 	for(y=cY; y>0; y-=step) {
-		painter->drawLine(QPoint(0,y), QPoint(width_,y));
+		painter->drawLine(QPoint(0,y), QPoint(width,y));
 	}
 
 	painter->end();
@@ -823,28 +834,27 @@ void DrawCore::drawGrid(int step, QColor color,int width)
 /*
  * Draws the coordinate plane
  */
-void DrawCore::drawCoordPlane(int coordPlaneStep, QColor clr, int width)
+void DrawCore::drawCoordPlane(int coordPlaneStep, QColor clr, int penWidth, qreal numbersOpacity)
 {
 	cpStep = coordPlaneStep;
 	int markSize;
 
-	if (coordPlaneStep >= 8) {
+	if (coordPlaneStep >= 8)
 		markSize = coordPlaneStep/4;
-	} else {
+	else
 		markSize = 2;
-	}
 
 	QPen coordPlanePen;
 	coordPlanePen.setColor(clr);
-	coordPlanePen.setWidth(width);
+	coordPlanePen.setWidth(penWidth);
 	//coordPlanePen.setCapStyle(Qt::RoundCap);
 	coordPlanePen.setJoinStyle(Qt::RoundJoin);
 
 	int cStartH, cEndH, cStartV, cEndV;
-	cEndV = height_*0.027;
-	cStartV = height_*0.973;
-	cEndH = width_*0.973;
-	cStartH = width_*0.027;
+	cEndV = height*0.027;
+	cStartV = height*0.973;
+	cEndH = width*0.973;
+	cStartH = width*0.027;
 
 	painter->begin(image);
 	painter->setPen(coordPlanePen);
@@ -855,75 +865,83 @@ void DrawCore::drawCoordPlane(int coordPlaneStep, QColor clr, int width)
 	}
 
 	{
-		painter->drawLine(QPoint(cX,height_*0.027),QPoint(cX-width_*0.01,height_*(0.037*1.5)));
-		painter->drawLine(QPoint(cX,height_*0.027),QPoint(cX+width_*0.01,height_*(0.037*1.5)));
+		painter->drawLine(QPoint(cX,height*0.027),
+				  QPoint(cX-width*0.01,height*(0.037*1.5)));
+		painter->drawLine(QPoint(cX,height*0.027),
+				  QPoint(cX+width*0.01,height*(0.037*1.5)));
 
-		painter->drawLine(QPoint(width_*0.973,cY),QPoint(width_*(1-(0.037*1.5)),cY-height_*0.01));
-		painter->drawLine(QPoint(width_*0.973,cY),QPoint(width_*(1-(0.037*1.5)),cY+height_*0.01));
+		painter->drawLine(QPoint(width*0.973,cY),
+				  QPoint(width*(1-(0.037*1.5)),cY-height*0.01));
+		painter->drawLine(QPoint(width*0.973,cY),
+				  QPoint(width*(1-(0.037*1.5)),cY+height*0.01));
 	}
 
 	QFont markFont("Monospace");
-	if (coordPlaneStep >= 20) {
-		markFont.setPointSize(coordPlaneStep/2);
-	} else {
-		markFont.setPointSize(10);
-	}
+	if (coordPlaneStep >= 20)
+		markFont.setPixelSize(coordPlaneStep/2);
+	else
+		markFont.setPixelSize(10);
+
 	markFont.setLetterSpacing(QFont::PercentageSpacing,75);
 	painter->setFont(markFont);
 
-	painter->setOpacity(0.65);
+	painter->setOpacity(numbersOpacity);
 
 	{
+		// Signing OX from 0 to right
 		int mrk = 0;
 		for (int i = cX; i < (cEndH-coordPlaneStep); i += coordPlaneStep) {
 			painter->drawLine(QPoint(i,cY-markSize),QPoint(i,cY+markSize));
 			if (mrk < 9) painter->drawText(
-						i-markFont.pointSize()-width,
-						cY+markFont.pointSize()+width+1,
+						i-markFont.pixelSize()*0.83-penWidth/2,
+						cY+markFont.pixelSize()+penWidth/2+1,
 						QString::number(mrk++));
 			else painter->drawText(
-						i-markFont.pointSize()*1.5-width,
-						cY+markFont.pointSize()+width+1,
+						i-markFont.pixelSize()*0.83*1.6-penWidth/2,
+						cY+markFont.pixelSize()+penWidth/2+1,
 						QString::number(mrk++));
 			gridMaxX = mrk;
 
 		}
+		// Signing OX from -1 to left
 		mrk = 0;
 		for (int i = cX-coordPlaneStep; i > cStartH; i -= coordPlaneStep) {
 			painter->drawLine(QPoint(i,cY-markSize),QPoint(i,cY+markSize));
 			if (mrk > -9) painter->drawText(
-						i-markFont.pointSize()*1.3-width,
-						cY+markFont.pointSize()+width+1,
+						i-markFont.pixelSize()*1.2-penWidth/2,
+						cY+markFont.pixelSize()+penWidth/2+1,
 						QString::number(--mrk));
 			else painter->drawText(
-						i-markFont.pointSize()*1.8-width,
-						cY+markFont.pointSize()+width+1,
+						i-markFont.pixelSize()*1.2*1.6-penWidth/2,
+						cY+markFont.pixelSize()+penWidth/2+1,
 						QString::number(--mrk));
 			gridMinX = mrk;
 		}
+		// Signing OY from 1 to up
 		mrk = 0;
 		for (int i = cY; i > (cEndV+coordPlaneStep); i -= coordPlaneStep) {
 			painter->drawLine(QPoint(cX-markSize,i),QPoint(cX+markSize,i));
 			if (mrk < 9) painter->drawText(
-						cX-markFont.pointSize()+width,
-						i+width-(coordPlaneStep-markFont.pointSize()),
+						cX-markFont.pixelSize()+penWidth/2,
+						i+penWidth/2-(coordPlaneStep*0.5-markFont.pointSize()),
 						QString::number(++mrk));
 			else painter->drawText(
-						cX-markFont.pointSize()*1.5+width,
-						i+width-(coordPlaneStep-markFont.pointSize()),
+						cX-markFont.pixelSize()*1.4+penWidth/2,
+						i+penWidth/2-(coordPlaneStep*0.5-markFont.pointSize()),
 						QString::number(++mrk));
 			gridMaxY = mrk;
 		}
+		// Signing OY from -1 to down
 		mrk = 0;
 		for (int i = cY; i < cStartV; i += coordPlaneStep) {
 			painter->drawLine(QPoint(cX-markSize,i),QPoint(cX+markSize,i));
 			if (mrk > -9) painter->drawText(
-						cX-markFont.pointSize()*1.5+width,
-						i+width+markFont.pointSize()+coordPlaneStep,
+						cX-markFont.pixelSize()*1.2+penWidth/2,
+						i+penWidth/2+markFont.pixelSize()+coordPlaneStep,
 						QString::number(--mrk));
 			else painter->drawText(
-						cX-markFont.pointSize()*2+width,
-						i+width+markFont.pointSize()+coordPlaneStep,
+						cX-markFont.pixelSize()*1.2*1.4+penWidth/2,
+						i+penWidth/2+markFont.pixelSize()+coordPlaneStep,
 						QString::number(--mrk));
 			gridMinY = mrk;
 		}
@@ -938,7 +956,7 @@ void DrawCore::drawCoordPlane(int coordPlaneStep, QColor clr, int width)
 /*
  * Draws graphic of func
  */
-void DrawCore::drawGraphic(QString func, QColor color, int width)
+void DrawCore::drawGraphic(QString func, QColor color, int penWidth)
 {
 	wrongExp = false;
 	if (cpStep == -1) {
@@ -949,7 +967,7 @@ void DrawCore::drawGraphic(QString func, QColor color, int width)
 	painter->begin(image);
 	QPen gpen;
 	gpen.setColor(color);
-	gpen.setWidth(width);
+	gpen.setWidth(penWidth);
 	gpen.setJoinStyle(Qt::RoundJoin);
 	gpen.setCapStyle(Qt::RoundCap);
 	painter->setPen(gpen);
@@ -972,6 +990,7 @@ void DrawCore::drawGraphic(QString func, QColor color, int width)
 	remember();
 	refresh();
 }
+
 
 /*
  * Sets all tools sticky to grid

@@ -1,4 +1,4 @@
-#include "Settings.h"
+﻿#include "Settings.h"
 
 Settings::Settings(QObject *parent) :
         QSettings(parent)
@@ -82,6 +82,11 @@ int Settings::cpStep()
 	return this->value(CP_STEP, DCP_STEP).toInt();
 }
 
+qreal Settings::numbersOpacity()
+{
+	return this->value(NUMBERSOPACITY, DNUMBERSOPACITY).toReal();
+}
+
 bool Settings::reverseToolBar()
 {
 	return this->value(REVERSE_TOOLBAR, DREVERSE_TOOLBAR).toBool();
@@ -95,6 +100,16 @@ bool Settings::syncCPToGrid()
 bool Settings::autoPresentation()
 {
 	return this->value(AUTO_PRESENTATION, DAUTO_PRESENTATION).toBool();
+}
+
+bool Settings::realGrid()
+{
+	return this->value(REALGRID, DREALGRID).toBool();
+}
+
+bool Settings::realCP()
+{
+	return this->value(REALCP, DREALCP).toBool();
 }
 
 QString Settings::language()
@@ -198,6 +213,11 @@ void Settings::setCpStep(int s)
 	this->setValue(CP_STEP, s);
 }
 
+void Settings::setNumbersOpacity(qreal o)
+{
+	this->setValue(NUMBERSOPACITY, 0);
+}
+
 void Settings::setReverseToolBar(bool r)
 {
 	this->setValue(REVERSE_TOOLBAR, r);
@@ -221,4 +241,14 @@ void Settings::setLanguage(QString l)
 void Settings::setPresentationDirectory(QString d)
 {
 	this->setValue(PRESENTATION_DIRECTORY, d);
+}
+
+void Settings::setRealGrid(bool p)
+{
+	this->setValue(REALGRID, p);
+}
+
+void Settings::setRealCP(bool p)
+{
+	this->setValue(REALGRID, p);
 }

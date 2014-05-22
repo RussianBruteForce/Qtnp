@@ -1,4 +1,4 @@
-#ifndef SETTINGS_H
+﻿#ifndef SETTINGS_H
 #define SETTINGS_H
 
 #include <QSettings>
@@ -111,6 +111,23 @@
 #define PRESENTATION_DIRECTORY "presentationDirectory"
 #define DPRESENTATION_DIRECTORY                       QDir::homePath()
 
+/*
+ * real grid
+ */
+#define REALGRID "realGrid"
+#define DREALGRID          true
+
+/*
+ * real coordinate plane
+ */
+#define REALCP "realCP"
+#define DREALCP        true
+
+/*
+ * Numbers opacity in coordinate plane
+ */
+#define NUMBERSOPACITY "numbersOpacity"
+#define DNUMBERSOPACITY                0.65
 
 
 class Settings : public QSettings
@@ -132,9 +149,12 @@ public:
 	int graphicThickness();
 	int gridStep();
 	int cpStep();
+	qreal numbersOpacity();
 	bool reverseToolBar();
 	bool syncCPToGrid();
 	bool autoPresentation();
+	bool realGrid();
+	bool realCP();
 	QString language();
 	QString presentationDirectory();
 	QList<QPoint>* templates();
@@ -157,11 +177,14 @@ public slots:
 	void setGraphicThickness(int t);
 	void setGridStep(int s);
 	void setCpStep(int s);
+	void setNumbersOpacity(qreal o);
 	void setReverseToolBar(bool r);
 	void setSyncCPToGrid(bool p);
 	void setAutoPresentation(bool p);
 	void setLanguage(QString l);
 	void setPresentationDirectory(QString d);
+	void setRealGrid(bool p);
+	void setRealCP(bool p);
 
 private:
 	QColor white, black;

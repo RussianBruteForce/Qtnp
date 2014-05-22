@@ -1,4 +1,4 @@
-#include "NewFileDialog.h"
+﻿#include "NewFileDialog.h"
 #include "ui_NewFileDialog.h"
 
 NewFileDialog::NewFileDialog(Settings &_s, QWidget *parent) :
@@ -35,9 +35,8 @@ NewFileDialog::~NewFileDialog()
 
 void NewFileDialog::setupTemplates()
 {
-	for (int i = 0; i < s->templates()->size(); i++) {
-		addTemplate(s->templates()->at(i), "");
-	}
+	for (auto &i: *s->templates())
+		addTemplate(i, "");
 }
 
 void NewFileDialog::addTemplate(QPoint resolution, QString addon)
@@ -47,7 +46,10 @@ void NewFileDialog::addTemplate(QPoint resolution, QString addon)
 	str += 'x';
 	str += QString::number(resolution.y());
 	str += ' ';
-	ui->templatesCB->addItem(QIcon(":/resources/template.png"), str + addon, resolution);
+	ui->templatesCB->addItem(
+		QIcon(":/resources/template.png"),
+		str + addon,
+		resolution);
 }
 
 

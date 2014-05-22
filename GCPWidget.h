@@ -1,4 +1,4 @@
-/*
+﻿/*
  *This file is part of Qtnp.
  *
  * Qtnp is free software: you can redistribute it and/or modify
@@ -45,18 +45,20 @@ public slots:
 private:
 	Ui::GCPWidget *ui;
 	QLabel *gridStepL, *coordinatePlaneStepL,
-	*gridColorThicknessL, *coordinatePlaneColorThicknessL;
+	*gridColorThicknessL, *coordinatePlaneColorThicknessL,
+	*coordinatePlaneNumbersOpacityL;
 	QSpinBox *gridStep, *coordinatePlaneStep,
 	*gridThickness, *coordinatePlaneThickness;
+	QDoubleSpinBox *coordinatePlaneNumbersOpacity;
 	ColorWidget *gridColor, *coordinatePlaneColor;
-	QSpacerItem *gSpacer, *cSpacer;
+	QSpacerItem *gSpacer, *cSpacer, *coSpacer;
 	Settings *s;
 
 
 
 signals:
 	void drawGrid(int step, QColor color, int width = 1);
-	void drawCoordinatePlane(int coordPlaneStep, QColor clr, int width = 1);
+	void drawCoordinatePlane(int coordPlaneStep, QColor clr, int width = 1, qreal numbersOpacity = 1);
 };
 
 #endif // GCPWIDGET_H

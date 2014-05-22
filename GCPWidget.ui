@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>163</width>
-    <height>97</height>
+    <width>482</width>
+    <height>320</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -68,6 +68,9 @@
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <layout class="QHBoxLayout" name="coordinatePlane"/>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="coordinatePlaneOpacity"/>
       </item>
       <item>
        <spacer name="verticalSpacer">

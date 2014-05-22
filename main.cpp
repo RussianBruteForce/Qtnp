@@ -1,4 +1,4 @@
-/*
+﻿/*
  *This file is part of Qtnp.
  *
  * Qtnp is free software: you can redistribute it and/or modify
@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
 	a.setWindowIcon(QIcon(":/resources/icon.png"));
 
 	QString argOpen;
-	QStringList args = a.arguments();
+	auto args = a.arguments();
 	for (int i = 0; i < args.size(); i++) {
 		if (args.at(i) == "-v" || args.at(i) == "--version" ) {
 			std::cout << "Qtnp version: " << VERSION << std::endl;
@@ -39,9 +39,9 @@ int main(int argc, char *argv[])
 	}
 
 	QPixmap pixmap(":/resources/splash.png");
-	QSplashScreen *splash = new QSplashScreen(pixmap);
+	auto *splash = new QSplashScreen(pixmap);
 	splash->show();
-	Qt::Alignment bottomLeft = Qt::AlignBottom | Qt::AlignLeft;
+	auto bottomLeft = Qt::AlignBottom | Qt::AlignLeft;
 	splash->showMessage(QObject::tr("Setting up the main window..."),
 	                    bottomLeft, Qt::black);
 
@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
 	QCoreApplication::setApplicationName("qtnp");  //     CONFIG
 
 	QTranslator translator;
-	Settings *s = new Settings;
+	auto *s = new Settings;
 	if (s->language() == "ru") {
 		translator.load(":/resources/ru_RU.qm"); // русский/russian
 		qApp->installTranslator(&translator);

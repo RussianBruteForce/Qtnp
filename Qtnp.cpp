@@ -29,13 +29,12 @@ Qtnp::Qtnp(Settings &settings, QWidget *parent) :
 
 	//s = new Settings;
 	s = &settings;
-
-	//resize(1050,850);
 }
 
 Qtnp::~Qtnp()
 {
 	delete ui;
+	delete image;
 	delete rpenColor;
 	delete penColor;
 }
@@ -46,6 +45,7 @@ void Qtnp::makeConnections()
 	 * Menu actions:
 	 */
 	{
+		// file
 		connect(ui->actionNew, &QAction::triggered,
 		        this, &Qtnp::newFile);
 		connect(ui->actionOpen, &QAction::triggered,
@@ -136,8 +136,8 @@ void Qtnp::makeConnections()
 
 void Qtnp::makeUI()
 {
-	image = new DrawCore(ui->scrollArea);
-	QPoint p = s->templates()->at(s->imageTemplate());
+	image = new DrawCore();
+	auto p = s->templates()->at(s->imageTemplate());
 	image->newImage(p.x(), p.y(), s->bgColor());
 	clock = new DigitalClock(ui->toolBar);
 
@@ -237,7 +237,7 @@ void Qtnp::makeUI()
 
 void Qtnp::loadToolbar(bool reverse)
 {
-	QWidget *spacerWidget = new QWidget(this);
+	auto *spacerWidget = new QWidget(this);
 	spacerWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 	spacerWidget->setVisible(true);
 
@@ -301,7 +301,7 @@ void Qtnp::preparePresentation()
 {
 	_currentPresentationImage = -1;
 	pImage->setDisabled(true);
-	QDir *d = new QDir(s->presentationDirectory());
+	auto *d = new QDir(s->presentationDirectory());
 	QStringList nf;
 	nf += "*.png";
 	nf += "*.jpg";
@@ -355,14 +355,15 @@ void Qtnp::save()
 void Qtnp::saveAs()
 {
 	QString fileName;
-	QString formats = tr("*.png;;*.xbm;;*.xpm;;*.bmp;;*.jpg;;*.jpeg;;*.ppm");
+	auto formats = tr("*.png;;*.xbm;;*.xpm;;*.bmp;;*.jpg;;*.jpeg;;*.ppm");
 	if(_openedFileLocation == "0")
 		fileName = QFileDialog::getSaveFileName(
 		                           this, tr("Save new image as..."),
 		                           QDir::homePath(),
 		                           formats
 		                           );
-	else    fileName = QFileDialog::getSaveFileName(
+	else
+		fileName = QFileDialog::getSaveFileName(
 		                           this, tr("Save image as..."),
 		                           _openedFileLocation,
 		                           formats
@@ -375,7 +376,8 @@ void Qtnp::saveAs()
 		if (image->saveImage(fileName)) {
 			_openedFileLocation = fileName;
 			statusLine->setText(tr("Image saved as ") + fileName);
-		} else statusLine->setText(tr("Couldn't save image as ") + fileName);
+		} else
+			statusLine->setText(tr("Couldn't save image as ") + fileName);
 
 		this->setEnabled(true);
 		this->setCursor(Qt::ArrowCursor);
@@ -403,14 +405,14 @@ void Qtnp::fullScreen()
 
 void Qtnp::swapPens()
 {
-	QColor buf = image->getPenColor(0);
+	auto buf = image->getPenColor(0);
 	penColor->setColor(image->getPenColor(1));
 	rpenColor->setColor(buf);
 }
 
 void Qtnp::openFile()
 {
-	QString fileName = QFileDialog::getOpenFileName(this, tr("Open Image..."),
+	auto fileName = QFileDialog::getOpenFileName(this, tr("Open Image..."),
 	                                                QDir::homePath(),
 	                                                tr("Image Files (*.png *.jpg *.jpeg *.bmp *.xpm *.xbm *.gif *.pbm *.pgm *.ppm)"));
 	if (!fileName.isEmpty()) {
@@ -475,47 +477,47 @@ void Qtnp::settings()
 void Qtnp::setTool_NONE()
 {
 	toolsButton->setIcon(QIcon(":/resources/cursor.png"));
-	image->setActiveTool(NONE);
+	image->setActiveTool(DrawTool::NONE);
 }
 
 void Qtnp::setTool_PEN()
 {
 	toolsButton->setIcon(QIcon(":/resources/pencil_ico.png"));
-	image->setActiveTool(PEN);
+	image->setActiveTool(DrawTool::PEN);
 }
 
 void Qtnp::setTool_LINE()
 {
 	toolsButton->setIcon(QIcon(":/resources/line_ico.png"));
-	image->setActiveTool(LINE);
+	image->setActiveTool(DrawTool::LINE);
 }
 
 void Qtnp::setTool_SQUARE()
 {
-	image->setActiveTool(SQUARE);
+	image->setActiveTool(DrawTool::SQUARE);
 }
 
 void Qtnp::setTool_ELLIPSE()
 {
-	image->setActiveTool(ELLIPSE);
+	image->setActiveTool(DrawTool::ELLIPSE);
 }
 
 void Qtnp::setTool_CIRCLE()
 {
 	toolsButton->setIcon(QIcon(":/resources/circle.png"));
-	image->setActiveTool(CIRCLE);
+	image->setActiveTool(DrawTool::CIRCLE);
 }
 
 void Qtnp::setTool_JOGGED_LINE()
 {
 	toolsButton->setIcon(QIcon(":/resources/jogged_ico.png"));
-	image->setActiveTool(JOGGED_LINE);
+	image->setActiveTool(DrawTool::JOGGED_LINE);
 }
 
 void Qtnp::setTool_FILL()
 {
 	toolsButton->setIcon(QIcon(":/resources/fill_ico.png"));
-	image->setActiveTool(FILL);
+	image->setActiveTool(DrawTool::FILL);
 }
 
 void Qtnp::setStyle_win()
@@ -581,13 +583,20 @@ void Qtnp::wrongExp()
 void Qtnp::nextImage()
 {
 	if (_currentPresentationImage + 1 < presentationImages.size())
-		image->loadImage(QString(s->presentationDirectory() + "/") + presentationImages.at(++_currentPresentationImage));
+		image->loadImage(QString(s->presentationDirectory() + "/")
+				 +
+				 presentationImages.at(
+					 ++_currentPresentationImage));
+
 	if (_currentPresentationImage + 1 == presentationImages.size())
 		nImage->setDisabled(true);
-	else nImage->setEnabled(true);
+	else
+		nImage->setEnabled(true);
+
 	if (_currentPresentationImage == 0)
 		pImage->setDisabled(true);
-	else pImage->setEnabled(true);
+	else
+		pImage->setEnabled(true);
 }
 
 void Qtnp::prevImage()

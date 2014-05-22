@@ -1,4 +1,4 @@
-#include "SettingsDialog.h"
+﻿#include "SettingsDialog.h"
 #include "ui_SettingsDialog.h"
 
 SettingsDialog::SettingsDialog(Settings &_s, QWidget *parent) :
@@ -28,10 +28,9 @@ SettingsDialog::SettingsDialog(Settings &_s, QWidget *parent) :
 	ui->rpenColorL->addWidget(rpenColor);
 
 	ui->language->addItem("English");
-    ui->language->addItem("Russian");
+	ui->language->addItem("Russian");
 
 	setupTemplates();
-
 
 	this->updateUI();
 
@@ -50,9 +49,8 @@ SettingsDialog::~SettingsDialog()
 
 void SettingsDialog::setupTemplates()
 {
-	for (int i = 0; i < s->templates()->size(); i++) {
-		addTemplate(s->templates()->at(i), "");
-	}
+	for (auto &i: *s->templates())
+		addTemplate(i, "");
 }
 
 void SettingsDialog::addTemplate(QPoint resolution, QString addon)
@@ -62,7 +60,10 @@ void SettingsDialog::addTemplate(QPoint resolution, QString addon)
 	str += 'x';
 	str += QString::number(resolution.y());
 	str += ' ';
-	ui->templatesCB->addItem(QIcon(":/resources/template.png"), str + addon, resolution);
+	ui->templatesCB->addItem(
+		QIcon(":/resources/template.png"),
+		str + addon,
+		resolution);
 }
 
 void SettingsDialog::save()
@@ -89,8 +90,9 @@ void SettingsDialog::save()
 
 	if (ui->language->currentIndex() == 0)
 		s->setLanguage("en");
-	else if (ui->language->currentIndex() == 1)
-        s->setLanguage("ru");
+	else
+		if (ui->language->currentIndex() == 1)
+			s->setLanguage("ru");
 
 	s->setImageTemplate(ui->templatesCB->currentIndex());
 
@@ -120,8 +122,9 @@ void SettingsDialog::updateUI()
 
 	if (s->language() == "en")
 		ui->language->setCurrentIndex(0);
-	else if (s->language() == "ru")
-        ui->language->setCurrentIndex(1);
+	else
+		if (s->language() == "ru")
+			ui->language->setCurrentIndex(1);
 
 	ui->templatesCB->setCurrentIndex(s->imageTemplate());
 	ui->presentationDir->setText(s->presentationDirectory());

@@ -1,4 +1,4 @@
-/*
+﻿/*
  *This file is part of Qtnp.
  *
  * Qtnp is free software: you can redistribute it and/or modify
@@ -33,6 +33,7 @@ GCPWidget::GCPWidget(Settings &_s, QWidget *parent) :
 	ui->grid->addWidget(gridStepL);
 
 	gridStep = new QSpinBox(this);
+	gridStep->setFixedWidth(60);
 	gridStep->setMinimum(3);
 	gridStep->setValue(s->gridStep());
 	ui->grid->addWidget(gridStep);
@@ -48,6 +49,7 @@ GCPWidget::GCPWidget(Settings &_s, QWidget *parent) :
 	ui->grid->addWidget(gridColor);
 
 	gridThickness = new QSpinBox(this);
+	gridThickness->setFixedWidth(60);
 	gridThickness->setMinimum(1);
 	gridThickness->setValue(s->gridThickness());
 	ui->grid->addWidget(gridThickness);
@@ -58,6 +60,7 @@ GCPWidget::GCPWidget(Settings &_s, QWidget *parent) :
 	ui->coordinatePlane->addWidget(coordinatePlaneStepL);
 
 	coordinatePlaneStep = new QSpinBox(this);
+	coordinatePlaneStep->setFixedWidth(60);
 	coordinatePlaneStep->setMinimum(3);
 	coordinatePlaneStep->setValue(s->cpStep());
 	ui->coordinatePlane->addWidget(coordinatePlaneStep);
@@ -73,13 +76,30 @@ GCPWidget::GCPWidget(Settings &_s, QWidget *parent) :
 	ui->coordinatePlane->addWidget(coordinatePlaneColor);
 
 	coordinatePlaneThickness = new QSpinBox(this);
+	coordinatePlaneThickness->setFixedWidth(60);
 	coordinatePlaneThickness->setMinimum(1);
 	coordinatePlaneThickness->setValue(s->cpThickness());
 	ui->coordinatePlane->addWidget(coordinatePlaneThickness);
 
+	coordinatePlaneNumbersOpacityL = new QLabel(this);
+	coordinatePlaneNumbersOpacityL->setText(tr("Coordinate plane opacity:"));
+	ui->coordinatePlaneOpacity->addWidget(coordinatePlaneNumbersOpacityL);
+
+	coordinatePlaneNumbersOpacity = new QDoubleSpinBox(this);
+	coordinatePlaneNumbersOpacity->setFixedWidth(60);
+	coordinatePlaneNumbersOpacity->setMaximum(1);
+	coordinatePlaneNumbersOpacity->setMinimum(0);
+	coordinatePlaneNumbersOpacity->setSingleStep(0.05);
+	coordinatePlaneNumbersOpacity->setValue(s->numbersOpacity());
+	ui->coordinatePlaneOpacity->addWidget(coordinatePlaneNumbersOpacity);
+
+
 	ui->coordinatePlane->setEnabled(false);
 	connect(ui->coordinatePlaneGroupBox, &QGroupBox::toggled,
 	        ui->coordinatePlane, &QHBoxLayout::setEnabled);
+	ui->coordinatePlaneOpacity->setEnabled(false);
+	connect(ui->coordinatePlaneGroupBox, &QGroupBox::toggled,
+		ui->coordinatePlaneOpacity, &QHBoxLayout::setEnabled);
 
 	if (s->syncCPToGrid()) {
 		connect(gridColor, &ColorWidget::colorChanged,
@@ -97,6 +117,16 @@ GCPWidget::~GCPWidget()
 	delete ui;
 	delete gridColor;
 	delete coordinatePlaneColor;
+
+	delete gridStepL;
+	delete coordinatePlaneStepL,
+	delete gridColorThicknessL;
+	delete coordinatePlaneColorThicknessL;
+	delete gridStep;
+	delete coordinatePlaneStep;
+	delete gridThickness;
+	delete coordinatePlaneThickness;
+
 	gSpacer->~QSpacerItem();
 	cSpacer->~QSpacerItem();
 }
@@ -120,10 +150,10 @@ void GCPWidget::askData()
 		              gridColor->color(),
 		              gridThickness->value());
 
-		if (ui->coordinatePlaneGroupBox->isChecked()) {
+		if (ui->coordinatePlaneGroupBox->isChecked())
 			emit drawCoordinatePlane(coordinatePlaneStep->value(),
-			                         coordinatePlaneColor->color(),
-			                         coordinatePlaneThickness->value());
-		}
+						 coordinatePlaneColor->color(),
+						 coordinatePlaneThickness->value(),
+						 coordinatePlaneNumbersOpacity->value());
 	}
 }

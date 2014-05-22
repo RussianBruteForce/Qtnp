@@ -74,7 +74,7 @@ private:
 	NewFileDialog *nfd;
 	SettingsDialog *sd;
 	QStringList presentationImages;
-	uint _currentPresentationImage;
+	int _currentPresentationImage;
 
 private slots:
 	void newFile();

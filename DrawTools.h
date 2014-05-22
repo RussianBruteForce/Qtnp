@@ -18,7 +18,7 @@
 #ifndef DRAWTOOLS_H
 #define DRAWTOOLS_H
 
-enum DrawTool{
+enum class DrawTool{
 	NONE,
 	PEN,
 	LINE,

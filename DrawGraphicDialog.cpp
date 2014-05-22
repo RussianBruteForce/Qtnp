@@ -1,4 +1,4 @@
-#include "DrawGraphicDialog.h"
+﻿#include "DrawGraphicDialog.h"
 #include "ui_DrawGraphicDialog.h"
 
 DrawGraphicDialog::DrawGraphicDialog(Settings &_s, QWidget *parent) :
@@ -26,14 +26,14 @@ DrawGraphicDialog::~DrawGraphicDialog()
 
 void DrawGraphicDialog::insert(QString t)
 {
-	int p = ui->formula->cursorPosition();
+	auto p = ui->formula->cursorPosition();
 	ui->formula->insert(t);
 	ui->formula->setCursorPosition(p+t.size());
 }
 
 void DrawGraphicDialog::insertF(QString t)
 {
-	int p = ui->formula->cursorPosition();
+	auto p = ui->formula->cursorPosition();
 	ui->formula->insert(t + QString("()"));
 	ui->formula->setCursorPosition(p+t.size()+1);
 }
