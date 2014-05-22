@@ -1,13 +1,16 @@
 ﻿#include "NewFileDialog.h"
 #include "ui_NewFileDialog.h"
 
-NewFileDialog::NewFileDialog(Settings &_s, QWidget *parent) :
+NewFileDialog::NewFileDialog(Settings &_s, QWidget *parent, int toolbarHeight) :
         QDialog(parent),
         ui(new Ui::NewFileDialog)
 {
 	ui->setupUi(this);
 	setWindowIcon(QIcon(":/resources/new.png"));
 	s = &_s;
+
+	TBHeight = toolbarHeight;
+
 	gcp = new GCPWidget(*s, this);
 	gcp->makeDedicated();
 	ui->GCPLayout->addWidget(gcp);
@@ -26,6 +29,8 @@ NewFileDialog::NewFileDialog(Settings &_s, QWidget *parent) :
 	void (QComboBox:: *signal)(int) = &QComboBox::currentIndexChanged;
 	connect(ui->templatesCB, signal,
 	        this, &NewFileDialog::setTemplate);
+	connect(ui->removeTBHeight, &QCheckBox::stateChanged,
+		this, &NewFileDialog::removeTBHeight);
 }
 
 NewFileDialog::~NewFileDialog()
@@ -59,6 +64,15 @@ void NewFileDialog::draw()
 	              backgroundColor->color());
 	gcp->askData();
 	this->accept();
+}
+
+void NewFileDialog::removeTBHeight(int state)
+{
+	if (state == Qt::Checked) {
+		fullHeight = ui->heightSB->value();
+		ui->heightSB->setValue(fullHeight - TBHeight - 2);
+	} else
+		ui->heightSB->setValue(fullHeight);
 }
 
 void NewFileDialog::setTemplate(int t)

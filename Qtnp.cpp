@@ -324,7 +324,7 @@ void Qtnp::newFile()
 	this->setCursor(Qt::WaitCursor);
 	this->setDisabled(true);
 
-	nfd = new NewFileDialog(*s, this);
+	nfd = new NewFileDialog(*s, this, ui->toolBar->height());
 	connect(nfd, &NewFileDialog::newImage,
 	        image, &DrawCore::newImage);
 	connect(nfd->gcp, &GCPWidget::drawGrid,

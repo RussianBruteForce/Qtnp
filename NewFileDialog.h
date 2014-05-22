@@ -1,4 +1,4 @@
-#ifndef NEWFILEDIALOG_H
+﻿#ifndef NEWFILEDIALOG_H
 #define NEWFILEDIALOG_H
 
 #include <QDialog>
@@ -16,7 +16,7 @@ class NewFileDialog : public QDialog
 	Q_OBJECT
 	
 public:
-	explicit NewFileDialog(Settings &_s, QWidget *parent = 0);
+	explicit NewFileDialog(Settings &_s, QWidget *parent = 0, int toolbarHeight = 0);
 	~NewFileDialog();
 	GCPWidget *gcp;
 	
@@ -24,12 +24,14 @@ private:
 	Ui::NewFileDialog *ui;
 	Settings *s;
 	ColorWidget *backgroundColor;
+	int TBHeight, fullHeight;
 
 	void setupTemplates();
 	void addTemplate(QPoint resolution, QString addon);
 
 public slots:
 	void draw();
+	void removeTBHeight(int state);
 
 private slots:
 	void setTemplate(int t);
