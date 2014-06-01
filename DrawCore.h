@@ -77,7 +77,7 @@ public slots:
 	void setPenColor(QColor color);
 	void setRPenColor(QColor color);
 	void setThickness(int size);
-	void prev();
+	void undo();
 	void setActiveTool(DrawTool tool);
 	void newImage(int x, int y, QColor color);
 	void negative();

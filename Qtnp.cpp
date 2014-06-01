@@ -98,7 +98,7 @@ void Qtnp::makeConnections()
 		connect(graphicButton, &QToolButton::clicked,
 		        this, &Qtnp::drawGraphic);
 		connect(prevButton, &QToolButton::clicked,
-		        image, &DrawCore::prev);
+		        image, &DrawCore::undo);
 		connect(stickyDraw, &QCheckBox::toggled,
 		        image, &DrawCore::setSticky);
 

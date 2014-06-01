@@ -588,7 +588,7 @@ void DrawCore::setThickness(int size)
 /*
  * Set back previous image
  */
-void DrawCore::prev(void)
+void DrawCore::undo(void)
 {
 	//if (!(oldImages.size() < 3)) {
 	//	*image = oldImages.last();
