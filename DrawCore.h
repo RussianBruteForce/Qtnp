@@ -62,14 +62,13 @@ private:
 	int width, height;
 	bool painting, joggedLineFirstClickDone, sticking;
 	DrawTool activeTool;
-	QPoint start, end;
+	QPoint start, end, center;
 	QPixmap *image;
 	QPen pen, rpen;
 	QBrush brush;
 	QPainter *painter;
 	QList<QPixmap> oldImages;
-	int cX, cY; // image's center
-	int gridMaxX, gridMaxY, gridMinX, gridMinY;
+	QPoint gridMax, gridMin;
 	int gridStep, cpStep;
 
 public slots:

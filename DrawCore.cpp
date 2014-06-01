@@ -27,10 +27,8 @@ DrawCore::DrawCore()
 	//newImage(1280,1024,Qt::white);
 
 	modified = false;
-	gridMaxX = 0;
-	gridMaxY = 0;
-	gridMinX = 0;
-	gridMinY = 0;
+	gridMax = QPoint(0,0);
+	gridMin = QPoint(0,0);
 
 	sticking = false;
 
@@ -69,8 +67,7 @@ void DrawCore::newImage(int x, int y, QColor color)
 	emit resetToolMenu();
 	setActiveTool(DrawTool::NONE);
 	oldImages.append(*image);
-	cX = width/2;
-	cY = height/2;
+	center = QPoint(width/2,height/2);
 	gridStep = -1;
 	cpStep = -1;
 
@@ -91,8 +88,7 @@ bool DrawCore::loadImage(const QString path)
 		emit resetToolMenu();
 		setActiveTool(DrawTool::NONE);
 		oldImages.append(*image);
-		cX = width/2;
-		cY = height/2;
+		center = QPoint(width/2,height/2);
 		gridStep = -1;
 		cpStep = -1;
 		modified = false;
@@ -610,7 +606,7 @@ QPoint DrawCore::closestGridPoint(const QPoint &p)
  */
 QPoint DrawCore::getCoordinatesOfGridPoint(QPoint gPoint, int step)
 {
-	return QPoint(cX+step*gPoint.x(), cY-step*gPoint.y());
+	return QPoint(center.x()+step*gPoint.x(), center.y()-step*gPoint.y());
 }
 
 /*
@@ -620,16 +616,16 @@ QPoint DrawCore::getGridPointByCoordinates(QPoint coordinate, int step)
 {
 	QPoint ret;
 	double x, y;
-	if (coordinate.x() > cX)
-		x =((double)(coordinate.x()-cX)/step);
-	else if (coordinate.x() < cX)
-		x = (-1*(double)(cX-coordinate.x())/step);
+	if (coordinate.x() > center.x())
+		x =((double)(coordinate.x()-center.x())/step);
+	else if (coordinate.x() < center.x())
+		x = (-1*(double)(center.x()-coordinate.x())/step);
 	else
 		x = (0);
-	if (coordinate.y() > cY)
-		y = (-1*(double)(coordinate.y()-cY)/step);
-	else if (coordinate.y() < cY)
-		y = ((double)(cY-coordinate.y())/step);
+	if (coordinate.y() > center.y())
+		y = (-1*(double)(coordinate.y()-center.y())/step);
+	else if (coordinate.y() < center.y())
+		y = ((double)(center.y()-coordinate.y())/step);
 	else
 		y = (0);
 
@@ -660,20 +656,20 @@ QPolygon* DrawCore::findAllPointsOfGraphic(QString &function_string, double step
 	}
 
 	double sX, sY, bX, bY;
-	bX = gridMinX;
+	bX = gridMin.x();
 	bY = fparser.getR(bX);
-	sX = cX+gridStep*bX;
-	sY = cY-gridStep*bY;
+	sX = center.x()+gridStep*bX;
+	sY = center.y()-gridStep*bY;
 
 	auto grphc = new QPolygon;
 	grphc->append(QPoint(round(sX),round(sY)));
 
-	for (double i = gridMinX; i < gridMaxX; i += step) {
+	for (double i = gridMin.x(); i < gridMax.x(); i += step) {
 		bX = i;
 		bY = fparser.getR(i);
 
-		sX = cX+gridStep*bX;
-		sY = cY-gridStep*bY;
+		sX = center.x()+gridStep*bX;
+		sY = center.y()-gridStep*bY;
 		grphc->append(QPoint(round(sX),round(sY)));
 	}
 	emit drawError(tr("Last value ") + QString::number(bY));
@@ -713,7 +709,6 @@ QList<QPolygon> *DrawCore::splitGraphicToPolygons(QPolygon *points_of_graphic)
 			polygons->append(current->mid(i, current->size()-i));
 			polygons->removeAt(polygons->size() - 3);
 			current = &polygons->last();
-			qDebug() << "HERE!";
 		}
 	}
 	delete points_of_graphic;
@@ -778,17 +773,17 @@ void DrawCore::drawGrid(int step, QColor color, int penWidth)
 	painter->begin(image);
 	painter->setPen(gridPen);
 
-	for(x=cX; x<width; x+=step) {
+	for(x = center.x(); x < width; x += step) {
 		painter->drawLine(QPoint(x,0), QPoint(x,height));
 	}
-	for(y=cY; y<height; y+=step) {
+	for(y = center.y(); y < height; y += step) {
 		painter->drawLine(QPoint(0,y), QPoint(width,y));
 	}
 
-	for(x=cX; x>0; x-=step) {
+	for(x = center.x(); x > 0; x -= step) {
 		painter->drawLine(QPoint(x,0), QPoint(x,height));
 	}
-	for(y=cY; y>0; y-=step) {
+	for(y = center.y(); y > 0; y -= step) {
 		painter->drawLine(QPoint(0,y), QPoint(width,y));
 	}
 
@@ -827,20 +822,20 @@ void DrawCore::drawCoordPlane(int coordPlaneStep, QColor clr, int penWidth, qrea
 	painter->setPen(coordPlanePen);
 
 	{
-		painter->drawLine(QPoint(cX,cStartV),QPoint(cX,cEndV));
-		painter->drawLine(QPoint(cStartH,cY),QPoint(cEndH,cY));
+		painter->drawLine(QPoint(center.x(),cStartV),QPoint(center.x(),cEndV));
+		painter->drawLine(QPoint(cStartH,center.y()),QPoint(cEndH,center.y()));
 	}
 
 	{
-		painter->drawLine(QPoint(cX,height*0.027),
-				  QPoint(cX-width*0.01,height*(0.037*1.5)));
-		painter->drawLine(QPoint(cX,height*0.027),
-				  QPoint(cX+width*0.01,height*(0.037*1.5)));
+		painter->drawLine(QPoint(center.x(),height*0.027),
+				  QPoint(center.x()-width*0.01,height*(0.037*1.5)));
+		painter->drawLine(QPoint(center.x(),height*0.027),
+				  QPoint(center.x()+width*0.01,height*(0.037*1.5)));
 
-		painter->drawLine(QPoint(width*0.973,cY),
-				  QPoint(width*(1-(0.037*1.5)),cY-height*0.01));
-		painter->drawLine(QPoint(width*0.973,cY),
-				  QPoint(width*(1-(0.037*1.5)),cY+height*0.01));
+		painter->drawLine(QPoint(width*0.973,center.y()),
+				  QPoint(width*(1-(0.037*1.5)),center.y()-height*0.01));
+		painter->drawLine(QPoint(width*0.973,center.y()),
+				  QPoint(width*(1-(0.037*1.5)),center.y()+height*0.01));
 	}
 
 	QFont markFont("Monospace");
@@ -857,60 +852,60 @@ void DrawCore::drawCoordPlane(int coordPlaneStep, QColor clr, int penWidth, qrea
 	{
 		// Signing OX from 0 to right
 		int mrk = 0;
-		for (int i = cX; i < (cEndH-coordPlaneStep); i += coordPlaneStep) {
-			painter->drawLine(QPoint(i,cY-markSize),QPoint(i,cY+markSize));
+		for (int i = center.x(); i < (cEndH-coordPlaneStep); i += coordPlaneStep) {
+			painter->drawLine(QPoint(i,center.y()-markSize),QPoint(i,center.y()+markSize));
 			if (mrk < 9) painter->drawText(
 						i-markFont.pixelSize()*0.83-penWidth/2,
-						cY+markFont.pixelSize()+penWidth/2+1,
+						center.y()+markFont.pixelSize()+penWidth/2+1,
 						QString::number(mrk++));
 			else painter->drawText(
 						i-markFont.pixelSize()*0.83*1.6-penWidth/2,
-						cY+markFont.pixelSize()+penWidth/2+1,
+						center.y()+markFont.pixelSize()+penWidth/2+1,
 						QString::number(mrk++));
-			gridMaxX = mrk;
+			gridMax.setX(mrk);
 
 		}
 		// Signing OX from -1 to left
 		mrk = 0;
-		for (int i = cX-coordPlaneStep; i > cStartH; i -= coordPlaneStep) {
-			painter->drawLine(QPoint(i,cY-markSize),QPoint(i,cY+markSize));
+		for (int i = center.x()-coordPlaneStep; i > cStartH; i -= coordPlaneStep) {
+			painter->drawLine(QPoint(i,center.y()-markSize),QPoint(i,center.y()+markSize));
 			if (mrk > -9) painter->drawText(
 						i-markFont.pixelSize()*1.2-penWidth/2,
-						cY+markFont.pixelSize()+penWidth/2+1,
+						center.y()+markFont.pixelSize()+penWidth/2+1,
 						QString::number(--mrk));
 			else painter->drawText(
 						i-markFont.pixelSize()*1.2*1.6-penWidth/2,
-						cY+markFont.pixelSize()+penWidth/2+1,
+						center.y()+markFont.pixelSize()+penWidth/2+1,
 						QString::number(--mrk));
-			gridMinX = mrk;
+			gridMin.setX(mrk);
 		}
 		// Signing OY from 1 to up
 		mrk = 0;
-		for (int i = cY; i > (cEndV+coordPlaneStep); i -= coordPlaneStep) {
-			painter->drawLine(QPoint(cX-markSize,i),QPoint(cX+markSize,i));
+		for (int i = center.y(); i > (cEndV+coordPlaneStep); i -= coordPlaneStep) {
+			painter->drawLine(QPoint(center.x()-markSize,i),QPoint(center.x()+markSize,i));
 			if (mrk < 9) painter->drawText(
-						cX-markFont.pixelSize()+penWidth/2,
+						center.x()-markFont.pixelSize()+penWidth/2,
 						i+penWidth/2-(coordPlaneStep*0.5-markFont.pointSize()),
 						QString::number(++mrk));
 			else painter->drawText(
-						cX-markFont.pixelSize()*1.4+penWidth/2,
+						center.x()-markFont.pixelSize()*1.4+penWidth/2,
 						i+penWidth/2-(coordPlaneStep*0.5-markFont.pointSize()),
 						QString::number(++mrk));
-			gridMaxY = mrk;
+			gridMax.setY(mrk);
 		}
 		// Signing OY from -1 to down
 		mrk = 0;
-		for (int i = cY; i < cStartV; i += coordPlaneStep) {
-			painter->drawLine(QPoint(cX-markSize,i),QPoint(cX+markSize,i));
+		for (int i = center.y(); i < cStartV; i += coordPlaneStep) {
+			painter->drawLine(QPoint(center.x()-markSize,i),QPoint(center.x()+markSize,i));
 			if (mrk > -9) painter->drawText(
-						cX-markFont.pixelSize()*1.2+penWidth/2,
+						center.x()-markFont.pixelSize()*1.2+penWidth/2,
 						i+penWidth/2+markFont.pixelSize()+coordPlaneStep,
 						QString::number(--mrk));
 			else painter->drawText(
-						cX-markFont.pixelSize()*1.2*1.4+penWidth/2,
+						center.x()-markFont.pixelSize()*1.2*1.4+penWidth/2,
 						i+penWidth/2+markFont.pixelSize()+coordPlaneStep,
 						QString::number(--mrk));
-			gridMinY = mrk;
+			gridMin.setY(mrk);
 		}
 	}
 
