@@ -22,7 +22,7 @@ DrawCore::DrawCore()
 	image = nullptr;
 	painter = nullptr;
 
-	prevList.reserve(3);
+	oldImages.reserve(3);
 
 	//newImage(1280,1024,Qt::white);
 
@@ -32,7 +32,7 @@ DrawCore::DrawCore()
 	gridMinX = 0;
 	gridMinY = 0;
 
-	_sticking = false;
+	sticking = false;
 
 	setAlignment(Qt::AlignTop);
 
@@ -68,7 +68,7 @@ void DrawCore::newImage(int x, int y, QColor color)
 	width = image->width();
 	emit resetToolMenu();
 	setActiveTool(DrawTool::NONE);
-	prevList.append(*image);
+	oldImages.append(*image);
 	cX = width/2;
 	cY = height/2;
 	gridStep = -1;
@@ -90,7 +90,7 @@ bool DrawCore::loadImage(const QString path)
 		width = image->width();
 		emit resetToolMenu();
 		setActiveTool(DrawTool::NONE);
-		prevList.append(*image);
+		oldImages.append(*image);
 		cX = width/2;
 		cY = height/2;
 		gridStep = -1;
@@ -411,11 +411,11 @@ void DrawCore::mouseReleaseEvent(QMouseEvent *event)
 /*
  * Draws line with pen p
  */
-void DrawCore::drawLine(QPen p)
+void DrawCore::drawLine(const QPen &p)
 {
 	painter->begin(image);
 	painter->setPen(p);
-	if (_sticking)
+	if (sticking)
 		painter->drawLine(closestGridPoint(start), closestGridPoint(end));
 	else
 		painter->drawLine(start, end);
@@ -426,11 +426,11 @@ void DrawCore::drawLine(QPen p)
 /*
  * Draws square with pen p
  */
-void DrawCore::drawSquare(QPen p)
+void DrawCore::drawSquare(const QPen &p)
 {
 	painter->begin(image);
 	painter->setPen(p);
-	if (_sticking)
+	if (sticking)
 		painter->drawRect(QRect(closestGridPoint(start), closestGridPoint(end)));
 	else
 		painter->drawRect(QRect(start, end));
@@ -441,11 +441,11 @@ void DrawCore::drawSquare(QPen p)
 /*
  * Draws ellipse with pen p
  */
-void DrawCore::drawEllipse(QPen p)
+void DrawCore::drawEllipse(const QPen &p)
 {
 	painter->begin(image);
 	painter->setPen(p);
-	if (_sticking)
+	if (sticking)
 		painter->drawEllipse(QRect(closestGridPoint(start), closestGridPoint(end)));
 	else
 		painter->drawEllipse(QRect(start, end));
@@ -456,9 +456,9 @@ void DrawCore::drawEllipse(QPen p)
 /*
  * Draws circle with pen p
  */
-void DrawCore::drawCircle(QPen p)
+void DrawCore::drawCircle(const QPen &p)
 {
-	if (_sticking) {
+	if (sticking) {
 		start = closestGridPoint(start);
 		end = closestGridPoint(end);
 	}
@@ -502,7 +502,7 @@ typedef struct { int xl, xr, y, dy; } LINESEGMENT;
 #define POP(XL, XR, Y, DY) \
     { --sp; XL = sp->xl; XR = sp->xr; Y = sp->y+(DY = sp->dy); }
 
-void DrawCore::fill(QRgb color)
+void DrawCore::fill(const QRgb color)
 {
 	auto img = image->toImage();
 
@@ -577,15 +577,6 @@ void DrawCore::setRPenColor(QColor color)
 }
 
 /*
- * Sets color to brush
- */
-void DrawCore::setBrushColor(QColor color)
-{
-	pen.setColor(color);
-	pen.setBrush(brush);
-}
-
-/*
  * Sets pen trickness to size
  */
 void DrawCore::setThickness(int size)
@@ -599,11 +590,13 @@ void DrawCore::setThickness(int size)
  */
 void DrawCore::prev(void)
 {
-	if (!(prevList.size() < 3)) {
-		*image = prevList.last();
-		prevList.pop_back();
-		refresh();
-	}
+	//if (!(oldImages.size() < 3)) {
+	//	*image = oldImages.last();
+	//	oldImages.pop_back();
+	//	refresh();
+	//}
+	if (!oldImages.isEmpty()) *image = oldImages.takeLast();
+	refresh();
 }
 
 /*
@@ -611,8 +604,8 @@ void DrawCore::prev(void)
  */
 void DrawCore::remember(void)
 {
-	if (prevList.size() > 7) prevList.pop_front();
-	prevList.append(*image);
+	if (oldImages.size() > 7) oldImages.pop_front();
+	oldImages.append(*image);
 
 	modified = true;
 }
@@ -620,7 +613,7 @@ void DrawCore::remember(void)
 /*
  * Returns the closest point of grid
  */
-QPoint DrawCore::closestGridPoint(QPoint p)
+QPoint DrawCore::closestGridPoint(const QPoint &p)
 {
 	return getCoordinatesOfGridPoint(
 				getGridPointByCoordinates(p, gridStep),
@@ -669,48 +662,46 @@ int DrawCore::round(double num)
 	return nearbyint(num);
 }
 
-QPolygon DrawCore::findAllPointsOfGraphic(QString function_string, double step)
+QPolygon* DrawCore::findAllPointsOfGraphic(QString &function_string, double step)
 {
-	QPolygon grphc;
 	ExpParser fparser;
 	fparser.setE(function_string);
 	connect(&fparser,&ExpParser::badExp,
 		this,&DrawCore::functionExeption);
 
-	double i = gridMinX;
-	double sX, sY, bX, bY;
-
-	bX = gridMinX;
-	bY = fparser.getR(i);
-	if (wrongExp) {
+	if (fparser.getR(0) == 666) {
 		emit badGraphicExpError();
-		//TODO return std::nullptr_t;
+		return nullptr;
 	}
 
+	double sX, sY, bX, bY;
+	bX = gridMinX;
+	bY = fparser.getR(bX);
 	sX = cX+gridStep*bX;
 	sY = cY-gridStep*bY;
 
-	grphc.append(QPoint(round(sX),round(sY)));
+	auto grphc = new QPolygon;
+	grphc->append(QPoint(round(sX),round(sY)));
 
-	for (; i < gridMaxX; i += step) {
+	for (double i = gridMinX; i < gridMaxX; i += step) {
 		bX = i;
 		bY = fparser.getR(i);
-		emit parserMsg(tr("Last value ") + QString::number(bY));
 
 		sX = cX+gridStep*bX;
 		sY = cY-gridStep*bY;
-		grphc.append(QPoint(round(sX),round(sY)));
+		grphc->append(QPoint(round(sX),round(sY)));
 	}
+	emit drawError(tr("Last value ") + QString::number(bY));
 	return grphc;
 }
 
-QList<QPolygon> DrawCore::splitGraphicToPolygons(QPolygon points_of_graphic)
+QList<QPolygon> *DrawCore::splitGraphicToPolygons(QPolygon *points_of_graphic)
 {
-	//if (points_of_graphic == std::nullptr_t)
-	// TODO	return std::nullptr_t;
-	QList<QPolygon> polygons;
-	polygons.append(points_of_graphic);
-	auto *current = &polygons.last();
+	if (!points_of_graphic)
+		return nullptr;
+	auto polygons = new QList<QPolygon>;
+	polygons->append(*points_of_graphic);
+	auto *current = &polygons->last();
 	for (int i = 1; i < current->size(); i++) {
 		if (abs(
 				current->at(i-1).x()
@@ -733,17 +724,18 @@ QList<QPolygon> DrawCore::splitGraphicToPolygons(QPolygon points_of_graphic)
 				current->at(i).x()) > width
 		    ) {
 			current->removeAt(i);
-			polygons.append(current->mid(0, i));
-			polygons.append(current->mid(i, current->size()-i));
-			polygons.removeAt(polygons.size() - 3);
-			current = &polygons.last();
+			polygons->append(current->mid(0, i));
+			polygons->append(current->mid(i, current->size()-i));
+			polygons->removeAt(polygons->size() - 3);
+			current = &polygons->last();
 			qDebug() << "HERE!";
 		}
 	}
+	delete points_of_graphic;
 	return polygons;
 }
 
-double DrawCore::getGraphicStep()
+inline double DrawCore::getGraphicStep()
 {
 	return (double)1/cpStep;
 }
@@ -751,9 +743,9 @@ double DrawCore::getGraphicStep()
 /*
  * Sets choosen tool active
  */
-void DrawCore::setActiveTool(DrawTool whichTool)
+void DrawCore::setActiveTool(DrawTool tool)
 {
-	activeTool = whichTool;
+	activeTool = tool;
 	painting = 0;
 	joggedLineFirstClickDone = true;
 	switch(activeTool) {
@@ -778,17 +770,6 @@ void DrawCore::setActiveTool(DrawTool whichTool)
 	default:
 		break;
 	}
-}
-
-/*
- * Returns pen's color, where pen is code:
- * *0 for left
- * *1 for right
- */
-QColor DrawCore::getPenColor(bool pen)
-{
-	if (!pen) return this->pen.color();
-	else return this->rpen.color();
 }
 
 bool DrawCore::isModified()
@@ -958,9 +939,8 @@ void DrawCore::drawCoordPlane(int coordPlaneStep, QColor clr, int penWidth, qrea
  */
 void DrawCore::drawGraphic(QString func, QColor color, int penWidth)
 {
-	wrongExp = false;
 	if (cpStep == -1) {
-		emit parserMsg("No coordinate plane drawed!");
+		emit drawError("No coordinate plane drawed!");
 		return;
 	}
 
@@ -973,22 +953,24 @@ void DrawCore::drawGraphic(QString func, QColor color, int penWidth)
 	painter->setPen(gpen);
 
 	painter->setRenderHint(QPainter::Antialiasing);
-//	TODO: drawing point-by-point
 
-	QList<QPolygon> polygons = splitGraphicToPolygons(
+	auto polygons = splitGraphicToPolygons(
 					   findAllPointsOfGraphic(
 						   func,
 						   getGraphicStep()));
 
-	//TODO reaction to NULL
-	qDebug() << "PSIZE" << polygons.size();
-	for (auto i : polygons)
-		painter->drawPolyline(i);
+	if (!polygons) {
+		emit drawError("Can't draw this!");
+	} else {
+		for (auto i : *polygons)
+			painter->drawPolyline(i);
 
-	painter->end();
+		painter->end();
+		delete polygons;
 
-	remember();
-	refresh();
+		remember();
+		refresh();
+	}
 }
 
 
@@ -997,7 +979,7 @@ void DrawCore::drawGraphic(QString func, QColor color, int penWidth)
  */
 void DrawCore::setSticky(bool ans)
 {
-	_sticking = ans;
+	sticking = ans;
 }
 
 /*
@@ -1005,6 +987,5 @@ void DrawCore::setSticky(bool ans)
  */
 void DrawCore::functionExeption(QString msg)
 {
-	wrongExp = true;
-	emit parserMsg(msg);
+	emit drawError(msg);
 }

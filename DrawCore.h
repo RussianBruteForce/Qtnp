@@ -35,7 +35,6 @@ public:
 	explicit DrawCore();
 	bool loadImage(const QString path);
 	bool saveImage(const QString path);
-	QColor getPenColor(bool pen);
 	bool isModified();
 
 protected:
@@ -45,23 +44,23 @@ protected:
 
 private:
 	void refresh();
-	void drawLine(QPen p);
-	void drawSquare(QPen p);
-	void drawEllipse(QPen p);
-	void drawCircle(QPen p);
-	void fill(QRgb color);
+	void drawLine(const QPen &p);
+	void drawSquare(const QPen &p);
+	void drawEllipse(const QPen &p);
+	void drawCircle(const QPen &p);
+	void fill(const QRgb color);
 	void remember();
-	QPoint closestGridPoint(QPoint p);
-	QPoint getCoordinatesOfGridPoint(QPoint gridPoint,int step);
-	QPoint getGridPointByCoordinates(QPoint coordinate, int step);
-	int round(double num);
-	QPolygon findAllPointsOfGraphic(QString function_string, double step);
-	QList<QPolygon> splitGraphicToPolygons(QPolygon points_of_graphic);
-	double getGraphicStep();
+	inline QPoint closestGridPoint(const QPoint &p);
+	inline QPoint getCoordinatesOfGridPoint(QPoint gridPoint,int step);
+	inline QPoint getGridPointByCoordinates(QPoint coordinate, int step);
+	inline int round(double num);
+	QPolygon* findAllPointsOfGraphic(QString &function_string, double step);
+	QList<QPolygon>* splitGraphicToPolygons(QPolygon *points_of_graphic);
+	inline double getGraphicStep();
 
 	bool modified;
 	int width, height;
-	bool painting, joggedLineFirstClickDone, _sticking, wrongExp;
+	bool painting, joggedLineFirstClickDone, sticking;
 	DrawTool activeTool;
 	QPoint start, end;
 	QPixmap *image;
@@ -69,7 +68,7 @@ private:
 	QPen pen, rpen;
 	QBrush brush;
 	QPainter *painter;
-	QList<QPixmap> prevList;
+	QList<QPixmap> oldImages;
 	int cX, cY; // image's center
 	int gridMaxX, gridMaxY, gridMinX, gridMinY;
 	int gridStep, cpStep;
@@ -77,10 +76,9 @@ private:
 public slots:
 	void setPenColor(QColor color);
 	void setRPenColor(QColor color);
-	void setBrushColor(QColor color); // check
 	void setThickness(int size);
 	void prev();
-	void setActiveTool(DrawTool);
+	void setActiveTool(DrawTool tool);
 	void newImage(int x, int y, QColor color);
 	void negative();
 	void grayscale();
@@ -95,7 +93,7 @@ private slots:
 signals:
 	void resetToolMenu();
 	void badGraphicExpError();
-	void parserMsg(QString);
+	void drawError(QString msg);
 };
 
 #endif // DRAWCORE_H

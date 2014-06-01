@@ -1,4 +1,4 @@
-/*
+﻿/*
  *This file is part of Qtnp.
  *
  * Qtnp is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@ using namespace mu;
 ExpParser::ExpParser()
 {
 	Parser p;
-};
+}
 
 void ExpParser::setE(QString str)
 {
@@ -36,6 +36,6 @@ double ExpParser::getR(value_type x)
 		return p.Eval();
 	} catch (Parser::exception_type &e) {
 		emit badExp(QString::fromStdString(e.GetMsg()));
-		return 0;
+		return 666; // FOR THE SATAN
 	}
 }

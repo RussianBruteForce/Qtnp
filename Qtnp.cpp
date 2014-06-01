@@ -88,7 +88,7 @@ void Qtnp::makeConnections()
 	 * toolBar
 	 */
 	{
-		connect(image, &DrawCore::parserMsg,
+		connect(image, &DrawCore::drawError,
 		        statusLine, &QLineEdit::setText);
 
 		connect(newFileButton, &QToolButton::clicked,
@@ -405,8 +405,8 @@ void Qtnp::fullScreen()
 
 void Qtnp::swapPens()
 {
-	auto buf = image->getPenColor(0);
-	penColor->setColor(image->getPenColor(1));
+	auto buf = this->penColor->color();
+	penColor->setColor(this->rpenColor->color());
 	rpenColor->setColor(buf);
 }
 
@@ -420,7 +420,8 @@ void Qtnp::openFile()
 			statusLine->setText(tr("Image openned!"));
 			image->resize(image->pixmap()->size());
 			openedFileLocation = fileName;
-		} else statusLine->setText(tr("Couldn't open image ") + fileName);
+		} else
+			statusLine->setText(tr("Couldn't open image ") + fileName);
 	}
 }
 

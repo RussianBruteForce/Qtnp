@@ -1,4 +1,4 @@
-#ifndef DRAWGRAPHICDIALOG_H
+﻿#ifndef DRAWGRAPHICDIALOG_H
 #define DRAWGRAPHICDIALOG_H
 
 #include <QDialog>
