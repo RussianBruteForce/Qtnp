@@ -416,7 +416,7 @@ void Qtnp::openFile()
 	                                                tr("Image Files (*.png *.jpg *.jpeg *.bmp *.xpm *.xbm *.gif *.pbm *.pgm *.ppm)"));
 	if (!fileName.isEmpty()) {
 		if (image->loadImage(fileName)) {
-			statusLine->setText(tr("Image openned!"));
+			statusLine->setText(tr("Opened: ") + fileName);
 			image->resize(image->pixmap()->size());
 			openedFileLocation = fileName;
 		} else
@@ -584,12 +584,14 @@ void Qtnp::wrongExp()
 
 void Qtnp::nextImage()
 {
-	if (currentPresentationImage + 1 < presentationImages.size())
+	if (currentPresentationImage + 1 < presentationImages.size()) {
 		image->loadImage(QString(s->presentationDirectory() + "/")
 				 +
 				 presentationImages.at(
 					 ++currentPresentationImage));
+		statusLine->setText("Opened: " + presentationImages.at(currentPresentationImage));
 
+	}
 	if (currentPresentationImage + 1 == presentationImages.size())
 		nImage->setDisabled(true);
 	else
@@ -603,11 +605,17 @@ void Qtnp::nextImage()
 
 void Qtnp::prevImage()
 {
-	if (currentPresentationImage > 0)
-		image->loadImage(QString(s->presentationDirectory() + "/") + presentationImages.at(--currentPresentationImage));
+	if (currentPresentationImage > 0) {
+		image->loadImage(QString(s->presentationDirectory()+ "/")
+				 +
+				 presentationImages.at(
+					 --currentPresentationImage));
+		statusLine->setText("Opened: " + presentationImages.at(currentPresentationImage));
+	}
 	if (currentPresentationImage == 0)
 		pImage->setDisabled(true);
-	else pImage->setEnabled(true);
+	else
+		pImage->setEnabled(true);
 	if (currentPresentationImage + 1 == presentationImages.size())
 		nImage->setDisabled(true);
 	else nImage->setEnabled(true);
