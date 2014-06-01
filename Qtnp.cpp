@@ -554,20 +554,22 @@ void Qtnp::about()
 {
 	QMessageBox::about(this, tr("About Qtnp"),
 			   tr(
-					   "<p align=\"center\"><span style=\" font-size:14pt; font-weight:600; color:#20AA20;\">Cute Noob-Painter Qt5</span></p>"
-					   "<br>"
-					   "&nbsp; Qtnp  Copyright &copy; 2012  Victor &lt;BruteForce&gt;<br>"
-					   "&nbsp; This program comes with ABSOLUTELY NO WARRANTY.<br>"
-					   "&nbsp; This is free software, and you are welcome to<br>"
-					   "&nbsp; redistribute it under certain conditions.<br>"
-					   "&nbsp; For more look at <a href=\"http://www.gnu.org/licenses/gpl-3.0.html\">www.gnu.org</a><br>"
-					   "<p align=\"center\"><img src=\":resources/GNU_GPLv3_Logo.png\" width=\"250\" height=\"124\" /></p>"
-					   "&nbsp; Official git repo: <a href=\"https://github.com/RussianBruteForce/Qtnp\">https://github.com/RussianBruteForce/Qtnp</a><br>"
-					   "<br>"
-					   "&nbsp; E-mail: <a href=\"mailto:bruteforce@sigil.tk\">bruteforce@sigil.tk</a>"
-					   "<br>"
-					   "&nbsp; Icons by <a href=\"http://icomoon.io\">icomoon.io</a> under <a href=\"http://creativecommons.org/licenses/by/3.0\">CC BY 3.0</a>"
-					   ));
+				   "<p align=\"center\"><span style=\" font-size:14pt; font-weight:600; color:#20AA20;\">Cute Noob-Painter Qt5 "
+				    VERSION
+				   "</span></p>"
+				   "<br>"
+				   "&nbsp; Qtnp  Copyright &copy; 2014  Victor &lt;BruteForce&gt;<br>"
+				   "&nbsp; This program comes with ABSOLUTELY NO WARRANTY.<br>"
+				   "&nbsp; This is free software, and you are welcome to<br>"
+				   "&nbsp; redistribute it under certain conditions.<br>"
+				   "&nbsp; For more look at <a href=\"http://www.gnu.org/licenses/gpl-3.0.html\">www.gnu.org</a><br>"
+				   "<p align=\"center\"><img src=\":resources/GNU_GPLv3_Logo.png\" width=\"250\" height=\"124\" /></p>"
+				   "&nbsp; Official git repo:<br><a href=\"https://github.com/RussianBruteForce/Qtnp\">https://github.com/RussianBruteForce/Qtnp</a><br>"
+				   "<br>"
+				   "&nbsp; E-mail: <a href=\"mailto:bruteforce@sigil.tk\">bruteforce@sigil.tk</a>"
+				   "<br>"
+				   "&nbsp; Icons by <a href=\"http://icomoon.io\">icomoon.io</a> under <a href=\"http://creativecommons.org/licenses/by/3.0\">CC BY 3.0</a>"
+				   ));
 }
 
 void Qtnp::wrongExp()
