@@ -27,7 +27,6 @@ Qtnp::Qtnp(Settings &settings, QWidget *parent) :
 	ui->setupUi(this);
 	setWindowIcon(QIcon(":/resources/icon.png"));
 
-	//s = new Settings;
 	s = &settings;
 }
 
@@ -307,7 +306,7 @@ void Qtnp::preparePresentation()
 	nf += "*.jpg";
 	nf += "*.bmp";
 	presentationImages = d->entryList(nf ,QDir::Files, QDir::Name);
-	if (presentationImages.size() == 0)
+	if (presentationImages.isEmpty())
 		nImage->setDisabled(true);
 	else {
 		nImage->setEnabled(true);

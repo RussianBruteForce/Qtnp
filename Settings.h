@@ -9,7 +9,7 @@
 /*
  * Define Qtnp version
  */
-#define VERSION "2.0.0-alpha"
+#define VERSION "2.0.0-beta"
 
 /*
  * Config file settings:
