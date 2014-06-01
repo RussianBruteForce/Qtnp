@@ -64,7 +64,6 @@ private:
 	DrawTool activeTool;
 	QPoint start, end;
 	QPixmap *image;
-	QPixmap imageCopy;
 	QPen pen, rpen;
 	QBrush brush;
 	QPainter *painter;

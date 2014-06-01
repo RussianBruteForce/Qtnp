@@ -177,25 +177,21 @@ void DrawCore::mousePressEvent(QMouseEvent *event)
 		case DrawTool::LINE:
 			painting = 1;
 			remember();
-			imageCopy = *image;
 			start = end = event->pos();
 			break;
 		case DrawTool::SQUARE:
 			painting = 1;
 			remember();
-			imageCopy = *image;
 			start = end = event->pos();
 			break;
 		case DrawTool::ELLIPSE:
 			painting = 1;
 			remember();
-			imageCopy = *image;
 			start = end = event->pos();
 			break;
 		case DrawTool::CIRCLE:
 			painting = 1;
 			remember();
-			imageCopy = *image;
 			start = end = event->pos();
 			break;
 		case DrawTool::JOGGED_LINE:
@@ -208,12 +204,10 @@ void DrawCore::mousePressEvent(QMouseEvent *event)
 				end = event->pos();
 				drawLine(pen);
 				start = end;
-				imageCopy = *image;
 			}
 			break;
 		case DrawTool::FILL:
 			remember();
-			imageCopy = *image;
 			start = event->pos();
 			fill(pen.color().rgb());
 			break;
@@ -232,25 +226,21 @@ void DrawCore::mousePressEvent(QMouseEvent *event)
 		case DrawTool::LINE:
 			painting = 1;
 			remember();
-			imageCopy = *image;
 			start = end = event->pos();
 			break;
 		case DrawTool::SQUARE:
 			painting = 1;
 			remember();
-			imageCopy = *image;
 			start = end = event->pos();
 			break;
 		case DrawTool::ELLIPSE:
 			painting = 1;
 			remember();
-			imageCopy = *image;
 			start = end = event->pos();
 			break;
 		case DrawTool::CIRCLE:
 			painting = 1;
 			remember();
-			imageCopy = *image;
 			start = end = event->pos();
 			break;
 		case DrawTool::JOGGED_LINE:
@@ -260,7 +250,6 @@ void DrawCore::mousePressEvent(QMouseEvent *event)
 		case DrawTool::FILL:
 			qDebug() << "MOUSE R PRESS EVENT";
 			remember();
-			imageCopy = *image;
 			start = event->pos();
 			fill(rpen.color().rgb());
 			break;
@@ -285,19 +274,19 @@ void DrawCore::mouseMoveEvent(QMouseEvent *event)
 			start = end;
 			break;
 		case DrawTool::LINE:
-			*image = imageCopy;
+			*image = oldImages.last();
 			drawLine(pen);
 			break;
 		case DrawTool::SQUARE:
-			*image = imageCopy;
+			*image = oldImages.last();
 			drawSquare(pen);
 			break;
 		case DrawTool::ELLIPSE:
-			*image = imageCopy;
+			*image = oldImages.last();
 			drawEllipse(pen);
 			break;
 		case DrawTool::CIRCLE:
-			*image = imageCopy;
+			*image = oldImages.last();
 			drawLine(pen);
 			drawCircle(pen);
 			break;
@@ -314,19 +303,19 @@ void DrawCore::mouseMoveEvent(QMouseEvent *event)
 			start = end;
 			break;
 		case DrawTool::LINE:
-			*image = imageCopy;
+			*image = oldImages.last();
 			drawLine(rpen);
 			break;
 		case DrawTool::SQUARE:
-			*image = imageCopy;
+			*image = oldImages.last();
 			drawSquare(rpen);
 			break;
 		case DrawTool::ELLIPSE:
-			*image = imageCopy;
+			*image = oldImages.last();
 			drawEllipse(rpen);
 			break;
 		case DrawTool::CIRCLE:
-			*image = imageCopy;
+			*image = oldImages.last();
 			drawLine(rpen);
 			drawCircle(rpen);
 			break;
@@ -351,22 +340,22 @@ void DrawCore::mouseReleaseEvent(QMouseEvent *event)
 			painting = 0;
 			break;
 		case DrawTool::LINE:
-			*image = imageCopy;
+			*image = oldImages.last();
 			drawLine(pen);
 			painting = 0;
 			break;
 		case DrawTool::SQUARE:
-			*image = imageCopy;
+			*image = oldImages.last();
 			drawSquare(pen);
 			painting = 0;
 			break;
 		case DrawTool::ELLIPSE:
-			*image = imageCopy;
+			*image = oldImages.last();
 			drawEllipse(pen);
 			painting = 0;
 			break;
 		case DrawTool::CIRCLE:
-			*image = imageCopy;
+			*image = oldImages.last();
 			drawCircle(pen);
 			painting = 0;
 			break;
@@ -383,22 +372,22 @@ void DrawCore::mouseReleaseEvent(QMouseEvent *event)
 			painting = 0;
 			break;
 		case DrawTool::LINE:
-			*image = imageCopy;
+			*image = oldImages.last();
 			drawLine(rpen);
 			painting = 0;
 			break;
 		case DrawTool::SQUARE:
-			*image = imageCopy;
+			*image = oldImages.last();
 			drawSquare(rpen);
 			painting = 0;
 			break;
 		case DrawTool::ELLIPSE:
-			*image = imageCopy;
+			*image = oldImages.last();
 			drawEllipse(rpen);
 			painting = 0;
 			break;
 		case DrawTool::CIRCLE:
-			*image = imageCopy;
+			*image = oldImages.last();
 			drawCircle(rpen);
 			painting = 0;
 			break;
@@ -556,7 +545,6 @@ SKIP:			for (++x; x <= x2 && img.pixel(x, y) != oldColor; ++x) {;}
 	}
 
 	*image = QPixmap::fromImage(img);
-	remember();
 	refresh();
 }
 
@@ -590,13 +578,10 @@ void DrawCore::setThickness(int size)
  */
 void DrawCore::undo(void)
 {
-	//if (!(oldImages.size() < 3)) {
-	//	*image = oldImages.last();
-	//	oldImages.pop_back();
-	//	refresh();
-	//}
-	if (!oldImages.isEmpty()) *image = oldImages.takeLast();
-	refresh();
+	if (!oldImages.isEmpty()) {
+		*image = oldImages.takeLast();
+		refresh();
+	}
 }
 
 /*
@@ -782,6 +767,7 @@ bool DrawCore::isModified()
  */
 void DrawCore::drawGrid(int step, QColor color, int penWidth)
 {
+	remember();
 	int x,y;
 	QPen gridPen;
 	gridPen.setColor(color);
@@ -808,7 +794,6 @@ void DrawCore::drawGrid(int step, QColor color, int penWidth)
 
 	painter->end();
 
-	remember();
 	refresh();
 }
 
@@ -817,6 +802,7 @@ void DrawCore::drawGrid(int step, QColor color, int penWidth)
  */
 void DrawCore::drawCoordPlane(int coordPlaneStep, QColor clr, int penWidth, qreal numbersOpacity)
 {
+	remember();
 	cpStep = coordPlaneStep;
 	int markSize;
 
@@ -930,7 +916,6 @@ void DrawCore::drawCoordPlane(int coordPlaneStep, QColor clr, int penWidth, qrea
 
 	painter->end();
 
-	remember();
 	refresh();
 }
 
@@ -943,6 +928,7 @@ void DrawCore::drawGraphic(QString func, QColor color, int penWidth)
 		emit drawError("No coordinate plane drawed!");
 		return;
 	}
+	remember();
 
 	painter->begin(image);
 	QPen gpen;
@@ -968,7 +954,6 @@ void DrawCore::drawGraphic(QString func, QColor color, int penWidth)
 		painter->end();
 		delete polygons;
 
-		remember();
 		refresh();
 	}
 }
