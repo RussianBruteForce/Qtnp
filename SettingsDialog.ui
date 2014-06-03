@@ -20,7 +20,7 @@
       <enum>QTabWidget::South</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="values">
       <attribute name="title">
@@ -527,6 +527,13 @@
         <widget class="QCheckBox" name="reverse">
          <property name="text">
           <string>Reverse ToolBar</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="fullscreen">
+         <property name="text">
+          <string>Run in fullscreen</string>
          </property>
         </widget>
        </item>

@@ -74,7 +74,11 @@ int main(int argc, char *argv[])
 	w.loadToolbar(w.s->reverseToolBar());
 
 	if (!argOpen.isNull()) w.image->loadImage(argOpen);
-	w.show();
+
+	w.showMaximized();
+	if (s->fullscreen())
+		w.fullScreen();
+
 	splash->finish(&w);
 	delete splash;
 	return a.exec();

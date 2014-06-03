@@ -88,6 +88,7 @@ void SettingsDialog::save()
 	s->setSyncCPToGrid(ui->sync->isChecked());
 	s->setAutoPresentation(ui->autoPresentation->isChecked());
 	s->setReverseToolBar(ui->reverse->isChecked());
+	s->setFullscreen(ui->fullscreen->isChecked());
 
 	if (ui->language->currentIndex() == 0)
 		s->setLanguage("en");
@@ -122,12 +123,12 @@ void SettingsDialog::updateUI()
 	ui->reverse->setChecked(s->reverseToolBar());
 	ui->sync->setChecked(s->syncCPToGrid());
 	ui->autoPresentation->setChecked(s->autoPresentation());
+	ui->fullscreen->setChecked(s->fullscreen());
 
 	if (s->language() == "en")
 		ui->language->setCurrentIndex(0);
-	else
-		if (s->language() == "ru")
-			ui->language->setCurrentIndex(1);
+	else if (s->language() == "ru")
+		ui->language->setCurrentIndex(1);
 
 	ui->templatesCB->setCurrentIndex(s->imageTemplate());
 	ui->presentationDir->setText(s->presentationDirectory());

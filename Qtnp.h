@@ -76,12 +76,14 @@ private:
 	QStringList presentationImages;
 	int currentPresentationImage;
 
+public slots:
+	void fullScreen();
+
 private slots:
 	void newFile();
 	void save();
 	void saveAs();
 	void exit();
-	void fullScreen();
 	void swapPens();
 	void openFile();
 	void drawGCP();
