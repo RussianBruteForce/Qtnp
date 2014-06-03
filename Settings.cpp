@@ -132,6 +132,16 @@ QList<QPoint> *Settings::templates()
 	return &standartImageTemplates;
 }
 
+QByteArray Settings::geometry()
+{
+	return this->value(GEOMETRY).toByteArray();
+}
+
+QByteArray Settings::windowState()
+{
+	return this->value(WINDOWSTATE).toByteArray();
+}
+
 void Settings::restoreDefaults()
 {
 	setBgColor(DBG_COLOR);
@@ -265,4 +275,14 @@ void Settings::setRealCP(bool p)
 void Settings::setFullscreen(bool p)
 {
 	this->setValue(FULLSCREEN, p);
+}
+
+void Settings::setGeometry(QByteArray g)
+{
+	this->setValue(GEOMETRY, g);
+}
+
+void Settings::setWindowState(QByteArray s)
+{
+	this->setValue(WINDOWSTATE, s);
 }

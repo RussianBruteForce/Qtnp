@@ -391,11 +391,12 @@ void Qtnp::exit()
 void Qtnp::fullScreen()
 {
 	if (!this->isFullScreen()) {
+		s->setGeometry(saveGeometry());
 		this->showFullScreen();
 		ui->menuBar->setVisible(false);
 		fullscreenButton->setIcon(QIcon(":/resources/normal.png"));
-	}
-	else {
+	} else {
+		restoreGeometry(s->geometry());
 		this->showNormal();
 		ui->menuBar->setVisible(true);
 		fullscreenButton->setIcon(QIcon(":/resources/fullscreen.png"));
@@ -623,6 +624,7 @@ void Qtnp::prevImage()
 
 void Qtnp::closeEvent(QCloseEvent *event)
 {
+	s->setGeometry(saveGeometry());
 	if (image->isModified()) {
 		this->setDisabled(true);
 		int r = QMessageBox::warning(this, tr("Qtnp"),

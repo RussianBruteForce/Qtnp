@@ -75,7 +75,8 @@ int main(int argc, char *argv[])
 
 	if (!argOpen.isNull()) w.image->loadImage(argOpen);
 
-	w.showMaximized();
+	w.show();
+	w.restoreGeometry(s->geometry());
 	if (s->fullscreen())
 		w.fullScreen();
 

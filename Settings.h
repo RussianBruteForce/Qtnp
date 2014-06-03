@@ -135,6 +135,12 @@
 #define FULLSCREEN "fullscreen"
 #define DFULLSCREEN            false
 
+/*
+ * Window geometry
+ */
+#define GEOMETRY "geometry"
+//#define DGEOMETRY            false
+
 
 class Settings : public QSettings
 {
@@ -165,6 +171,7 @@ public:
 	QString language();
 	QString presentationDirectory();
 	QList<QPoint>* templates();
+	QByteArray geometry();
 	
 signals:
 	
@@ -193,6 +200,7 @@ public slots:
 	void setRealGrid(bool p);
 	void setRealCP(bool p);
 	void setFullscreen(bool p);
+	void setGeometry(QByteArray g);
 
 private:
 	QColor white, black;
