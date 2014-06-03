@@ -129,6 +129,12 @@
 #define NUMBERSOPACITY "numbersOpacity"
 #define DNUMBERSOPACITY                0.65
 
+/*
+ * Run in fullscreen
+ */
+#define FULLSCREEN "fullscreen"
+#define DFULLSCREEN            false
+
 
 class Settings : public QSettings
 {
@@ -155,6 +161,7 @@ public:
 	bool autoPresentation();
 	bool realGrid();
 	bool realCP();
+	bool fullscreen();
 	QString language();
 	QString presentationDirectory();
 	QList<QPoint>* templates();
@@ -185,6 +192,7 @@ public slots:
 	void setPresentationDirectory(QString d);
 	void setRealGrid(bool p);
 	void setRealCP(bool p);
+	void setFullscreen(bool p);
 
 private:
 	QColor white, black;

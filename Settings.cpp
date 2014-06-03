@@ -112,6 +112,11 @@ bool Settings::realCP()
 	return this->value(REALCP, DREALCP).toBool();
 }
 
+bool Settings::fullscreen()
+{
+	return this->value(FULLSCREEN, DFULLSCREEN).toBool();
+}
+
 QString Settings::language()
 {
 	return this->value(LANGUAGE, DLANGUAGE).toString();
@@ -147,6 +152,7 @@ void Settings::restoreDefaults()
 	setAutoPresentation(DAUTO_PRESENTATION);
 	setRealCP(DREALCP);
 	setRealGrid(DREALGRID);
+	setFullscreen(DFULLSCREEN);
 	setLanguage(DLANGUAGE);
 	setPresentationDirectory(DPRESENTATION_DIRECTORY);
 }
@@ -254,4 +260,9 @@ void Settings::setRealGrid(bool p)
 void Settings::setRealCP(bool p)
 {
 	this->setValue(REALGRID, p);
+}
+
+void Settings::setFullscreen(bool p)
+{
+	this->setValue(FULLSCREEN, p);
 }
