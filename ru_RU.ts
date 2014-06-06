@@ -13,7 +13,7 @@
 <context>
     <name>DrawCore</name>
     <message>
-        <location filename="DrawCore.cpp" line="797"/>
+        <location filename="DrawCore.cpp" line="675"/>
         <source>Last value </source>
         <translatorcomment>калькулятор</translatorcomment>
         <translation>Последнее значение</translation>
@@ -46,22 +46,22 @@
         <source>Formula</source>
         <translation>Формула</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="DrawGraphicDialog.ui" line="85"/>
         <source>Π</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="DrawGraphicDialog.ui" line="109"/>
         <source>Π/3</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="DrawGraphicDialog.ui" line="133"/>
         <source>Π/4</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="DrawGraphicDialog.ui" line="157"/>
         <source>Π/6</source>
         <translation></translation>
@@ -101,7 +101,7 @@
         <source>atan</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="DrawGraphicDialog.ui" line="363"/>
         <source>√</source>
         <translation></translation>
@@ -335,15 +335,20 @@ Write it or click CANCEL.</source>
     </message>
     <message>
         <location filename="GCPWidget.cpp" line="32"/>
-        <location filename="GCPWidget.cpp" line="57"/>
+        <location filename="GCPWidget.cpp" line="59"/>
         <source>Step:</source>
         <translation>Шаг:</translation>
     </message>
     <message>
-        <location filename="GCPWidget.cpp" line="44"/>
-        <location filename="GCPWidget.cpp" line="69"/>
+        <location filename="GCPWidget.cpp" line="45"/>
+        <location filename="GCPWidget.cpp" line="72"/>
         <source>Color and thickness:</source>
         <translation>Цвет и толщина:</translation>
+    </message>
+    <message>
+        <location filename="GCPWidget.cpp" line="85"/>
+        <source>Coordinate plane opacity:</source>
+        <translation>Прозрачность координатной плоскости:</translation>
     </message>
 </context>
 <context>
@@ -359,17 +364,22 @@ Write it or click CANCEL.</source>
         <translation>Шаблон:</translation>
     </message>
     <message>
-        <location filename="NewFileDialog.ui" line="49"/>
+        <location filename="NewFileDialog.ui" line="32"/>
+        <source>Remove toolbar height</source>
+        <translation>Вычесть ширину тулбара</translation>
+    </message>
+    <message>
+        <location filename="NewFileDialog.ui" line="56"/>
         <source>Width:</source>
         <translation>Ширина:</translation>
     </message>
     <message>
-        <location filename="NewFileDialog.ui" line="66"/>
+        <location filename="NewFileDialog.ui" line="73"/>
         <source>Height:</source>
         <translation>Высота:</translation>
     </message>
     <message>
-        <location filename="NewFileDialog.ui" line="96"/>
+        <location filename="NewFileDialog.ui" line="103"/>
         <source>Background:</source>
         <translation>Фон:</translation>
     </message>
@@ -377,7 +387,7 @@ Write it or click CANCEL.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="main.cpp" line="44"/>
+        <location filename="main.cpp" line="45"/>
         <source>Setting up the main window...</source>
         <translation>Настройка главного окна...</translation>
     </message>
@@ -386,12 +396,12 @@ Write it or click CANCEL.</source>
         <translation type="obsolete">Загрузка русификации...</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="59"/>
+        <location filename="main.cpp" line="60"/>
         <source>Making UI...</source>
         <translation>Создание UI...</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="63"/>
+        <location filename="main.cpp" line="64"/>
         <source>Prepare presentation...</source>
         <translation>Подготовка презентации...</translation>
     </message>
@@ -400,12 +410,12 @@ Write it or click CANCEL.</source>
         <translation type="obsolete">Подготовка презентаций</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="67"/>
+        <location filename="main.cpp" line="68"/>
         <source>Making SIGNAL-&gt;SLOT connections...</source>
         <translation>Сигнал-слоты...</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="71"/>
+        <location filename="main.cpp" line="72"/>
         <source>Loading Toolbar...</source>
         <translation>Загрузка тулбара...</translation>
     </message>
@@ -414,7 +424,7 @@ Write it or click CANCEL.</source>
     <name>Qtnp</name>
     <message>
         <location filename="Qtnp.ui" line="14"/>
-        <location filename="Qtnp.cpp" line="602"/>
+        <location filename="Qtnp.cpp" line="630"/>
         <source>Qtnp</source>
         <translation></translation>
     </message>
@@ -449,206 +459,211 @@ Write it or click CANCEL.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Qtnp.ui" line="118"/>
+        <location filename="Qtnp.ui" line="121"/>
         <source>&amp;New</source>
         <translation>Новый</translation>
     </message>
     <message>
-        <location filename="Qtnp.ui" line="121"/>
+        <location filename="Qtnp.ui" line="124"/>
         <source>Ctrl+N</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Qtnp.ui" line="126"/>
+        <location filename="Qtnp.ui" line="129"/>
         <source>&amp;Open</source>
         <translation>Открыть</translation>
     </message>
     <message>
-        <location filename="Qtnp.ui" line="129"/>
+        <location filename="Qtnp.ui" line="132"/>
         <source>Ctrl+O</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Qtnp.ui" line="134"/>
+        <location filename="Qtnp.ui" line="137"/>
         <source>&amp;Save</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="Qtnp.ui" line="137"/>
+        <location filename="Qtnp.ui" line="140"/>
         <source>Ctrl+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Qtnp.ui" line="142"/>
+        <location filename="Qtnp.ui" line="145"/>
         <source>Save as...</source>
         <translation>Сохранить как...</translation>
     </message>
     <message>
-        <location filename="Qtnp.ui" line="145"/>
+        <location filename="Qtnp.ui" line="148"/>
         <source>Ctrl+Shift+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Qtnp.ui" line="150"/>
+        <location filename="Qtnp.ui" line="153"/>
         <source>E&amp;xit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="Qtnp.ui" line="153"/>
+        <location filename="Qtnp.ui" line="156"/>
         <source>Ctrl+X, Ctrl+Q</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Qtnp.ui" line="158"/>
+        <location filename="Qtnp.ui" line="161"/>
         <source>Negative</source>
         <translation>Негатив</translation>
     </message>
     <message>
-        <location filename="Qtnp.ui" line="163"/>
+        <location filename="Qtnp.ui" line="166"/>
         <source>Grayscale</source>
         <translation>В оттенках серого</translation>
     </message>
     <message>
-        <location filename="Qtnp.ui" line="168"/>
-        <location filename="Qtnp.cpp" line="546"/>
+        <location filename="Qtnp.ui" line="171"/>
+        <location filename="Qtnp.cpp" line="556"/>
         <source>About Qtnp</source>
         <translation>О Qtnp</translation>
     </message>
     <message>
-        <location filename="Qtnp.ui" line="171"/>
+        <location filename="Qtnp.ui" line="174"/>
         <source>Ctrl+A</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Qtnp.ui" line="176"/>
-        <location filename="Qtnp.cpp" line="194"/>
+        <location filename="Qtnp.ui" line="179"/>
+        <location filename="Qtnp.cpp" line="193"/>
         <source>Fullscreen</source>
         <translation>Полноэкранный режим</translation>
     </message>
     <message>
-        <location filename="Qtnp.ui" line="179"/>
+        <location filename="Qtnp.ui" line="182"/>
         <source>F11</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Qtnp.ui" line="184"/>
+        <location filename="Qtnp.ui" line="187"/>
         <source>GTK+</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Qtnp.ui" line="187"/>
+        <location filename="Qtnp.ui" line="190"/>
         <source>Ctrl+G</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Qtnp.ui" line="192"/>
+        <location filename="Qtnp.ui" line="195"/>
         <source>Plastique</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Qtnp.ui" line="195"/>
+        <location filename="Qtnp.ui" line="198"/>
         <source>Ctrl+P</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Qtnp.ui" line="200"/>
+        <location filename="Qtnp.ui" line="203"/>
         <source>CDE</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Qtnp.ui" line="205"/>
+        <location filename="Qtnp.ui" line="208"/>
         <source>Motif</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Qtnp.ui" line="210"/>
+        <location filename="Qtnp.ui" line="213"/>
         <source>Windows</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Qtnp.ui" line="215"/>
+        <location filename="Qtnp.ui" line="218"/>
         <source>Windows XP</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Qtnp.ui" line="220"/>
+        <location filename="Qtnp.ui" line="223"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="Qtnp.cpp" line="148"/>
+        <location filename="Qtnp.cpp" line="147"/>
         <source>Right pen color</source>
         <translation>Правый цвет</translation>
     </message>
     <message>
-        <location filename="Qtnp.cpp" line="151"/>
+        <location filename="Qtnp.cpp" line="150"/>
         <source>Pen color</source>
         <translation>Цвет кисти</translation>
     </message>
     <message>
-        <location filename="Qtnp.cpp" line="161"/>
+        <location filename="Qtnp.cpp" line="160"/>
         <source>Next image</source>
         <translation>Следующее изображение</translation>
     </message>
     <message>
-        <location filename="Qtnp.cpp" line="165"/>
+        <location filename="Qtnp.cpp" line="164"/>
         <source>Previous image</source>
         <translation>Предыдущее изображение</translation>
     </message>
     <message>
-        <location filename="Qtnp.cpp" line="170"/>
+        <location filename="Qtnp.cpp" line="169"/>
         <source>Previous</source>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="Qtnp.cpp" line="175"/>
+        <location filename="Qtnp.cpp" line="174"/>
         <source>New</source>
         <translation>Новый</translation>
     </message>
     <message>
-        <location filename="Qtnp.cpp" line="180"/>
+        <location filename="Qtnp.cpp" line="179"/>
         <source>Grid</source>
         <translation>Сетка</translation>
     </message>
     <message>
-        <location filename="Qtnp.cpp" line="185"/>
+        <location filename="Qtnp.cpp" line="184"/>
         <source>Graphic</source>
         <translation>График</translation>
     </message>
     <message>
-        <location filename="Qtnp.cpp" line="189"/>
+        <location filename="Qtnp.cpp" line="188"/>
         <source>Swap pens</source>
         <translation>Поменять кисти местами</translation>
     </message>
     <message>
-        <location filename="Qtnp.cpp" line="197"/>
+        <location filename="Qtnp.cpp" line="196"/>
         <source>Stick to web&apos;s points</source>
         <translation>Привязка к сетке</translation>
     </message>
     <message>
-        <location filename="Qtnp.cpp" line="202"/>
+        <location filename="Qtnp.cpp" line="201"/>
         <source>Cursor</source>
         <translation>Курсор</translation>
     </message>
     <message>
-        <location filename="Qtnp.cpp" line="203"/>
+        <location filename="Qtnp.cpp" line="202"/>
         <source>Line</source>
         <translation>Линия</translation>
     </message>
     <message>
-        <location filename="Qtnp.cpp" line="204"/>
+        <location filename="Qtnp.cpp" line="203"/>
         <source>Circle</source>
         <translation>Окружность</translation>
     </message>
     <message>
-        <location filename="Qtnp.cpp" line="205"/>
+        <location filename="Qtnp.cpp" line="204"/>
         <source>Jogged Line</source>
         <translation>Ломаная</translation>
     </message>
     <message>
-        <location filename="Qtnp.cpp" line="206"/>
+        <location filename="Qtnp.cpp" line="205"/>
         <source>Pen</source>
         <translation>Карандаш</translation>
+    </message>
+    <message>
+        <location filename="Qtnp.cpp" line="206"/>
+        <source>Fill</source>
+        <translation>Заливка</translation>
     </message>
     <message>
         <location filename="Qtnp.cpp" line="207"/>
@@ -668,13 +683,13 @@ Write it or click CANCEL.</source>
     </message>
     <message>
         <location filename="Qtnp.cpp" line="348"/>
-        <location filename="Qtnp.cpp" line="376"/>
+        <location filename="Qtnp.cpp" line="377"/>
         <source>Image saved as </source>
         <translation>Изображение сохранено как </translation>
     </message>
     <message>
         <location filename="Qtnp.cpp" line="349"/>
-        <location filename="Qtnp.cpp" line="377"/>
+        <location filename="Qtnp.cpp" line="379"/>
         <source>Couldn&apos;t save image as </source>
         <translation>Не могу сохранить изображение </translation>
     </message>
@@ -694,49 +709,53 @@ Write it or click CANCEL.</source>
         <translation>Сохранить новыое изображение как...</translation>
     </message>
     <message>
-        <location filename="Qtnp.cpp" line="365"/>
+        <location filename="Qtnp.cpp" line="366"/>
         <source>Save image as...</source>
         <translation>Сохранить изображение как...</translation>
     </message>
     <message>
-        <location filename="Qtnp.cpp" line="412"/>
+        <location filename="Qtnp.cpp" line="415"/>
         <source>Open Image...</source>
         <translation>Открыть изображение...</translation>
     </message>
     <message>
-        <location filename="Qtnp.cpp" line="414"/>
+        <location filename="Qtnp.cpp" line="417"/>
         <source>Image Files (*.png *.jpg *.jpeg *.bmp *.xpm *.xbm *.gif *.pbm *.pgm *.ppm)</source>
         <translation>Файлы изображений (*.png *.jpg *.jpeg *.bmp *.xpm *.xbm *.gif *.pbm *.pgm *.ppm)</translation>
     </message>
     <message>
-        <location filename="Qtnp.cpp" line="417"/>
+        <location filename="Qtnp.cpp" line="420"/>
+        <source>Opened: </source>
+        <translation>Открыт: </translation>
+    </message>
+    <message>
+        <location filename="Qtnp.cpp" line="557"/>
+        <source>&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt; font-weight:600; color:#20AA20;&quot;&gt;Cute Noob-Painter Qt5 </source>
+        <translation></translation>
+    </message>
+    <message>
         <source>Image openned!</source>
         <translation>Изображение открыто!</translation>
     </message>
     <message>
-        <location filename="Qtnp.cpp" line="420"/>
+        <location filename="Qtnp.cpp" line="424"/>
         <source>Couldn&apos;t open image </source>
         <translation>Не могу открыть изображение </translation>
     </message>
     <message>
-        <location filename="Qtnp.cpp" line="547"/>
-        <source>&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt; font-weight:600; color:#20AA20;&quot;&gt;Cute Noob-Painter Qt5&lt;/span&gt;&lt;/p&gt;&lt;br&gt;&amp;nbsp; Qtnp  Copyright &amp;copy; 2012  Victor &amp;lt;BruteForce&amp;gt;&lt;br&gt;&amp;nbsp; This program comes with ABSOLUTELY NO WARRANTY.&lt;br&gt;&amp;nbsp; This is free software, and you are welcome to&lt;br&gt;&amp;nbsp; redistribute it under certain conditions.&lt;br&gt;&amp;nbsp; For more look at &lt;a href=&quot;http://www.gnu.org/licenses/gpl-3.0.html&quot;&gt;www.gnu.org&lt;/a&gt;&lt;br&gt;&lt;p align=&quot;center&quot;&gt;&lt;img src=&quot;:resources/GNU_GPLv3_Logo.png&quot; width=&quot;250&quot; height=&quot;124&quot; /&gt;&lt;/p&gt;&amp;nbsp; Official git repo: &lt;a href=&quot;https://github.com/RussianBruteForce/Qtnp&quot;&gt;https://github.com/RussianBruteForce/Qtnp&lt;/a&gt;&lt;br&gt;&lt;br&gt;&amp;nbsp; E-mail: &lt;a href=&quot;mailto:bruteforce@sigil.tk&quot;&gt;bruteforce@sigil.tk&lt;/a&gt;&lt;br&gt;&amp;nbsp; Icons by &lt;a href=&quot;http://icomoon.io&quot;&gt;icomoon.io&lt;/a&gt; under &lt;a href=&quot;http://creativecommons.org/licenses/by/3.0&quot;&gt;CC BY 3.0&lt;/a&gt;</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="Qtnp.cpp" line="567"/>
+        <location filename="Qtnp.cpp" line="579"/>
         <source>WRONG EXPRESSION</source>
         <translation>Неверное выражение</translation>
     </message>
     <message>
-        <location filename="Qtnp.cpp" line="568"/>
+        <location filename="Qtnp.cpp" line="580"/>
         <source>Wrong expression!
 It&apos;s can&apos;t be drawn</source>
         <translation>Неверное выражение!
 Такую функцию не нарисовать</translation>
     </message>
     <message>
-        <location filename="Qtnp.cpp" line="603"/>
+        <location filename="Qtnp.cpp" line="631"/>
         <source>The image has been modified.
 Do you want to save your changes?</source>
         <translation>Изображение было изменено.
@@ -767,101 +786,126 @@ Do you want to save your changes?</source>
     </message>
     <message>
         <location filename="SettingsDialog.ui" line="57"/>
-        <location filename="SettingsDialog.ui" line="140"/>
+        <location filename="SettingsDialog.ui" line="174"/>
         <source>Graphic:</source>
         <translation>График:</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="75"/>
-        <location filename="SettingsDialog.ui" line="168"/>
-        <location filename="SettingsDialog.ui" line="227"/>
+        <location filename="SettingsDialog.ui" line="71"/>
+        <source>Pen color</source>
+        <translation>Цвет кисти</translation>
+    </message>
+    <message>
+        <location filename="SettingsDialog.ui" line="89"/>
+        <location filename="SettingsDialog.ui" line="208"/>
+        <location filename="SettingsDialog.ui" line="279"/>
         <source>Grid:</source>
         <translation>Сетка:</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="89"/>
-        <location filename="SettingsDialog.ui" line="192"/>
-        <location filename="SettingsDialog.ui" line="251"/>
+        <location filename="SettingsDialog.ui" line="103"/>
+        <location filename="SettingsDialog.ui" line="238"/>
+        <location filename="SettingsDialog.ui" line="309"/>
         <source>Coordinate plane:</source>
         <translation>Координатная плоскость:</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="106"/>
+        <location filename="SettingsDialog.ui" line="117"/>
+        <source>Right pen color:</source>
+        <translation>Цвет ПКМ:</translation>
+    </message>
+    <message>
+        <location filename="SettingsDialog.ui" line="134"/>
         <source>Thickness</source>
         <translation>Толщина</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="116"/>
+        <location filename="SettingsDialog.ui" line="144"/>
         <source>Pens:</source>
         <translation>Карандаш:</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="219"/>
+        <location filename="SettingsDialog.ui" line="271"/>
         <source>Steps</source>
         <translation>Шаг</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="276"/>
+        <location filename="SettingsDialog.ui" line="340"/>
+        <source>Opacity</source>
+        <translation>Прозрачность</translation>
+    </message>
+    <message>
+        <location filename="SettingsDialog.ui" line="348"/>
+        <source>Numbers of coordinate plane:</source>
+        <translation>Прозрачность координатной плоскости:</translation>
+    </message>
+    <message>
+        <location filename="SettingsDialog.ui" line="376"/>
         <source>Presentation</source>
         <translation>Презентация</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="284"/>
+        <location filename="SettingsDialog.ui" line="384"/>
         <source>Images dir:</source>
         <translation>Каталог изображений:</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="314"/>
+        <location filename="SettingsDialog.ui" line="414"/>
         <source>...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="326"/>
+        <location filename="SettingsDialog.ui" line="426"/>
         <source>Start presentation automaticaly</source>
         <translation>Автостарт презентации</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="337"/>
+        <location filename="SettingsDialog.ui" line="437"/>
         <source>UI</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="345"/>
+        <location filename="SettingsDialog.ui" line="445"/>
         <source>Language:</source>
         <translation>Язык:</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="404"/>
+        <location filename="SettingsDialog.ui" line="504"/>
         <source>Template:</source>
         <translation>Шаблон:</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="429"/>
+        <location filename="SettingsDialog.ui" line="529"/>
         <source>Reverse ToolBar</source>
         <translation>Обратный тулбар</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="436"/>
+        <location filename="SettingsDialog.ui" line="536"/>
+        <source>Run in fullscreen</source>
+        <translation>Стартовать в полноэкранном режиме</translation>
+    </message>
+    <message>
+        <location filename="SettingsDialog.ui" line="543"/>
         <source>Sync coordinate plane to grid</source>
         <translation>Синхронизация значений сетки и коорд. плоскости</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="449"/>
+        <location filename="SettingsDialog.ui" line="556"/>
         <source>Restore &amp;Defaults</source>
         <translation>По умолчанию</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="469"/>
+        <location filename="SettingsDialog.ui" line="576"/>
         <source>&amp;Save</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.ui" line="476"/>
+        <location filename="SettingsDialog.ui" line="583"/>
         <source>&amp;Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="SettingsDialog.cpp" line="132"/>
+        <location filename="SettingsDialog.cpp" line="147"/>
         <source>Open Directory</source>
         <translation>Открыть каталог</translation>
     </message>

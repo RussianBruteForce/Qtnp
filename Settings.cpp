@@ -137,11 +137,6 @@ QByteArray Settings::geometry()
 	return this->value(GEOMETRY).toByteArray();
 }
 
-QByteArray Settings::windowState()
-{
-	return this->value(WINDOWSTATE).toByteArray();
-}
-
 void Settings::restoreDefaults()
 {
 	setBgColor(DBG_COLOR);
@@ -282,7 +277,3 @@ void Settings::setGeometry(QByteArray g)
 	this->setValue(GEOMETRY, g);
 }
 
-void Settings::setWindowState(QByteArray s)
-{
-	this->setValue(WINDOWSTATE, s);
-}
