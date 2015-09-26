@@ -1,8 +1,0 @@
-E-mail: <bruteforce@sigil.tk> <russianbruteforce@gmail.com> <hackeridze@gmail.com> Victor Hackeridze
-
-COMPILE
-	$ qmake
-	$ make
-
-RUN
-	$ ./qtnp
